@@ -15,7 +15,7 @@ class LogoSection extends StatelessWidget {
           Positioned(
             top: 0,
             child: Image.asset(
-              'assets/logo/vertical_stack-big.png',
+              'assets/logo/logo.png',
               width: 88,
               height: 88,
               fit: BoxFit.contain,

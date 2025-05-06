@@ -1,0 +1,56 @@
+# Cursor Rules: Money Mate
+
+## Quy ước đặt tên
+- Sử dụng `snake_case` cho tên tệp
+- Sử dụng `camelCase` cho biến và phương thức
+- Sử dụng `PascalCase` cho tên lớp, enums và extension
+- Sử dụng tiền tố `_` cho biến và phương thức private
+
+## Cấu trúc thư mục
+- Tổ chức thư mục theo tính năng trong mỗi lớp (presentation, domain, data)
+- Đặt giao diện UI trong thư mục presentation/screens và presentation/widgets
+- Đặt các trường hợp sử dụng trong domain/usecases
+- Đặt repositories trong data/repositories
+
+## Quy tắc code
+- Luôn có documentation cho public classes và methods
+- Sử dụng const constructor khi có thể
+- Sử dụng late chỉ khi thực sự cần thiết
+- Tránh nullable types khi có thể
+- Ưu tiên sử dụng immutable state
+
+## Kiểu dữ liệu
+- Sử dụng kiểu cụ thể thay vì dynamic
+- Sử dụng final khi biến không thay đổi sau khi được gán giá trị
+- Ưu tiên sử dụng collection immutable (List.unmodifiable, etc.)
+
+## Xử lý lỗi
+- Sử dụng Failure objects thay vì throws exceptions trong domain layer
+- Xử lý các trường hợp ngoại lệ ở repository layer
+- Hiển thị thông báo lỗi thân thiện cho người dùng
+
+## UI/UX
+- Tuân thủ Material Design 3
+- Sử dụng theme nhất quán
+- Tất cả các văn bản hiển thị phải hỗ trợ đa ngôn ngữ
+- Đảm bảo UI responsive trên nhiều kích thước màn hình
+
+## Quản lý trạng thái
+- Tránh sử dụng StatefulWidget nếu có thể thay thế bằng Bloc/Cubit
+- Chia nhỏ state objects để tránh rebuild không cần thiết
+- Sử dụng Equatable để so sánh state objects
+
+## Firebase
+- Sử dụng các phương thức batch và transaction cho các thao tác phức tạp
+- Đảm bảo security rules được thiết lập đúng
+- Thiết kế cấu trúc dữ liệu để tối ưu cho việc truy vấn
+
+## Testing
+- Viết unit tests cho tất cả use cases
+- Viết widget tests cho các UI components phức tạp
+- Mock dependencies khi test repositories và use cases
+
+## CI/CD
+- Đảm bảo linting pass trước khi commit
+- Version code và version name theo semantic versioning
+- Tự động hóa việc build và deploy với GitHub Actions 
