@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "911509380555",
+    "project_id": "e-commerce-project-70c8e",
+    "storage_bucket": "e-commerce-project-70c8e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:911509380555:android:806d4049479dd916fbaa4e",
+        "android_client_info": {
+          "package_name": "com.example.ecommerce_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7ZrBikz_aEogDO6_ueCn-wFNfA0ON9ds"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:911509380555:android:c4d959421480e1fdfbaa4e",
+        "android_client_info": {
+          "package_name": "com.example.money_mate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7ZrBikz_aEogDO6_ueCn-wFNfA0ON9ds"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
