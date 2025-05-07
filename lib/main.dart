@@ -23,7 +23,6 @@ class MyApp extends StatelessWidget {
       theme: lightTheme,
       initialRoute: RouteConstants.onboarding,
       onGenerateRoute: Routes.generateRoute,
-     
     );
   }
 }

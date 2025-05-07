@@ -3,9 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:money_mate/core/errors/auth_failure.dart';
-import 'package:money_mate/feartures/authentication/domain/entities/user_entity.dart';
-import 'package:money_mate/feartures/authentication/domain/repositories/auth_repository.dart';
-import 'package:money_mate/feartures/authentication/domain/usecases/auth/register_with_google_usecase.dart';
+import 'package:money_mate/features/authentication/domain/entities/user_entity.dart';
+import 'package:money_mate/features/authentication/domain/repositories/auth_repository.dart';
+import 'package:money_mate/features/authentication/domain/usecases/auth/register_with_google_usecase.dart';
 
 import 'register_with_google_usecase_test.mocks.dart';
 
@@ -18,7 +18,7 @@ void main() {
     mockAuthRepository = MockAuthRepository();
     usecase = RegisterWithGoogleUseCase(mockAuthRepository);
   });
-  
+
   final tUserEntity = UserEntity(
     id: 'test-id',
     email: 'test@example.com',
@@ -30,10 +30,10 @@ void main() {
       // arrange
       when(mockAuthRepository.registerWithGoogle())
           .thenAnswer((_) async => Right(tUserEntity));
-      
+
       // act
       final result = await usecase(const NoParams());
-      
+
       // assert
       expect(result, Right(tUserEntity));
       verify(mockAuthRepository.registerWithGoogle()).called(1);
@@ -45,33 +45,33 @@ void main() {
       final failure = AuthFailure.userCancelled();
       when(mockAuthRepository.registerWithGoogle())
           .thenAnswer((_) async => Left(failure));
-      
+
       // act
       final result = await usecase(const NoParams());
-      
+
       // assert
       expect(result, Left(failure));
       verify(mockAuthRepository.registerWithGoogle()).called(1);
       verifyNoMoreInteractions(mockAuthRepository);
     });
   });
-  
+
   group('NoParams', () {
     test('should return true when comparing two NoParams instances', () {
       // arrange
       const params1 = NoParams();
       const params2 = NoParams();
-      
+
       // act & assert
       expect(params1 == params2, true);
     });
-    
+
     test('should have empty props list', () {
       // arrange
       const params = NoParams();
-      
+
       // act & assert
       expect(params.props, []);
     });
   });
-} 
+}
