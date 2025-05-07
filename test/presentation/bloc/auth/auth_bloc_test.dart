@@ -4,10 +4,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:money_mate/core/errors/auth_failure.dart';
-import 'package:money_mate/feartures/authentication/domain/entities/user_entity.dart';
-import 'package:money_mate/feartures/authentication/domain/usecases/auth/register_with_email_usecase.dart';
-import 'package:money_mate/feartures/authentication/domain/usecases/auth/register_with_google_usecase.dart';
-import 'package:money_mate/feartures/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:money_mate/features/authentication/domain/entities/user_entity.dart';
+import 'package:money_mate/features/authentication/domain/usecases/auth/register_with_email_usecase.dart';
+import 'package:money_mate/features/authentication/domain/usecases/auth/register_with_google_usecase.dart';
+import 'package:money_mate/features/authentication/presentation/bloc/auth_bloc.dart';
 
 import 'auth_bloc_test.mocks.dart';
 
@@ -33,7 +33,7 @@ void main() {
   // Định nghĩa dữ liệu test
   const tEmail = 'test@example.com';
   const tPassword = 'Password123!';
-  
+
   final tUserEntity = UserEntity(
     id: 'test-id',
     email: tEmail,
@@ -131,4 +131,4 @@ void main() {
       },
     );
   });
-} 
+}

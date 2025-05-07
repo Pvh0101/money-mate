@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:money_mate/feartures/authentication/presentation/bloc/auth_bloc.dart';
-import 'package:money_mate/feartures/authentication/presentation/pages/register_page.dart';
+import 'package:money_mate/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:money_mate/features/authentication/presentation/pages/register_page.dart';
 
 import 'register_page_test.mocks.dart';
 
@@ -16,7 +16,7 @@ void main() {
 
   setUp(() {
     mockAuthBloc = MockAuthBloc();
-    
+
     // Thiết lập trạng thái mặc định
     when(mockAuthBloc.state).thenReturn(AuthInitial());
     when(mockAuthBloc.stream).thenAnswer((_) => Stream.value(AuthInitial()));
@@ -31,7 +31,8 @@ void main() {
     );
   }
 
-  testWidgets('RegisterPageView hiển thị tất cả các phần tử UI cần thiết', (WidgetTester tester) async {
+  testWidgets('RegisterPageView hiển thị tất cả các phần tử UI cần thiết',
+      (WidgetTester tester) async {
     await tester.pumpWidget(createTestableWidget());
 
     // Kiểm tra các widget chính được hiển thị
@@ -45,7 +46,8 @@ void main() {
     expect(find.text('Đăng nhập ngay'), findsOneWidget);
   });
 
-  testWidgets('Hiển thị lỗi khi nhấn submit mà không điền thông tin', (WidgetTester tester) async {
+  testWidgets('Hiển thị lỗi khi nhấn submit mà không điền thông tin',
+      (WidgetTester tester) async {
     await tester.pumpWidget(createTestableWidget());
 
     // Nhấn vào nút REGISTER mà không điền thông tin
@@ -56,14 +58,18 @@ void main() {
     expect(find.text('Vui lòng điền đầy đủ thông tin'), findsOneWidget);
   });
 
-  testWidgets('Hiển thị lỗi khi mật khẩu không khớp', (WidgetTester tester) async {
+  testWidgets('Hiển thị lỗi khi mật khẩu không khớp',
+      (WidgetTester tester) async {
     await tester.pumpWidget(createTestableWidget());
 
     // Điền thông tin đăng ký với mật khẩu không khớp
-    await tester.enterText(find.widgetWithText(TextField, 'Email'), 'test@example.com');
-    await tester.enterText(find.widgetWithText(TextField, 'Password'), 'password123');
-    await tester.enterText(find.widgetWithText(TextField, 'Confirm Password'), 'password456');
-    
+    await tester.enterText(
+        find.widgetWithText(TextField, 'Email'), 'test@example.com');
+    await tester.enterText(
+        find.widgetWithText(TextField, 'Password'), 'password123');
+    await tester.enterText(
+        find.widgetWithText(TextField, 'Confirm Password'), 'password456');
+
     // Nhấn đăng ký
     await tester.tap(find.text('REGISTER'));
     await tester.pump();
@@ -72,14 +78,18 @@ void main() {
     expect(find.text('Mật khẩu nhập lại không khớp'), findsOneWidget);
   });
 
-  testWidgets('Hiển thị lỗi khi định dạng email không hợp lệ', (WidgetTester tester) async {
+  testWidgets('Hiển thị lỗi khi định dạng email không hợp lệ',
+      (WidgetTester tester) async {
     await tester.pumpWidget(createTestableWidget());
 
     // Điền thông tin đăng ký với email không hợp lệ
-    await tester.enterText(find.widgetWithText(TextField, 'Email'), 'invalid-email');
-    await tester.enterText(find.widgetWithText(TextField, 'Password'), 'password123');
-    await tester.enterText(find.widgetWithText(TextField, 'Confirm Password'), 'password123');
-    
+    await tester.enterText(
+        find.widgetWithText(TextField, 'Email'), 'invalid-email');
+    await tester.enterText(
+        find.widgetWithText(TextField, 'Password'), 'password123');
+    await tester.enterText(
+        find.widgetWithText(TextField, 'Confirm Password'), 'password123');
+
     // Nhấn đăng ký
     await tester.tap(find.text('REGISTER'));
     await tester.pump();
@@ -92,10 +102,13 @@ void main() {
     await tester.pumpWidget(createTestableWidget());
 
     // Điền thông tin đăng ký hợp lệ
-    await tester.enterText(find.widgetWithText(TextField, 'Email'), 'test@example.com');
-    await tester.enterText(find.widgetWithText(TextField, 'Password'), 'password123');
-    await tester.enterText(find.widgetWithText(TextField, 'Confirm Password'), 'password123');
-    
+    await tester.enterText(
+        find.widgetWithText(TextField, 'Email'), 'test@example.com');
+    await tester.enterText(
+        find.widgetWithText(TextField, 'Password'), 'password123');
+    await tester.enterText(
+        find.widgetWithText(TextField, 'Confirm Password'), 'password123');
+
     // Nhấn đăng ký
     await tester.tap(find.text('REGISTER'));
     await tester.pump();
@@ -103,4 +116,4 @@ void main() {
     // Verify AuthBloc được gọi với sự kiện RegisterWithEmailEvent
     verify(mockAuthBloc.add(any)).called(1);
   });
-} 
+}
