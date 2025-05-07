@@ -35,7 +35,6 @@ class CustomTextField extends StatelessWidget {
           style: TextStyle(
             fontSize: 16,
             color: const Color(0xFF242D35),
-            fontFamily: GoogleFonts.inter().fontFamily,
           ),
           decoration: InputDecoration(
             isDense: true,
@@ -43,7 +42,6 @@ class CustomTextField extends StatelessWidget {
             hintStyle: TextStyle(
               fontSize: 16,
               color: const Color(0xFF9BA1A8),
-              fontFamily: GoogleFonts.inter().fontFamily,
             ),
             prefixIcon: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),

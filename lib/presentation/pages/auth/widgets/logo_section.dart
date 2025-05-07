@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class LogoSection extends StatelessWidget {
   const LogoSection({super.key});
@@ -25,8 +24,7 @@ class LogoSection extends StatelessWidget {
             style: TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.w700,
-              color: const Color(0xFF242D35),
-              fontFamily: GoogleFonts.inter().fontFamily,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
         ],

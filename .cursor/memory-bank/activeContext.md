@@ -8,12 +8,18 @@ Hiện dự án đang tập trung vào việc phát triển các tính năng c�
 - Tích hợp Firebase cho authentication và cơ sở dữ liệu
 - Thiết lập các lớp kiến trúc: presentation, domain, và data
 - Cài đặt các dependencies cần thiết trong pubspec.yaml
+- Hoàn thiện UI cho trang Onboarding theo thiết kế Figma (3 slides, SVG, text styles, page indicator).
+- Cập nhật `CustomButton` widget để hỗ trợ `buttonTextStyle` và tùy chỉnh gradient, áp dụng cho nút trên trang Onboarding.
+- Tích hợp `flutter_svg` để hiển thị hình ảnh SVG từ Figma.
+- Sử dụng `google_fonts` (cụ thể là Inter) cho `CustomButton` và các text trên trang Onboarding.
 
 ## Các quyết định đang hoạt động
 - Sử dụng Bloc/Cubit làm giải pháp quản lý trạng thái
 - Áp dụng go_router cho việc điều hướng
 - Thiết kế UI theo Material Design 3
 - Lưu trữ dữ liệu trên Firestore
+- Sử dụng `flutter_svg` cho các tài sản hình ảnh vector.
+- Sử dụng `google_fonts` để quản lý và áp dụng font chữ nhất quán.
 
 ## Các vấn đề đang xem xét
 - Thực hiện tính năng đăng nhập/đăng ký người dùng

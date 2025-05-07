@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:money_mate/presentation/widgets/custom_button.dart';
 import 'widgets/custom_text_field.dart';
 import 'widgets/logo_section.dart';
+import '../../../core/routes/app_routes.dart';
+import '../../../core/constants/route_constants.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -121,18 +122,19 @@ class _LoginPageState extends State<LoginPage> {
 
         // Forgot password
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            Routes.navigateTo(context, RouteConstants.forgotPassword);
+          },
           style: TextButton.styleFrom(
             minimumSize: const Size(44, 36),
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
-          child: Text(
+          child: const Text(
             'FORGOT PASSWORD',
             style: TextStyle(
-              color: const Color(0xFF6B7580),
+              color: Color(0xFF6B7580),
               fontSize: 14,
               fontWeight: FontWeight.w600,
-              fontFamily: GoogleFonts.inter().fontFamily,
             ),
           ),
         ),
@@ -183,22 +185,20 @@ class _ErrorToast extends StatelessWidget {
         color: const Color(0xFFFFD7D7),
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Row(
+      child: const Row(
         children: [
-          const Icon(
+          Icon(
             Icons.warning_amber_rounded,
             color: Color(0xFFEF4E4E),
             size: 24,
           ),
-          const SizedBox(width: 8),
+          SizedBox(width: 8),
           Text(
             'Incorrect username or password',
             style: TextStyle(
-              color: const Color(0xFFEF4E4E),
+              color: Color(0xFFEF4E4E),
               fontSize: 12,
-              fontFamily: GoogleFonts.inter().fontFamily,
-              letterSpacing: 0.02,
-              height: 1.33,
+
             ),
           ),
         ],
@@ -223,10 +223,7 @@ class _OrDivider extends StatelessWidget {
               'Or',
               style: TextStyle(
                 fontSize: 16,
-                color: const Color(0xFF242D35),
-                fontFamily: GoogleFonts.inter().fontFamily,
-                letterSpacing: 0.02,
-                height: 1.5,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
           ),
@@ -306,7 +303,6 @@ class _SocialLoginButton extends StatelessWidget {
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
                 color: Theme.of(context).colorScheme.onSurface,
-                fontFamily: GoogleFonts.inter().fontFamily,
               ),
             ),
           ],
@@ -328,18 +324,16 @@ class _RegisterLink extends StatelessWidget {
           'Don\'t have an account?',
           style: TextStyle(
             fontSize: 14,
-            color: const Color(0xFF242D35),
-            fontFamily: GoogleFonts.inter().fontFamily,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         TextButton(
           onPressed: () {},
-          child: Text(
+          child: const Text(
             'Register here',
             style: TextStyle(
               fontSize: 14,
-              color: const Color(0xFF0E33F3),
-              fontFamily: GoogleFonts.inter().fontFamily,
+              color: Color(0xFF0E33F3),
             ),
           ),
         ),

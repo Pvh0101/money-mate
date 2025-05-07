@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../../core/constants/route_constants.dart';
 import '../../../core/routes/app_routes.dart';
 import '../../../presentation/widgets/custom_button.dart';
+// import 'package:google_fonts/google_fonts.dart'; // GoogleFonts sẽ được lấy từ TextTheme
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
@@ -23,12 +25,17 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context); // Lấy theme
+    final textTheme = theme.textTheme;
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
+      // backgroundColor: colorScheme.background, // Thường thì Scaffold tự lấy màu này
       body: SafeArea(
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 40),
+              padding: const EdgeInsets.only(top: 40, bottom: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -37,9 +44,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     height: 40,
                   ),
                   const SizedBox(width: 8),
-                  const Text(
+                  Text(
                     'monex',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: textTheme.headlineSmall?.copyWith(color: colorScheme.primary, fontWeight: FontWeight.bold), // Cập nhật style
                   ),
                 ],
               ),
@@ -54,35 +61,35 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   });
                 },
                 itemBuilder: (context, index) {
-                  return _buildOnboardingSlide(index);
+                  return _buildOnboardingSlide(context, index); // Truyền context
                 },
               ),
             ),
-            _buildBottomSection(),
+            _buildBottomSection(context), // Truyền context
           ],
         ),
       ),
     );
   }
 
-  Widget _buildOnboardingSlide(int index) {
+  Widget _buildOnboardingSlide(BuildContext context, int index) { // Nhận context
     final List<Map<String, String>> slides = [
       {
-        'image': 'assets/images/onboarding_1.png',
+        'image': 'assets/images/onboarding_slide_1_illustration.svg',
         'title': 'Note Down Expenses',
-        'description': 'Daily note your expenses to help manage money',
+        'description': 'Daily note your expenses to\nhelp manage money',
       },
       {
-        'image': 'assets/images/onboarding_2.png',
+        'image': 'assets/images/onboarding_slide_2_illustration.svg',
         'title': 'Simple Money Management',
         'description':
-            'Get your notifications or alert when you do the over expenses',
+            'Get your notifications or alert\nwhen you do the over expenses',
       },
       {
-        'image': 'assets/images/onboarding_3.png',
+        'image': 'assets/images/onboarding_slide_3_illustration.svg',
         'title': 'Easy to Track and Analize',
         'description':
-            'Tracking your expense help make sure you don\'t overspend',
+            'Tracking your expense help make sure\nyou don\'t overspend',
       },
     ];
 
@@ -94,15 +101,20 @@ class _OnboardingPageState extends State<OnboardingPage> {
     );
   }
 
-  Widget _buildBottomSection() {
+  Widget _buildBottomSection(BuildContext context) { // Nhận context
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    // final textTheme = theme.textTheme;
+
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
-          _buildPageIndicator(),
-          const SizedBox(height: 20),
+          _buildPageIndicator(context), // Truyền context
+          const SizedBox(height: 40),
+          // Cân nhắc thay CustomButton bằng ElevatedButton để đồng bộ hoàn toàn
           CustomButton(
-            text: 'LET\'S GO',
+            text: _currentPage == 2 ? "LET'S GO" : "NEXT",
             onPressed: () {
               if (_currentPage < 2) {
                 _pageController.nextPage(
@@ -113,24 +125,36 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 Routes.navigateToReplacement(context, RouteConstants.login);
               }
             },
+            // Gradient giữ nguyên theo yêu cầu trước đó của AppFillButton
+            gradientColors: const [Color(0xFF2F51FF), Color(0xFF0E33F3)], 
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            // TextStyle cho CustomButton nên được xử lý bên trong CustomButton để nhất quán
+            // hoặc CustomButton nên nhận TextStyle từ theme
+            buttonTextStyle: theme.textTheme.labelLarge?.copyWith(color: colorScheme.onPrimary), 
+            // GoogleFonts.inter(
+            //   fontSize: 16,
+            //   fontWeight: FontWeight.w600,
+            //   color: colorScheme.onPrimary, // Sử dụng màu onPrimary từ theme
+            // ),
           ),
-          const SizedBox(height: 50),
+          const SizedBox(height: 20),
         ],
       ),
     );
   }
 
-  Widget _buildPageIndicator() {
+  Widget _buildPageIndicator(BuildContext context) { // Nhận context
+    final colorScheme = Theme.of(context).colorScheme;
     return SmoothPageIndicator(
       controller: _pageController,
       count: 3,
       effect: ExpandingDotsEffect(
-        activeDotColor: const Color(0xFF246BFD),
-        dotColor: Colors.grey.shade300,
+        activeDotColor: colorScheme.primary, // Cập nhật màu
+        dotColor: colorScheme.surfaceVariant, // Cập nhật màu
         dotHeight: 8,
         dotWidth: 8,
         spacing: 8,
-        expansionFactor: 4,
+        expansionFactor: 3,
       ),
     );
   }
@@ -150,29 +174,32 @@ class _OnboardingSlide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    // final colorScheme = Theme.of(context).colorScheme; // không cần nếu textTheme đã có màu
+
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 50),
+      padding: const EdgeInsets.symmetric(horizontal: 40),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 45),
-            child: Image.asset(
+            padding: const EdgeInsets.symmetric(vertical: 30),
+            child: SvgPicture.asset(
               image,
-              height: 226,
-              width: 251,
+              height: 300,
+              width: 300,
               fit: BoxFit.contain,
             ),
           ),
           Text(
             title,
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            style: textTheme.titleMedium, // Cập nhật style (16pt, w600)
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 12),
           Text(
             description,
-            style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
+            style: textTheme.bodyLarge?.copyWith(height: 1.5), // Cập nhật style (16pt, w400)
             textAlign: TextAlign.center,
           ),
         ],

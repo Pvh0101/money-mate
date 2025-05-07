@@ -9,6 +9,8 @@ Dự án đang ở giai đoạn phát triển ban đầu. Cấu trúc dự án v
 - ✅ Cài đặt các dependencies chính
 - ✅ Thiết kế sơ bộ cơ sở dữ liệu Firestore
 - ✅ Tạo cấu trúc thư mục theo kiến trúc đã chọn
+- ✅ Thiết kế và triển khai UI cho trang Onboarding (3 slide) với hình ảnh SVG, text styles, và page indicator theo Figma.
+- ✅ Cập nhật `CustomButton` để phù hợp với yêu cầu thiết kế của trang Onboarding (gradient, text style, padding).
 
 ## Đang phát triển
 - 🔄 Màn hình đăng nhập/đăng ký
@@ -27,7 +29,7 @@ Dự án đang ở giai đoạn phát triển ban đầu. Cấu trúc dự án v
 ## Các vấn đề đã biết
 - Chưa có cơ chế xử lý offline cho ứng dụng
 - Hiệu suất truy vấn Firestore chưa được tối ưu
-- Giao diện người dùng cần cải thiện trải nghiệm
+- Giao diện người dùng cần cải thiện trải nghiệm (Trang Onboarding đã cải thiện một phần)
 - Chưa có hệ thống testing đầy đủ
 
 ## Dự định phát triển tiếp theo
@@ -37,8 +39,8 @@ Dự án đang ở giai đoạn phát triển ban đầu. Cấu trúc dự án v
 4. Xây dựng hệ thống quản lý danh mục
 
 ## Thống kê dự án
-- **Tính năng đã hoàn thành**: 20%
+- **Tính năng đã hoàn thành**: 20% (Xem xét tăng nhẹ sau onboarding)
 - **Tính năng đang phát triển**: 30%
 - **Tính năng cần phát triển**: 50%
-- **Độ hoàn thiện UI/UX**: 10%
+- **Độ hoàn thiện UI/UX**: 10% (Tăng lên khoảng 15-20% sau onboarding)
 - **Độ ổn định**: 30% 

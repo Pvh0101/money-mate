@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../constants/route_constants.dart';
 import '../../presentation/pages/onboarding/onboarding_page.dart';
 import '../../presentation/pages/auth/login_page.dart';
+import '../../presentation/pages/auth/forgot_password_page.dart';
+import '../../presentation/pages/auth/password_updated_page.dart';
 import '../../presentation/pages/home_page.dart';
 
 class Routes {
@@ -14,6 +16,10 @@ class Routes {
         return _materialRoute(const OnboardingPage());
       case RouteConstants.login:
         return _materialRoute(const LoginPage());
+      case RouteConstants.forgotPassword:
+        return _materialRoute(const ForgotPasswordPage());
+      case RouteConstants.passwordUpdated:
+        return _materialRoute(const PasswordUpdatedPage());
       case RouteConstants.home:
         return _materialRoute(const HomePage());
       // Các routes khác sẽ được thêm khi có file tương ứng

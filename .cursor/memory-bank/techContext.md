@@ -22,6 +22,7 @@
   - smooth_page_indicator: ^1.1.0
   - google_fonts: ^6.1.0
   - go_router: ^13.2.0
+  - flutter_svg: ^2.1.0
 
 ## Thành phần Firebase
 - **Firebase Authentication**: Xác thực người dùng

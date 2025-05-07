@@ -20,6 +20,7 @@ class CustomButton extends StatelessWidget {
   final EdgeInsets? padding;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
+  final TextStyle? buttonTextStyle;
 
   const CustomButton({
     super.key,
@@ -36,6 +37,7 @@ class CustomButton extends StatelessWidget {
     this.padding,
     this.prefixIcon,
     this.suffixIcon,
+    this.buttonTextStyle,
   });
 
   @override
@@ -48,8 +50,8 @@ class CustomButton extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: backgroundColor == null
             ? LinearGradient(
-                begin: const Alignment(-0.8, -0.7),
-                end: const Alignment(0.8, 0.7),
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
                 colors: currentGradient,
               )
             : null,
@@ -103,12 +105,13 @@ class CustomButton extends StatelessWidget {
                   ],
                   Text(
                     text,
-                    style: TextStyle(
-                      color: textColor,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: GoogleFonts.inter().fontFamily,
-                      letterSpacing: 0.02,
+                    style: GoogleFonts.inter(
+                      color: buttonTextStyle?.color ?? textColor,
+                      fontSize: buttonTextStyle?.fontSize ?? 16,
+                      fontWeight: buttonTextStyle?.fontWeight ?? FontWeight.w600,
+                      letterSpacing: buttonTextStyle?.letterSpacing,
+                      fontStyle: buttonTextStyle?.fontStyle,
+                      height: buttonTextStyle?.height,
                     ),
                   ),
                   if (suffixIcon != null) ...[

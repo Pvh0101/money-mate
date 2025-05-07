@@ -19,6 +19,8 @@ Money Mate được xây dựng theo **Clean Architecture** với ba lớp chín
 - Các thành phần:
   - Screens: Các màn hình chính của ứng dụng
   - Widgets: Các thành phần UI có thể tái sử dụng
+    - `CustomButton`: Widget nút tùy chỉnh, hỗ trợ gradient, `buttonTextStyle` cho phép tùy chỉnh font, size, weight, color, và các thuộc tính style khác. Đã được cập nhật để tăng tính linh hoạt.
+    - `_OnboardingSlide`: Widget cục bộ được sử dụng trong `OnboardingPage` để hiển thị nội dung từng slide (hình ảnh SVG, tiêu đề, mô tả).
   - Blocs/Cubits: Quản lý trạng thái và logic UI
   - Routes: Quản lý điều hướng ứng dụng
 
