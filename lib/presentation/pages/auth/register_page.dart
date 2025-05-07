@@ -6,24 +6,29 @@ import 'widgets/logo_section.dart';
 import '../../../core/routes/app_routes.dart';
 import '../../../core/constants/route_constants.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _usernameController = TextEditingController();
+class _RegisterPageState extends State<RegisterPage> {
+  final TextEditingController _emailController = TextEditingController(); // Added email controller
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController(); // Added confirm password controller
   bool _isPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false; // Added for confirm password
   bool _isLoading = false;
   bool _hasError = false;
+  String _errorMessage = ''; // For dynamic error messages
 
   @override
   void dispose() {
-    _usernameController.dispose();
+
+    _emailController.dispose(); // Dispose email controller
     _passwordController.dispose();
+    _confirmPasswordController.dispose(); // Dispose confirm password controller
     super.dispose();
   }
 
@@ -52,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
 
                         // Form section
                         if (_hasError) ...[
-                          const _ErrorToast(),
+                          _ErrorToast(message: _errorMessage), // Pass dynamic error message
                           const SizedBox(height: 16),
                         ],
                         _buildFormSection(),
@@ -88,11 +93,11 @@ class _LoginPageState extends State<LoginPage> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // Username field
+        // Email field
         CustomTextField(
-          controller: _usernameController,
-          hintText: 'Username',
-          prefixIcon: Icons.person_outline,
+          controller: _emailController,
+          hintText: 'Email',
+          prefixIcon: Icons.email_outlined,
         ),
         const SizedBox(height: 20),
 
@@ -111,57 +116,78 @@ class _LoginPageState extends State<LoginPage> {
             });
           },
         ),
+        const SizedBox(height: 20),
+
+        // Confirm Password field
+        CustomTextField(
+          controller: _confirmPasswordController,
+          hintText: 'Confirm Password',
+          prefixIcon: Icons.lock_outline,
+          suffixIcon: _isConfirmPasswordVisible
+              ? Icons.visibility_off
+              : Icons.visibility_outlined,
+          isPassword: !_isConfirmPasswordVisible,
+          onSuffixIconTap: () {
+            setState(() {
+              _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
+            });
+          },
+        ),
         const SizedBox(height: 24),
 
-        // Login button
+        // Register button
         AppFillButton(
           size: ButtonSize.large,
           isFullWidth: true,
-          text: 'LOGIN',
+          text: 'REGISTER', // Changed text to REGISTER
           isLoading: _isLoading,
-          onPressed: _handleLogin,
+          onPressed: _handleRegister, // Changed to _handleRegister
         ),
         const SizedBox(height: 24),
-
-        // Forgot password
-        TextButton(
-          onPressed: () {
-            Routes.navigateTo(context, RouteConstants.forgotPassword);
-          },
-          style: TextButton.styleFrom(
-            minimumSize: const Size(44, 36),
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          ),
-          child: const Text(
-            'FORGOT PASSWORD',
-            style: TextStyle(
-              color: Color(0xFF6B7580),
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
 
         const _OrDivider(),
         const SizedBox(height: 8),
 
         // Social buttons
-        const _SocialLoginSection(),
+        const _SocialLoginSection(), // Keep social login, update text inside widget
         const SizedBox(height: 24),
 
-        // Register link
-        const _RegisterLink(),
+        // Login link
+        const _LoginLink(), // Changed to _LoginLink
       ],
     );
   }
 
-  Future<void> _handleLogin() async {
-    if (_usernameController.text.isEmpty || _passwordController.text.isEmpty) {
+  Future<void> _handleRegister() async { // Renamed to _handleRegister
+    if (
+        _emailController.text.isEmpty ||
+        _passwordController.text.isEmpty ||
+        _confirmPasswordController.text.isEmpty) {
       setState(() {
         _hasError = true;
+        _errorMessage = 'Please fill in all fields';
       });
       return;
     }
+
+    if (_passwordController.text != _confirmPasswordController.text) {
+      setState(() {
+        _hasError = true;
+        _errorMessage = 'Passwords do not match';
+      });
+      return;
+    }
+
+    // Basic email validation
+    final emailRegExp = RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+    if (!emailRegExp.hasMatch(_emailController.text)) {
+      setState(() {
+        _hasError = true;
+        _errorMessage = 'Invalid email format';
+      });
+      return;
+    }
+
 
     setState(() {
       _isLoading = true;
@@ -174,11 +200,14 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       _isLoading = false;
     });
+    // TODO: Navigate to home page or verify email page after successful registration
+    // Routes.navigateTo(context, RouteConstants.home); // Example
   }
 }
 
 class _ErrorToast extends StatelessWidget {
-  const _ErrorToast();
+  final String message; // Added message parameter
+  const _ErrorToast({required this.message}); // Updated constructor
 
   @override
   Widget build(BuildContext context) {
@@ -188,20 +217,21 @@ class _ErrorToast extends StatelessWidget {
         color: const Color(0xFFFFD7D7),
         borderRadius: BorderRadius.circular(12),
       ),
-      child: const Row(
+      child: Row(
         children: [
-          Icon(
+          const Icon(
             Icons.warning_amber_rounded,
             color: Color(0xFFEF4E4E),
             size: 24,
           ),
-          SizedBox(width: 8),
-          Text(
-            'Incorrect username or password',
-            style: TextStyle(
-              color: Color(0xFFEF4E4E),
-              fontSize: 12,
-
+          const SizedBox(width: 8),
+          Expanded( // Added Expanded to prevent overflow
+            child: Text(
+              message, // Use dynamic message
+              style: const TextStyle(
+                color: Color(0xFFEF4E4E),
+                fontSize: 12,
+              ),
             ),
           ),
         ],
@@ -220,13 +250,13 @@ class _OrDivider extends StatelessWidget {
       child: Row(
         children: [
           Expanded(child: Container(height: 1, color: const Color(0xFFDCDFE3))),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               'Or',
               style: TextStyle(
                 fontSize: 16,
-                color: Theme.of(context).colorScheme.onSurface,
+                color: Color(0xFF6B7580), // Adjusted color for consistency
               ),
             ),
           ),
@@ -246,14 +276,18 @@ class _SocialLoginSection extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         _SocialLoginButton(
-          text: 'CONTINUE WITH GOOGLE',
-          onPressed: () {},
+          text: 'REGISTER WITH GOOGLE', // Changed text
+          onPressed: () {
+            // TODO: Implement Google registration
+          },
           icon: 'assets/icons/google_icon.png',
         ),
         const SizedBox(height: 20),
         _SocialLoginButton(
-          text: 'CONTINUE WITH APPLE',
-          onPressed: () {},
+          text: 'REGISTER WITH APPLE', // Changed text
+          onPressed: () {
+            // TODO: Implement Apple registration
+          },
           icon: 'assets/icons/apple_icon.png',
         ),
       ],
@@ -315,8 +349,8 @@ class _SocialLoginButton extends StatelessWidget {
   }
 }
 
-class _RegisterLink extends StatelessWidget {
-  const _RegisterLink();
+class _LoginLink extends StatelessWidget { // Renamed from _RegisterLink
+  const _LoginLink();
 
   @override
   Widget build(BuildContext context) {
@@ -324,7 +358,7 @@ class _RegisterLink extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          'Don\'t have an account?',
+          'Already have an account?', // Changed text
           style: TextStyle(
             fontSize: 14,
             color: Theme.of(context).colorScheme.onSurface,
@@ -332,10 +366,11 @@ class _RegisterLink extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
-            Routes.navigateTo(context, RouteConstants.register);
+            // Navigate to Login Page
+            Routes.navigateTo(context, RouteConstants.login); // TODO: Ensure login route is defined
           },
           child: const Text(
-            'Register here',
+            'Login here', // Changed text
             style: TextStyle(
               fontSize: 14,
               color: Color(0xFF0E33F3),
@@ -345,4 +380,4 @@ class _RegisterLink extends StatelessWidget {
       ],
     );
   }
-}
+} 

@@ -125,17 +125,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 Routes.navigateToReplacement(context, RouteConstants.login);
               }
             },
-            // Gradient giữ nguyên theo yêu cầu trước đó của AppFillButton
-            gradientColors: const [Color(0xFF2F51FF), Color(0xFF0E33F3)], 
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            // TextStyle cho CustomButton nên được xử lý bên trong CustomButton để nhất quán
-            // hoặc CustomButton nên nhận TextStyle từ theme
-            buttonTextStyle: theme.textTheme.labelLarge?.copyWith(color: colorScheme.onPrimary), 
-            // GoogleFonts.inter(
-            //   fontSize: 16,
-            //   fontWeight: FontWeight.w600,
-            //   color: colorScheme.onPrimary, // Sử dụng màu onPrimary từ theme
-            // ),
+            
           ),
           const SizedBox(height: 20),
         ],

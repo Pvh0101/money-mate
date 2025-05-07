@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
@@ -22,7 +21,7 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 48,
+      height: 50,
       decoration: BoxDecoration(
         color: const Color(0xFFF5F6F7),
         border: Border.all(color: const Color(0xFFDCDFE3)),
