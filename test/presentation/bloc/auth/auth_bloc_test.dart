@@ -4,10 +4,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:money_mate/core/errors/auth_failure.dart';
-import 'package:money_mate/domain/entities/user_entity.dart';
-import 'package:money_mate/domain/usecases/auth/register_with_email_usecase.dart';
-import 'package:money_mate/domain/usecases/auth/register_with_google_usecase.dart';
-import 'package:money_mate/presentation/bloc/auth/auth_bloc.dart';
+import 'package:money_mate/feartures/domain/entities/user_entity.dart';
+import 'package:money_mate/feartures/domain/usecases/auth/register_with_email_usecase.dart';
+import 'package:money_mate/feartures/domain/usecases/auth/register_with_google_usecase.dart';
+import 'package:money_mate/feartures/presentation/bloc/auth_bloc.dart';
 
 import 'auth_bloc_test.mocks.dart';
 

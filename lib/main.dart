@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+
 import 'core/constants/route_constants.dart';
+import 'core/di/service_locator.dart' as di;
 import 'core/routes/app_routes.dart';
 import 'core/theme/app_theme.dart';
-import 'core/di/service_locator.dart' as di;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: lightTheme,
-      initialRoute: RouteConstants.register,
+      initialRoute: RouteConstants.onboarding,
       onGenerateRoute: Routes.generateRoute,
      
     );

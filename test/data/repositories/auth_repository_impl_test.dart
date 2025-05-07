@@ -4,10 +4,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:money_mate/core/errors/auth_failure.dart';
-import 'package:money_mate/data/datasources/firebase_auth_datasource.dart';
-import 'package:money_mate/data/models/user_model.dart';
-import 'package:money_mate/data/repositories/auth_repository_impl.dart';
-import 'package:money_mate/domain/entities/user_entity.dart';
+import 'package:money_mate/feartures/data/datasources/firebase_auth_datasource.dart';
+import 'package:money_mate/feartures/data/models/user_model.dart';
+import 'package:money_mate/feartures/data/repositories/auth_repository_impl.dart';
+import 'package:money_mate/feartures/domain/entities/user_entity.dart';
 
 import 'auth_repository_impl_test.mocks.dart';
 

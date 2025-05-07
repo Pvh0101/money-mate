@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart'; // Import google_fonts
-import 'package:money_mate/core/theme/app_colors.dart';
+import 'app_colors.dart';
 
 // Helper function to create TextTheme to ensure consistency
 TextTheme _buildTextTheme(TextTheme base, ColorScheme colorScheme) {

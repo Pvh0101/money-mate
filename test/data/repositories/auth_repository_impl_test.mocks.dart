@@ -7,9 +7,9 @@ import 'dart:async' as _i4;
 
 import 'package:firebase_auth/firebase_auth.dart' as _i5;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:money_mate/data/datasources/firebase_auth_datasource.dart'
+import 'package:money_mate/feartures/data/datasources/firebase_auth_datasource.dart'
     as _i3;
-import 'package:money_mate/data/models/user_model.dart' as _i2;
+import 'package:money_mate/feartures/data/models/user_model.dart' as _i2;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values

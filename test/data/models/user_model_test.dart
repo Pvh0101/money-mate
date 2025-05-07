@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:money_mate/data/models/user_model.dart';
-import 'package:money_mate/domain/entities/user_entity.dart';
+import 'package:money_mate/feartures/data/models/user_model.dart';
+import 'package:money_mate/feartures/domain/entities/user_entity.dart';
 
 import 'user_model_test.mocks.dart';
 
