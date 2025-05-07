@@ -9,28 +9,21 @@ class LogoSection extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       height: 136,
-      child: Stack(
-        alignment: Alignment.center,
+      child: Column(
         children: [
-          Positioned(
-            top: 0,
-            child: Image.asset(
-              'assets/logo/vertical_stack-big.png',
-              width: 88,
-              height: 88,
-              fit: BoxFit.contain,
-            ),
+          Image.asset(
+            'assets/logo/logo.png',
+            width: 88,
+            height: 88,
+            fit: BoxFit.contain,
           ),
-          Positioned(
-            top: 94.5,
-            child: Text(
-              'monex',
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.w700,
-                color: const Color(0xFF242D35),
-                fontFamily: GoogleFonts.inter().fontFamily,
-              ),
+          Text(
+            'monex',
+            style: TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.w700,
+              color: const Color(0xFF242D35),
+              fontFamily: GoogleFonts.inter().fontFamily,
             ),
           ),
         ],

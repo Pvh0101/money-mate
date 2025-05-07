@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: Column(
                       children: [
-                        const SizedBox(height: 64),
+                        const SizedBox(height: 40),
                         // Logo section
                         const LogoSection(),
                         const SizedBox(height: 52),
@@ -117,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
           isLoading: _isLoading,
           onPressed: _handleLogin,
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 24),
 
         // Forgot password
         TextButton(
