@@ -11,11 +11,14 @@ class LogoSection extends StatelessWidget {
       height: 136,
       child: Column(
         children: [
-          Image.asset(
-            'assets/logo/logo.png',
-            width: 88,
-            height: 88,
-            fit: BoxFit.contain,
+          Positioned(
+            top: 0,
+            child: Image.asset(
+              'assets/logo/logo.png',
+              width: 88,
+              height: 88,
+              fit: BoxFit.contain,
+            ),
           ),
           Text(
             'monex',
