@@ -7,18 +7,17 @@ class LogoSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 136,
+      height: 140,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Positioned(
-            top: 0,
-            child: Image.asset(
-              'assets/logo/logo.png',
-              width: 88,
-              height: 88,
-              fit: BoxFit.contain,
-            ),
+          Image.asset(
+            'assets/logo/logo.png',
+            width: 88,
+            height: 88,
+            fit: BoxFit.contain,
           ),
+          const SizedBox(height: 4),
           Text(
             'monex',
             style: TextStyle(

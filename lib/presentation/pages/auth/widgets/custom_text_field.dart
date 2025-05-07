@@ -6,6 +6,7 @@ class CustomTextField extends StatelessWidget {
   final IconData prefixIcon;
   final IconData? suffixIcon;
   final bool isPassword;
+  final bool enabled;
   final VoidCallback? onSuffixIconTap;
 
   const CustomTextField({
@@ -15,6 +16,7 @@ class CustomTextField extends StatelessWidget {
     required this.prefixIcon,
     this.suffixIcon,
     this.isPassword = false,
+    this.enabled = true,
     this.onSuffixIconTap,
   });
 
@@ -23,7 +25,7 @@ class CustomTextField extends StatelessWidget {
     return Container(
       height: 50,
       decoration: BoxDecoration(
-        color: const Color(0xFFF5F6F7),
+        color: enabled ? const Color(0xFFF5F6F7) : const Color(0xFFEDEEF0),
         border: Border.all(color: const Color(0xFFDCDFE3)),
         borderRadius: BorderRadius.circular(14),
       ),
@@ -31,6 +33,7 @@ class CustomTextField extends StatelessWidget {
         child: TextField(
           controller: controller,
           obscureText: isPassword,
+          enabled: enabled,
           style: TextStyle(
             fontSize: 16,
             color: const Color(0xFF242D35),
@@ -52,7 +55,7 @@ class CustomTextField extends StatelessWidget {
             ),
             suffixIcon: suffixIcon != null
                 ? GestureDetector(
-                    onTap: onSuffixIconTap,
+                    onTap: enabled ? onSuffixIconTap : null,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: Icon(suffixIcon,

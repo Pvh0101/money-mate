@@ -172,15 +172,14 @@ class _OnboardingSlide extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 30),
+          SizedBox(
+            height: 240, // Chiều cao cố định để tránh tràn viền
             child: SvgPicture.asset(
               image,
-              height: 300,
-              width: 300,
               fit: BoxFit.contain,
             ),
           ),
+          const SizedBox(height: 16),
           Text(
             title,
             style: textTheme.titleMedium, // Cập nhật style (16pt, w600)

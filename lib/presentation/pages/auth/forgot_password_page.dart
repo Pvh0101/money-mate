@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../core/routes/app_routes.dart';
 import '../../../core/constants/route_constants.dart';
 import '../../../presentation/widgets/custom_button.dart';
