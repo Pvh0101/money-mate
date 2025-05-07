@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:money_mate/core/constants/route_constants.dart';
 import 'package:money_mate/core/routes/app_routes.dart';
-import 'package:money_mate/feartures/presentation/pages/auth/onboarding_page.dart';
+import 'package:money_mate/feartures/authentication/presentation/pages/onboarding_page.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 void main() {

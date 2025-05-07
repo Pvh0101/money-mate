@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../feartures/presentation/pages/auth/forgot_password_page.dart';
-import '../../feartures/presentation/pages/auth/login_page.dart';
-import '../../feartures/presentation/pages/auth/password_updated_page.dart';
-import '../../feartures/presentation/pages/auth/register_page.dart';
-import '../../feartures/presentation/widgets/home_page.dart';
-import '../../feartures/presentation/pages/auth/onboarding_page.dart';
+import '../../feartures/authentication/presentation/pages/forgot_password_page.dart';
+import '../../feartures/authentication/presentation/pages/login_page.dart';
+import '../../feartures/authentication/presentation/pages/password_updated_page.dart';
+import '../../feartures/authentication/presentation/pages/register_page.dart';
+import '../../feartures/authentication/presentation/widgets/home_page.dart';
+import '../../feartures/authentication/presentation/pages/onboarding_page.dart';
 import '../constants/route_constants.dart';
 
 class Routes {

@@ -8,11 +8,11 @@ import 'dart:async' as _i5;
 import 'package:dartz/dartz.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:money_mate/core/errors/auth_failure.dart' as _i6;
-import 'package:money_mate/feartures/domain/entities/user_entity.dart' as _i7;
-import 'package:money_mate/feartures/domain/repositories/auth_repository.dart' as _i2;
-import 'package:money_mate/feartures/domain/usecases/auth/register_with_email_usecase.dart'
+import 'package:money_mate/feartures/authentication/domain/entities/user_entity.dart' as _i7;
+import 'package:money_mate/feartures/authentication/domain/repositories/auth_repository.dart' as _i2;
+import 'package:money_mate/feartures/authentication/domain/usecases/auth/register_with_email_usecase.dart'
     as _i4;
-import 'package:money_mate/feartures/domain/usecases/auth/register_with_google_usecase.dart'
+import 'package:money_mate/feartures/authentication/domain/usecases/auth/register_with_google_usecase.dart'
     as _i8;
 
 // ignore_for_file: type=lint

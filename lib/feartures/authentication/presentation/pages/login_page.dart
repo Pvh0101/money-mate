@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import '../../../../core/widgets/buttons/app_fill_button.dart';
 import '../../../../core/widgets/buttons/button_enums.dart';
 import '../../../../core/widgets/fields/custom_text_field.dart';
-import '../../widgets/auth_layout.dart';
+import '../widgets/auth_layout.dart';
 import '../../../../core/routes/app_routes.dart';
 import '../../../../core/constants/route_constants.dart';
-import '../../widgets/auth_error_toast.dart';
-import '../../widgets/auth_or_divider.dart';
-import '../../widgets/social_auth_section.dart';
-import '../../widgets/auth_footer_link.dart';
+import '../widgets/auth_error_toast.dart';
+import '../widgets/auth_or_divider.dart';
+import '../widgets/social_auth_section.dart';
+import '../widgets/auth_footer_link.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

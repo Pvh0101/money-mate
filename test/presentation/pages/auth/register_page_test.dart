@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:money_mate/feartures/presentation/bloc/auth_bloc.dart';
-import 'package:money_mate/feartures/presentation/pages/auth/register_page.dart';
+import 'package:money_mate/feartures/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:money_mate/feartures/authentication/presentation/pages/register_page.dart';
 
 import 'register_page_test.mocks.dart';
 

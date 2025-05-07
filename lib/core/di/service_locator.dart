@@ -3,12 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import '../../feartures/data/datasources/firebase_auth_datasource.dart';
-import '../../feartures/data/repositories/auth_repository_impl.dart';
-import '../../feartures/domain/repositories/auth_repository.dart';
-import '../../feartures/domain/usecases/auth/register_with_email_usecase.dart';
-import '../../feartures/domain/usecases/auth/register_with_google_usecase.dart';
-import '../../feartures/presentation/bloc/auth_bloc.dart';
+import '../../feartures/authentication/data/datasources/firebase_auth_datasource.dart';
+import '../../feartures/authentication/data/repositories/auth_repository_impl.dart';
+import '../../feartures/authentication/domain/repositories/auth_repository.dart';
+import '../../feartures/authentication/domain/usecases/auth/register_with_email_usecase.dart';
+import '../../feartures/authentication/domain/usecases/auth/register_with_google_usecase.dart';
+import '../../feartures/authentication/presentation/bloc/auth_bloc.dart';
 
 final sl = GetIt.instance;
 

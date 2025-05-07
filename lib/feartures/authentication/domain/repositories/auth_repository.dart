@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import '../entities/user_entity.dart';
-import '../../../core/errors/auth_failure.dart';
+import '../../../../core/errors/auth_failure.dart';
 
 abstract class AuthRepository {
   /// Đăng ký người dùng với email và mật khẩu
