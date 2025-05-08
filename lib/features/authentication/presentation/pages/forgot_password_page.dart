@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import '../../../../core/constants/route_constants.dart';
 import '../../../../core/routes/app_routes.dart';
 import '../../../../core/utils/validator.dart';
-import '../../../../core/widgets/buttons/custom_button.dart';
+import '../../../../core/widgets/buttons/app_fill_button.dart';
+import '../../../../core/widgets/fields/custom_text_field.dart';
+import '../../../../core/widgets/buttons/button_enums.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -76,21 +78,25 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       return;
     }
 
-    if (password != confirmPassword) {
+    String? confirmPasswordError = Validator.validateConfirmPassword(password, confirmPassword);
+    if (confirmPasswordError != null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Passwords do not match. Please re-enter.")),
+        SnackBar(content: Text(confirmPasswordError)),
       );
       return;
     }
     
-    bool isPasswordValid = Validator.isPasswordCompliant(
-      password,
-      nameOrEmailSubstring: 'fisher',
-    );
-
-    if (!isPasswordValid) {
+    String? complexityError = Validator.validatePasswordComplexity(password);
+    if (complexityError != null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("New password does not meet all requirements.")),
+        SnackBar(content: Text(complexityError)),
+      );
+      return;
+    }
+
+    if (Validator.containsNameOrEmail(password, 'fisher')) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Password must not contain your name or email.")),
       );
       return;
     }
@@ -163,28 +169,43 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   ),
                 ),
                 const SizedBox(height: 32),
-                _buildPasswordField(
+                CustomTextField(
                   controller: _passwordController,
                   hintText: 'New Password',
-                  isPasswordVisible: _isPasswordVisible,
-                  onVisibilityToggle: () {
+                  prefixIcon: Icons.lock_outline,
+                  isPassword: !_isPasswordVisible,
+                  suffixIcon: _isPasswordVisible
+                      ? Icons.visibility_off_outlined
+                      : Icons.visibility_outlined,
+                  onSuffixIconTap: () {
                     setState(() {
                       _isPasswordVisible = !_isPasswordVisible;
                     });
                   },
                 ),
                 const SizedBox(height: 16),
-                _buildPasswordField(
+                CustomTextField(
                   controller: _confirmPasswordController,
                   hintText: 'Confirm Password',
-                  isPasswordVisible: _isConfirmPasswordVisible,
-                  onVisibilityToggle: () {
+                  prefixIcon: Icons.lock_outline,
+                  isPassword: !_isConfirmPasswordVisible,
+                  suffixIcon: _isConfirmPasswordVisible
+                      ? Icons.visibility_off_outlined
+                      : Icons.visibility_outlined,
+                  onSuffixIconTap: () {
                     setState(() {
                       _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
                     });
                   },
-                  errorText: _passwordErrorText,
                 ),
+                if (_passwordErrorText != null && _passwordErrorText!.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0, left: 12.0),
+                    child: Text(
+                      _passwordErrorText!,
+                      style: const TextStyle(color: Colors.red, fontSize: 12),
+                    ),
+                  ),
                 const SizedBox(height: 24),
                 _buildValidationRule(
                   "Must not contain your name or email",
@@ -206,13 +227,15 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   _passwordController.text.isNotEmpty,
                   Validator.isNotEmpty(_passwordController.text) && !_isValidSymbolOrNumberRule ? Colors.red : null,
                 ),
-                const SizedBox(height: 48),
-                CustomButton(
+                const SizedBox(height: 32),
+                AppFillButton(
                   text: 'RESET PASSWORD',
-                  isLoading: _isLoading,
                   onPressed: _resetPassword,
+                  isLoading: _isLoading,
+                  isFullWidth: true,
+                  size: ButtonSize.large,
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 40),
               ],
             ),
           ),
@@ -221,94 +244,21 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     );
   }
 
-  Widget _buildPasswordField({
-    required TextEditingController controller,
-    required String hintText,
-    required bool isPasswordVisible,
-    required VoidCallback onVisibilityToggle,
-    String? errorText,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          height: 56,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(
-                color: errorText != null ? Colors.red : const Color(0xFFDCDFE3)),
-            borderRadius: BorderRadius.circular(14),
-          ),
-          child: Center(
-            child: TextField(
-              controller: controller,
-              obscureText: !isPasswordVisible,
-              style: TextStyle(
-                fontSize: 16,
-                color: const Color(0xFF242D35),
-              ),
-              decoration: InputDecoration(
-                isDense: true,
-                hintText: hintText,
-                hintStyle: TextStyle(
-                  fontSize: 16,
-                  color: const Color(0xFF9BA1A8),
-                ),
-                prefixIcon: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Icon(Icons.lock_outline, color: const Color(0xFF242D35), size: 20),
-                ),
-                prefixIconConstraints: const BoxConstraints(
-                  minWidth: 44,
-                  minHeight: 44,
-                ),
-                suffixIcon: GestureDetector(
-                  onTap: onVisibilityToggle,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: Icon(
-                      isPasswordVisible ? Icons.visibility_off : Icons.visibility_outlined,
-                      color: const Color(0xFFB0B8BF),
-                      size: 20,
-                    ),
-                  ),
-                ),
-                suffixIconConstraints: const BoxConstraints(
-                  minWidth: 44,
-                  minHeight: 44,
-                ),
-                border: InputBorder.none,
-                contentPadding: const EdgeInsets.symmetric(vertical: 12),
-              ),
-            ),
-          ),
-        ),
-        if (errorText != null)
-          Padding(
-            padding: const EdgeInsets.only(top: 4.0, left: 12.0),
-            child: Text(
-              errorText,
-              style: TextStyle(color: Colors.red, fontSize: 12),
-            ),
-          ),
-      ],
-    );
-  }
-
-  Widget _buildValidationRule(String text, bool isValid, bool isActive, [Color? activeColor]) {
-    Color ruleColor = isActive ? 
-                        (isValid ? (activeColor ?? const Color(0xFF2F51FF)) : Colors.red) 
+  Widget _buildValidationRule(String text, bool isValid, bool isPasswordEntered, Color? highlightColor) {
+    final bool showError = isPasswordEntered && !isValid;
+    Color ruleColor = isPasswordEntered ? 
+                        (isValid ? (highlightColor ?? const Color(0xFF2F51FF)) : Colors.red) 
                         : const Color(0xFFC4C8CC);
-    Color iconContainerColor = isActive ? 
-                                (isValid ? (activeColor ?? const Color(0xFF2F51FF)) : const Color(0xFFEEEFF0)) 
+    Color iconContainerColor = isPasswordEntered ? 
+                                (isValid ? (highlightColor ?? const Color(0xFF2F51FF)) : const Color(0xFFEEEFF0)) 
                                 : const Color(0xFFEEEFF0);
-    Color iconColor = isActive && isValid ? Colors.white : const Color(0xFFC4C8CC);
+    Color iconColor = isPasswordEntered && isValid ? Colors.white : const Color(0xFFC4C8CC);
 
-    if (activeColor == Colors.blue && isActive) {
+    if (highlightColor == Colors.blue && isPasswordEntered) {
       ruleColor = isValid ? Colors.blue : Colors.red;
       iconContainerColor = isValid ? Colors.blue : const Color(0xFFEEEFF0);
       iconColor = isValid ? Colors.white : const Color(0xFFC4C8CC); 
-    } else if (isActive && !isValid) {
+    } else if (isPasswordEntered && !isValid) {
          ruleColor = Colors.red;
          iconContainerColor = const Color(0xFFEEEFF0);
          iconColor = const Color(0xFFC4C8CC);

@@ -12,9 +12,9 @@ import 'package:money_mate/features/authentication/domain/entities/user_entity.d
     as _i7;
 import 'package:money_mate/features/authentication/domain/repositories/auth_repository.dart'
     as _i2;
-import 'package:money_mate/features/authentication/domain/usecases/auth/register_with_email_usecase.dart'
+import 'package:money_mate/features/authentication/domain/usecases/register_with_email_usecase.dart'
     as _i4;
-import 'package:money_mate/features/authentication/domain/usecases/auth/register_with_google_usecase.dart'
+import 'package:money_mate/features/authentication/domain/usecases/register_with_google_usecase.dart'
     as _i8;
 
 // ignore_for_file: type=lint

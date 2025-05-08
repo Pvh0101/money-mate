@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../core/di/service_locator.dart';
 import '../bloc/auth_bloc.dart';
-import '../../../../core/widgets/buttons/app_fill_button.dart';
-import '../../../../core/widgets/buttons/button_enums.dart';
-import '../../../../core/widgets/fields/custom_text_field.dart';
 import '../widgets/auth_layout.dart';
-import '../../../../core/routes/app_routes.dart';
-import '../../../../core/constants/route_constants.dart';
-import '../../../../core/widgets/error_toast.dart';
 import '../widgets/auth_or_divider.dart';
 import '../widgets/social_auth_section.dart';
 import '../widgets/auth_footer_link.dart';
+import '../../../../core/core.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
@@ -61,9 +55,9 @@ class _RegisterPageViewState extends State<RegisterPageView> {
         } else if (state is AuthError) {
           setState(() {
             _hasError = true;
-            _errorMessage = state.message;
+            _errorMessage = state.failure.toString();
           });
-        } else if (state is AuthSuccess) {
+        } else if (state is Authenticated) {
           // Điều hướng đến trang home sau khi đăng ký thành công
           Routes.navigateTo(context, RouteConstants.home);
         }
@@ -170,9 +164,13 @@ class _RegisterPageViewState extends State<RegisterPageView> {
   }
 
   Future<void> _handleRegister() async {
-    if (_emailController.text.isEmpty ||
-        _passwordController.text.isEmpty ||
-        _confirmPasswordController.text.isEmpty) {
+    final email = _emailController.text;
+    final password = _passwordController.text;
+    final confirmPassword = _confirmPasswordController.text;
+
+    if (!Validator.isNotEmpty(email) ||
+        !Validator.isNotEmpty(password) ||
+        !Validator.isNotEmpty(confirmPassword)) {
       setState(() {
         _hasError = true;
         _errorMessage = 'Vui lòng điền đầy đủ thông tin';
@@ -180,23 +178,37 @@ class _RegisterPageViewState extends State<RegisterPageView> {
       return;
     }
 
-    if (_passwordController.text != _confirmPasswordController.text) {
+    String? emailError = Validator.validateEmailField(email);
+    if (emailError != null) {
       setState(() {
         _hasError = true;
-        _errorMessage = 'Mật khẩu nhập lại không khớp';
+        _errorMessage = emailError;
       });
       return;
     }
 
-    // Basic email validation
-    final emailRegExp = RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-    if (!emailRegExp.hasMatch(_emailController.text)) {
+    String? passwordError = Validator.validatePasswordComplexity(password);
+    if (passwordError != null) {
       setState(() {
         _hasError = true;
-        _errorMessage = 'Email không hợp lệ';
+        _errorMessage = passwordError;
       });
       return;
     }
+
+    String? confirmPasswordError = Validator.validateConfirmPassword(password, confirmPassword);
+    if (confirmPasswordError != null) {
+      setState(() {
+        _hasError = true;
+        _errorMessage = confirmPasswordError;
+      });
+      return;
+    }
+
+    setState(() {
+      _hasError = false;
+      _errorMessage = '';
+    });
 
     context.read<AuthBloc>().add(RegisterWithEmailEvent(
           email: _emailController.text,

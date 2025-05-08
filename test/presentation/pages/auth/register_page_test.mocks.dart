@@ -7,9 +7,9 @@ import 'dart:async' as _i5;
 
 import 'package:bloc/bloc.dart' as _i6;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:money_mate/features/authentication/domain/usecases/auth/register_with_email_usecase.dart'
+import 'package:money_mate/features/authentication/domain/usecases/register_with_email_usecase.dart'
     as _i2;
-import 'package:money_mate/features/authentication/domain/usecases/auth/register_with_google_usecase.dart'
+import 'package:money_mate/features/authentication/domain/usecases/register_with_google_usecase.dart'
     as _i3;
 import 'package:money_mate/features/authentication/presentation/bloc/auth_bloc.dart'
     as _i4;

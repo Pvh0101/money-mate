@@ -6,8 +6,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../../features/authentication/data/datasources/firebase_auth_datasource.dart';
 import '../../features/authentication/data/repositories/auth_repository_impl.dart';
 import '../../features/authentication/domain/repositories/auth_repository.dart';
-import '../../features/authentication/domain/usecases/auth/register_with_email_usecase.dart';
-import '../../features/authentication/domain/usecases/auth/register_with_google_usecase.dart';
+
+import '../../features/authentication/domain/usecases/usecases.dart';
+
 import '../../features/authentication/presentation/bloc/auth_bloc.dart';
 
 final sl = GetIt.instance;
@@ -24,7 +25,7 @@ Future<void> init() async {
   sl.registerLazySingleton<FirebaseAuthDataSource>(
     () => FirebaseAuthDataSourceImpl(
       firebaseAuth: sl(),
-      firestore: sl(),
+      firestore: sl(), // Firestore có thể không cần cho FirebaseAuthDataSourceImpl trực tiếp, tùy thuộc vào implementation của bạn
       googleSignIn: sl(),
     ),
   );
@@ -37,14 +38,25 @@ Future<void> init() async {
   );
 
   //! Use cases
+  // Đăng ký sử dụng tên class từ barrel file
   sl.registerLazySingleton(() => RegisterWithEmailUseCase(sl()));
   sl.registerLazySingleton(() => RegisterWithGoogleUseCase(sl()));
+  sl.registerLazySingleton(() => LoginWithEmailPasswordUseCase(sl()));
+  sl.registerLazySingleton(() => LoginWithGoogleUseCase(sl()));
+  sl.registerLazySingleton(() => GetAuthStateChangesUseCase(sl()));
+  sl.registerLazySingleton(() => GetCurrentUserUseCase(sl()));
+  sl.registerLazySingleton(() => LogoutUseCase(sl()));
 
   //! BLoC
   sl.registerFactory(
     () => AuthBloc(
       registerWithEmailUseCase: sl(),
       registerWithGoogleUseCase: sl(),
+      loginWithEmailPasswordUseCase: sl(),
+      loginWithGoogleUseCase: sl(),
+      getAuthStateChangesUseCase: sl(),
+      getCurrentUserUseCase: sl(),
+      logoutUseCase: sl(),
     ),
   );
 }

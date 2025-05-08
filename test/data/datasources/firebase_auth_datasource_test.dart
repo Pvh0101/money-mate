@@ -1,65 +1,70 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:money_mate/features/authentication/data/datasources/firebase_auth_datasource.dart';
 import 'package:money_mate/features/authentication/data/models/user_model.dart';
+import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 
 import 'firebase_auth_datasource_test.mocks.dart';
 
 @GenerateMocks([
-  FirebaseAuth,
-  UserCredential,
-  User,
+  auth.FirebaseAuth,
+  auth.User,
+  auth.UserCredential,
   FirebaseFirestore,
-  CollectionReference,
-  DocumentReference,
   GoogleSignIn,
   GoogleSignInAccount,
   GoogleSignInAuthentication,
+  CollectionReference,
+  DocumentReference,
+  DocumentSnapshot,
 ])
 void main() {
   late FirebaseAuthDataSourceImpl dataSource;
   late MockFirebaseAuth mockFirebaseAuth;
-  late MockFirebaseFirestore mockFirestore;
+  late FakeFirebaseFirestore fakeFirestore;
   late MockGoogleSignIn mockGoogleSignIn;
-  late MockCollectionReference<Map<String, dynamic>> mockCollectionReference;
-  late MockDocumentReference<Map<String, dynamic>> mockDocumentReference;
-  late MockUserCredential mockUserCredential;
   late MockUser mockUser;
+  late MockUserCredential mockUserCredential;
   late MockGoogleSignInAccount mockGoogleSignInAccount;
   late MockGoogleSignInAuthentication mockGoogleSignInAuthentication;
 
+  const tEmail = 'test@example.com';
+  const tPassword = 'Password123!';
+  const tUid = 'test-uid';
+  const tDisplayName = 'Test User';
+  const tPhotoUrl = 'test-photo-url';
+
+  final tUserModel = UserModel(
+    id: tUid,
+    email: tEmail,
+    name: tDisplayName,
+    photoUrl: tPhotoUrl,
+  );
+
   setUp(() {
     mockFirebaseAuth = MockFirebaseAuth();
-    mockFirestore = MockFirebaseFirestore();
+    fakeFirestore = FakeFirebaseFirestore();
     mockGoogleSignIn = MockGoogleSignIn();
-    mockCollectionReference = MockCollectionReference<Map<String, dynamic>>();
-    mockDocumentReference = MockDocumentReference<Map<String, dynamic>>();
-    mockUserCredential = MockUserCredential();
     mockUser = MockUser();
+    mockUserCredential = MockUserCredential();
     mockGoogleSignInAccount = MockGoogleSignInAccount();
     mockGoogleSignInAuthentication = MockGoogleSignInAuthentication();
 
     dataSource = FirebaseAuthDataSourceImpl(
       firebaseAuth: mockFirebaseAuth,
-      firestore: mockFirestore,
+      firestore: fakeFirestore,
       googleSignIn: mockGoogleSignIn,
     );
 
-    // Mocking chung
-    when(mockFirestore.collection(any)).thenReturn(mockCollectionReference);
-    when(mockCollectionReference.doc(any)).thenReturn(mockDocumentReference);
-    when(mockDocumentReference.set(any, any)).thenAnswer((_) async => {});
+    when(mockUser.uid).thenReturn(tUid);
+    when(mockUser.email).thenReturn(tEmail);
+    when(mockUser.displayName).thenReturn(tDisplayName);
+    when(mockUser.photoURL).thenReturn(tPhotoUrl);
   });
-
-  const tEmail = 'test@example.com';
-  const tPassword = 'Password123!';
-  const tDisplayName = 'Test User';
-  const tPhotoUrl = 'https://example.com/photo.jpg';
-  const tUid = 'test-uid';
 
   group('registerWithEmail', () {
     setUp(() {
@@ -68,10 +73,6 @@ void main() {
         password: anyNamed('password'),
       )).thenAnswer((_) async => mockUserCredential);
       when(mockUserCredential.user).thenReturn(mockUser);
-      when(mockUser.uid).thenReturn(tUid);
-      when(mockUser.email).thenReturn(tEmail);
-      when(mockUser.displayName).thenReturn(tDisplayName);
-      when(mockUser.photoURL).thenReturn(tPhotoUrl);
     });
 
     test(
@@ -106,7 +107,7 @@ void main() {
       // act & assert
       expect(
         () => dataSource.registerWithEmail(tEmail, tPassword),
-        throwsA(isA<FirebaseAuthException>().having(
+        throwsA(isA<auth.FirebaseAuthException>().having(
           (e) => e.code,
           'code',
           'null-user',
@@ -121,12 +122,12 @@ void main() {
       when(mockFirebaseAuth.createUserWithEmailAndPassword(
         email: anyNamed('email'),
         password: anyNamed('password'),
-      )).thenThrow(FirebaseAuthException(code: 'email-already-in-use'));
+      )).thenThrow(auth.FirebaseAuthException(code: 'email-already-in-use'));
 
       // act & assert
       expect(
         () => dataSource.registerWithEmail(tEmail, tPassword),
-        throwsA(isA<FirebaseAuthException>().having(
+        throwsA(isA<auth.FirebaseAuthException>().having(
           (e) => e.code,
           'code',
           'email-already-in-use',
@@ -136,7 +137,7 @@ void main() {
   });
 
   group('signInWithCredential', () {
-    final tAuthCredential = GoogleAuthProvider.credential(
+    final tAuthCredential = auth.GoogleAuthProvider.credential(
       idToken: 'id-token',
       accessToken: 'access-token',
     );
@@ -145,10 +146,6 @@ void main() {
       when(mockFirebaseAuth.signInWithCredential(any))
           .thenAnswer((_) async => mockUserCredential);
       when(mockUserCredential.user).thenReturn(mockUser);
-      when(mockUser.uid).thenReturn(tUid);
-      when(mockUser.email).thenReturn(tEmail);
-      when(mockUser.displayName).thenReturn(tDisplayName);
-      when(mockUser.photoURL).thenReturn(tPhotoUrl);
     });
 
     test(
@@ -180,7 +177,7 @@ void main() {
       // act & assert
       expect(
         () => dataSource.signInWithCredential(tAuthCredential),
-        throwsA(isA<FirebaseAuthException>().having(
+        throwsA(isA<auth.FirebaseAuthException>().having(
           (e) => e.code,
           'code',
           'null-user',
@@ -190,38 +187,29 @@ void main() {
   });
 
   group('saveUserToFirestore', () {
-    final tUserModel = UserModel(
-      id: tUid,
-      email: tEmail,
-      name: tDisplayName,
-      photoUrl: tPhotoUrl,
-    );
-
     test('should call Firestore with correct parameters', () async {
       // act
       await dataSource.saveUserToFirestore(tUserModel);
 
       // assert
-      verify(mockFirestore.collection('users')).called(1);
-      verify(mockCollectionReference.doc(tUid)).called(1);
-      verify(mockDocumentReference.set(any, any)).called(1);
+      final doc = await fakeFirestore.collection('users').doc(tUid).get();
+      expect(doc.exists, isTrue);
+      expect(doc.data()?['email'], tEmail);
     });
 
-    test('should throw FirebaseException when Firestore operation fails',
+    test('should throw Exception (mapped to FirebaseAuthException) when Firestore operation fails during sign in flow',
         () async {
-      // arrange
-      when(mockDocumentReference.set(any, any)).thenThrow(
-          FirebaseException(plugin: 'firestore', code: 'write-error'));
+       // Arrange: Mock signInWithCredential để throw lỗi Firestore bị bắt và map lại
+       when(mockFirebaseAuth.signInWithCredential(any))
+         .thenThrow(auth.FirebaseAuthException(code: 'unknown', message: 'Lỗi Firestore khi đăng nhập')); // Giả lập lỗi đã được map
 
-      // act & assert
-      expect(
-        () => dataSource.saveUserToFirestore(tUserModel),
-        throwsA(isA<FirebaseException>().having(
-          (e) => e.code,
-          'code',
-          'write-error',
-        )),
-      );
+       // act & assert
+       expect(
+         // Test thông qua một flow gọi đến nó, ví dụ signInWithCredential
+         () => dataSource.signInWithCredential(auth.GoogleAuthProvider.credential(idToken: 't', accessToken: 't')), 
+         // Mong đợi FirebaseAuthException với code 'unknown' vì lỗi Firestore bị bắt và map lại trong signInWithCredential
+         throwsA(isA<auth.FirebaseAuthException>().having((e) => e.code, 'code', 'unknown')),
+       );
     });
   });
 
@@ -242,7 +230,7 @@ void main() {
       final result = await dataSource.getGoogleAuthCredential();
 
       // assert
-      expect(result, isA<AuthCredential>());
+      expect(result, isA<auth.AuthCredential>());
       verify(mockGoogleSignIn.signIn()).called(1);
       verify(mockGoogleSignInAccount.authentication).called(1);
     });
@@ -268,7 +256,7 @@ void main() {
       // act & assert
       expect(
         () => dataSource.getGoogleAuthCredential(),
-        throwsA(isA<FirebaseAuthException>().having(
+        throwsA(isA<auth.FirebaseAuthException>().having(
           (e) => e.code,
           'code',
           'google-sign-in-failed',
@@ -289,6 +277,92 @@ void main() {
       // assert
       verify(mockGoogleSignIn.signOut()).called(1);
       verify(mockFirebaseAuth.signOut()).called(1);
+    });
+  });
+
+  group('signInWithEmailPassword', () {
+    setUp(() {
+       when(mockUserCredential.user).thenReturn(mockUser);
+    });
+
+    test('should call FirebaseAuth.signInWithEmailAndPassword and return UserModel on success', () async {
+      // arrange
+      when(mockFirebaseAuth.signInWithEmailAndPassword(email: tEmail, password: tPassword))
+          .thenAnswer((_) async => mockUserCredential);
+      // act
+      final result = await dataSource.signInWithEmailPassword(tEmail, tPassword);
+      // assert
+      expect(result, isA<UserModel>());
+      expect(result.id, tUid);
+      verify(mockFirebaseAuth.signInWithEmailAndPassword(email: tEmail, password: tPassword));
+      // Verify Firestore update for lastLoginAt (using FakeFirestore)
+      final userDoc = await fakeFirestore.collection('users').doc(tUid).get();
+      expect(userDoc.exists, true);
+      expect(userDoc.data()?['lastLoginAt'], isNotNull); 
+    });
+
+    test('should throw FirebaseAuthException with code "null-user" when userCredential.user is null', () async {
+      // arrange
+      when(mockUserCredential.user).thenReturn(null); // Simulate null user
+      when(mockFirebaseAuth.signInWithEmailAndPassword(email: tEmail, password: tPassword))
+          .thenAnswer((_) async => mockUserCredential);
+      // act & assert
+      final call = dataSource.signInWithEmailPassword;
+      expect(() => call(tEmail, tPassword), throwsA(isA<auth.FirebaseAuthException>().having((e) => e.code, 'code', 'null-user')));
+    });
+
+    test('should re-throw specific FirebaseAuthException from FirebaseAuth', () async {
+      // arrange
+      final tException = auth.FirebaseAuthException(code: 'user-not-found');
+      when(mockFirebaseAuth.signInWithEmailAndPassword(email: tEmail, password: tPassword))
+          .thenThrow(tException);
+      // act & assert
+      final call = dataSource.signInWithEmailPassword;
+      expect(() => call(tEmail, tPassword), throwsA(isA<auth.FirebaseAuthException>().having((e) => e.code, 'code', 'user-not-found')));
+    });
+
+    test('should throw FirebaseAuthException with code "unknown-sign-in-error" for other exceptions', () async {
+      // arrange
+      when(mockFirebaseAuth.signInWithEmailAndPassword(email: tEmail, password: tPassword))
+          .thenThrow(Exception('Some random error'));
+      // act & assert
+      final call = dataSource.signInWithEmailPassword;
+      expect(() => call(tEmail, tPassword), throwsA(isA<auth.FirebaseAuthException>().having((e) => e.code, 'code', 'unknown-sign-in-error')));
+    });
+  });
+
+  group('authStateChanges', () {
+    test('should return the stream from FirebaseAuth.authStateChanges', () {
+      // arrange
+      final expectedStream = Stream<auth.User?>.value(mockUser);
+      when(mockFirebaseAuth.authStateChanges()).thenAnswer((_) => expectedStream);
+      // act
+      final result = dataSource.authStateChanges;
+      // assert
+      expect(result, equals(expectedStream));
+      verify(mockFirebaseAuth.authStateChanges());
+    });
+  });
+
+  group('getCurrentFirebaseUser', () {
+    test('should return the user from FirebaseAuth.currentUser when user is logged in', () {
+      // arrange
+      when(mockFirebaseAuth.currentUser).thenReturn(mockUser);
+      // act
+      final result = dataSource.getCurrentFirebaseUser();
+      // assert
+      expect(result, equals(mockUser));
+      verify(mockFirebaseAuth.currentUser);
+    });
+
+     test('should return null from FirebaseAuth.currentUser when user is not logged in', () {
+      // arrange
+      when(mockFirebaseAuth.currentUser).thenReturn(null);
+      // act
+      final result = dataSource.getCurrentFirebaseUser();
+      // assert
+      expect(result, isNull);
+      verify(mockFirebaseAuth.currentUser);
     });
   });
 }

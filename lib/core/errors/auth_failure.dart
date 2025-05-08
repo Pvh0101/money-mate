@@ -1,4 +1,5 @@
 import 'failures.dart';
+import 'package:equatable/equatable.dart';
 
 class AuthFailure extends Failure {
   const AuthFailure([String message = 'Lỗi xác thực']) : super(message);
@@ -30,4 +31,13 @@ class AuthFailure extends Failure {
       
   factory AuthFailure.wrongPassword() => 
       const AuthFailure('Mật khẩu không đúng');
+
+  factory AuthFailure.userDisabled() =>
+      const AuthFailure('Tài khoản người dùng này đã bị vô hiệu hóa');
+
+  factory AuthFailure.accountExistsWithDifferentCredential() =>
+      const AuthFailure('Tài khoản đã tồn tại với phương thức đăng nhập khác');
+
+  factory AuthFailure.requiresRecentLogin() =>
+      const AuthFailure('Thao tác nhạy cảm, yêu cầu đăng nhập lại gần đây');
 } 

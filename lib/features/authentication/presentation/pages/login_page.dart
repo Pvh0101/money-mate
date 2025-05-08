@@ -1,86 +1,104 @@
 import 'package:flutter/material.dart';
-import '../../../../core/widgets/buttons/app_fill_button.dart';
-import '../../../../core/widgets/buttons/button_enums.dart';
-import '../../../../core/widgets/fields/custom_text_field.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:money_mate/core/core.dart';
 import '../widgets/auth_layout.dart';
-import '../../../../core/routes/app_routes.dart';
-import '../../../../core/constants/route_constants.dart';
-import '../../../../core/widgets/error_toast.dart';
 import '../widgets/auth_or_divider.dart';
 import '../widgets/social_auth_section.dart';
 import '../widgets/auth_footer_link.dart';
+import '../bloc/auth_bloc.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  bool _isPasswordVisible = false;
-  bool _isLoading = false;
-  bool _hasError = false;
-
-  @override
-  void dispose() {
-    _usernameController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
+
     return AuthLayout(
-      errorToast: _hasError
-          ? const ErrorToast(message: 'Incorrect username or password')
-          : null,
-      child: _buildFormSection(),
+      child: BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state is Authenticated) {
+            Routes.navigateToReplacement(context, RouteConstants.home);
+          } else if (state is AuthError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.failure.message),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        },
+        child: _buildFormContents(context, emailController, passwordController),
+      ),
     );
   }
 
-  Widget _buildFormSection() {
+  Widget _buildFormContents(
+    BuildContext context,
+    TextEditingController emailController, 
+    TextEditingController passwordController,
+  ) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // Username field
         CustomTextField(
-          controller: _usernameController,
-          hintText: 'Username',
-          prefixIcon: Icons.person_outline,
+          controller: emailController,
+          hintText: 'Email',
+          prefixIcon: Icons.email_outlined,
         ),
         const SizedBox(height: 20),
-
-        // Password field
         CustomTextField(
-          controller: _passwordController,
+          controller: passwordController,
           hintText: 'Password',
           prefixIcon: Icons.lock_outline,
-          suffixIcon: _isPasswordVisible
-              ? Icons.visibility_off
-              : Icons.visibility_outlined,
-          isPassword: !_isPasswordVisible,
-          onSuffixIconTap: () {
-            setState(() {
-              _isPasswordVisible = !_isPasswordVisible;
-            });
+        ),
+        const SizedBox(height: 24),
+        BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, state) {
+            final isLoading = state is AuthLoading;
+            return AppFillButton(
+              size: ButtonSize.large,
+              isFullWidth: true,
+              text: 'LOGIN',
+              isLoading: isLoading,
+              onPressed: isLoading 
+                ? null 
+                : () {
+                    final email = emailController.text.trim();
+                    final password = passwordController.text.trim();
+                    
+                    String? emailError = Validator.validateEmailField(email);
+                    
+                    String? passwordError;
+                    if (!Validator.isNotEmpty(password)) {
+                      passwordError = 'Mật khẩu không được để trống';
+                    }
+
+                    if (emailError != null) {
+                       ScaffoldMessenger.of(context).showSnackBar(
+                         SnackBar(content: Text(emailError), backgroundColor: Colors.red),
+                       );
+                       return;
+                    }
+                    if (passwordError != null) {
+                       ScaffoldMessenger.of(context).showSnackBar(
+                         SnackBar(content: Text(passwordError), backgroundColor: Colors.red),
+                       );
+                       return;
+                    }
+
+                    context.read<AuthBloc>().add(
+                          LoginWithEmailPasswordRequested(
+                            email: email,
+                            password: password,
+                          ),
+                        );
+                  },
+            );
           },
         ),
         const SizedBox(height: 24),
-
-        // Login button
-        AppFillButton(
-          size: ButtonSize.large,
-          isFullWidth: true,
-          text: 'LOGIN',
-          isLoading: _isLoading,
-          onPressed: _handleLogin,
-        ),
-        const SizedBox(height: 24),
-
-        // Forgot password
         TextButton(
           onPressed: () {
             Routes.navigateTo(context, RouteConstants.forgotPassword);
@@ -98,24 +116,28 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
         ),
-
         const AuthOrDivider(),
         const SizedBox(height: 8),
-
-        // Social buttons
-        SocialAuthSection(
-          isLogin: true,
-          isLoading: _isLoading,
-          onGooglePressed: () {
-            // Handle Google login
-          },
-          onApplePressed: () {
-            // Handle Apple login
+        BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, state) {
+            final isLoading = state is AuthLoading;
+            return SocialAuthSection(
+              isLogin: true,
+              isLoading: isLoading,
+              onGooglePressed: isLoading
+                ? null
+                : () {
+                    context.read<AuthBloc>().add(const LoginWithGoogleRequested());
+                  },
+              onApplePressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Chức năng đăng nhập Apple chưa được hỗ trợ.')),
+                );
+              },
+            );
           },
         ),
         const SizedBox(height: 24),
-
-        // Register link
         AuthFooterLink(
           isLogin: true,
           onPressed: () {
@@ -124,26 +146,5 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ],
     );
-  }
-
-  Future<void> _handleLogin() async {
-    if (_usernameController.text.isEmpty || _passwordController.text.isEmpty) {
-      setState(() {
-        _hasError = true;
-      });
-      return;
-    }
-
-    setState(() {
-      _isLoading = true;
-      _hasError = false;
-    });
-
-    // Simulate API call
-    await Future.delayed(const Duration(seconds: 2));
-
-    setState(() {
-      _isLoading = false;
-    });
   }
 }

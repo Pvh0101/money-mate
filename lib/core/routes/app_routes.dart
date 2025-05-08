@@ -4,7 +4,8 @@ import '../../features/authentication/presentation/pages/forgot_password_page.da
 import '../../features/authentication/presentation/pages/login_page.dart';
 import '../../features/authentication/presentation/pages/password_updated_page.dart';
 import '../../features/authentication/presentation/pages/register_page.dart';
-import '../../features/authentication/presentation/widgets/home_page.dart';
+// import '../../features/authentication/presentation/widgets/home_page.dart'; // Đã comment/xóa ở bước trước nếu thành công
+import 'package:money_mate/features/home/presentation/pages/home_screen.dart'; 
 import '../../features/authentication/presentation/pages/onboarding_page.dart';
 import '../constants/route_constants.dart';
 
@@ -25,7 +26,7 @@ class Routes {
       case RouteConstants.passwordUpdated:
         return _materialRoute(const PasswordUpdatedPage());
       case RouteConstants.home:
-        return _materialRoute(const HomePage());
+        return _materialRoute(const HomeScreen());
       // Các routes khác sẽ được thêm khi có file tương ứng
       default:
         return _materialRoute(const OnboardingPage());

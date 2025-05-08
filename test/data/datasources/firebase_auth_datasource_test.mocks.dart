@@ -201,42 +201,53 @@ class _FakeFuture_15<T1> extends _i1.SmartFake implements _i7.Future<T1> {
         );
 }
 
-class _FakeFirebaseFirestore_16 extends _i1.SmartFake
-    implements _i6.FirebaseFirestore {
-  _FakeFirebaseFirestore_16(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeAggregateQuery_17 extends _i1.SmartFake
-    implements _i6.AggregateQuery {
-  _FakeAggregateQuery_17(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeDocumentSnapshot_18<T1 extends Object?> extends _i1.SmartFake
-    implements _i6.DocumentSnapshot<T1> {
-  _FakeDocumentSnapshot_18(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeGoogleSignInAuthentication_19 extends _i1.SmartFake
+class _FakeGoogleSignInAuthentication_16 extends _i1.SmartFake
     implements _i8.GoogleSignInAuthentication {
-  _FakeGoogleSignInAuthentication_19(
+  _FakeGoogleSignInAuthentication_16(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeFirebaseFirestore_17 extends _i1.SmartFake
+    implements _i6.FirebaseFirestore {
+  _FakeFirebaseFirestore_17(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeAggregateQuery_18 extends _i1.SmartFake
+    implements _i6.AggregateQuery {
+  _FakeAggregateQuery_18(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeDocumentSnapshot_19<T1 extends Object?> extends _i1.SmartFake
+    implements _i6.DocumentSnapshot<T1> {
+  _FakeDocumentSnapshot_19(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeSnapshotMetadata_20 extends _i1.SmartFake
+    implements _i6.SnapshotMetadata {
+  _FakeSnapshotMetadata_20(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -281,20 +292,19 @@ class MockFirebaseAuth extends _i1.Mock implements _i4.FirebaseAuth {
       );
 
   @override
+  set customAuthDomain(String? customAuthDomain) => super.noSuchMethod(
+        Invocation.setter(
+          #customAuthDomain,
+          customAuthDomain,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
   Map<dynamic, dynamic> get pluginConstants => (super.noSuchMethod(
         Invocation.getter(#pluginConstants),
         returnValue: <dynamic, dynamic>{},
       ) as Map<dynamic, dynamic>);
-
-  @override
-  _i7.Future<void> useEmulator(String? origin) => (super.noSuchMethod(
-        Invocation.method(
-          #useEmulator,
-          [origin],
-        ),
-        returnValue: _i7.Future<void>.value(),
-        returnValueForMissingStub: _i7.Future<void>.value(),
-      ) as _i7.Future<void>);
 
   @override
   _i7.Future<void> useAuthEmulator(
@@ -632,23 +642,6 @@ class MockFirebaseAuth extends _i1.Mock implements _i4.FirebaseAuth {
       ) as _i7.Future<_i4.UserCredential>);
 
   @override
-  _i7.Future<_i4.UserCredential> signInWithAuthProvider(
-          _i3.AuthProvider? provider) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #signInWithAuthProvider,
-          [provider],
-        ),
-        returnValue: _i7.Future<_i4.UserCredential>.value(_FakeUserCredential_2(
-          this,
-          Invocation.method(
-            #signInWithAuthProvider,
-            [provider],
-          ),
-        )),
-      ) as _i7.Future<_i4.UserCredential>);
-
-  @override
   _i7.Future<_i4.UserCredential> signInWithProvider(
           _i3.AuthProvider? provider) =>
       (super.noSuchMethod(
@@ -789,15 +782,6 @@ class MockFirebaseAuth extends _i1.Mock implements _i4.FirebaseAuth {
         returnValue: _i7.Future<void>.value(),
         returnValueForMissingStub: _i7.Future<void>.value(),
       ) as _i7.Future<void>);
-}
-
-/// A class which mocks [UserCredential].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockUserCredential extends _i1.Mock implements _i4.UserCredential {
-  MockUserCredential() {
-    _i1.throwOnMissingStub(this);
-  }
 }
 
 /// A class which mocks [User].
@@ -1162,6 +1146,15 @@ class MockUser extends _i1.Mock implements _i4.User {
         returnValue: _i7.Future<void>.value(),
         returnValueForMissingStub: _i7.Future<void>.value(),
       ) as _i7.Future<void>);
+}
+
+/// A class which mocks [UserCredential].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockUserCredential extends _i1.Mock implements _i4.UserCredential {
+  MockUserCredential() {
+    _i1.throwOnMissingStub(this);
+  }
 }
 
 /// A class which mocks [FirebaseFirestore].
@@ -1548,6 +1541,182 @@ class MockFirebaseFirestore extends _i1.Mock implements _i6.FirebaseFirestore {
       ) as _i7.Future<void>);
 }
 
+/// A class which mocks [GoogleSignIn].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockGoogleSignIn extends _i1.Mock implements _i8.GoogleSignIn {
+  MockGoogleSignIn() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i11.SignInOption get signInOption => (super.noSuchMethod(
+        Invocation.getter(#signInOption),
+        returnValue: _i11.SignInOption.standard,
+      ) as _i11.SignInOption);
+
+  @override
+  List<String> get scopes => (super.noSuchMethod(
+        Invocation.getter(#scopes),
+        returnValue: <String>[],
+      ) as List<String>);
+
+  @override
+  bool get forceCodeForRefreshToken => (super.noSuchMethod(
+        Invocation.getter(#forceCodeForRefreshToken),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  _i7.Stream<_i8.GoogleSignInAccount?> get onCurrentUserChanged =>
+      (super.noSuchMethod(
+        Invocation.getter(#onCurrentUserChanged),
+        returnValue: _i7.Stream<_i8.GoogleSignInAccount?>.empty(),
+      ) as _i7.Stream<_i8.GoogleSignInAccount?>);
+
+  @override
+  _i7.Future<_i8.GoogleSignInAccount?> signInSilently({
+    bool? suppressErrors = true,
+    bool? reAuthenticate = false,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #signInSilently,
+          [],
+          {
+            #suppressErrors: suppressErrors,
+            #reAuthenticate: reAuthenticate,
+          },
+        ),
+        returnValue: _i7.Future<_i8.GoogleSignInAccount?>.value(),
+      ) as _i7.Future<_i8.GoogleSignInAccount?>);
+
+  @override
+  _i7.Future<bool> isSignedIn() => (super.noSuchMethod(
+        Invocation.method(
+          #isSignedIn,
+          [],
+        ),
+        returnValue: _i7.Future<bool>.value(false),
+      ) as _i7.Future<bool>);
+
+  @override
+  _i7.Future<_i8.GoogleSignInAccount?> signIn() => (super.noSuchMethod(
+        Invocation.method(
+          #signIn,
+          [],
+        ),
+        returnValue: _i7.Future<_i8.GoogleSignInAccount?>.value(),
+      ) as _i7.Future<_i8.GoogleSignInAccount?>);
+
+  @override
+  _i7.Future<_i8.GoogleSignInAccount?> signOut() => (super.noSuchMethod(
+        Invocation.method(
+          #signOut,
+          [],
+        ),
+        returnValue: _i7.Future<_i8.GoogleSignInAccount?>.value(),
+      ) as _i7.Future<_i8.GoogleSignInAccount?>);
+
+  @override
+  _i7.Future<_i8.GoogleSignInAccount?> disconnect() => (super.noSuchMethod(
+        Invocation.method(
+          #disconnect,
+          [],
+        ),
+        returnValue: _i7.Future<_i8.GoogleSignInAccount?>.value(),
+      ) as _i7.Future<_i8.GoogleSignInAccount?>);
+
+  @override
+  _i7.Future<bool> requestScopes(List<String>? scopes) => (super.noSuchMethod(
+        Invocation.method(
+          #requestScopes,
+          [scopes],
+        ),
+        returnValue: _i7.Future<bool>.value(false),
+      ) as _i7.Future<bool>);
+
+  @override
+  _i7.Future<bool> canAccessScopes(
+    List<String>? scopes, {
+    String? accessToken,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #canAccessScopes,
+          [scopes],
+          {#accessToken: accessToken},
+        ),
+        returnValue: _i7.Future<bool>.value(false),
+      ) as _i7.Future<bool>);
+}
+
+/// A class which mocks [GoogleSignInAccount].
+///
+/// See the documentation for Mockito's code generation for more information.
+// ignore: must_be_immutable
+class MockGoogleSignInAccount extends _i1.Mock
+    implements _i8.GoogleSignInAccount {
+  MockGoogleSignInAccount() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  String get email => (super.noSuchMethod(
+        Invocation.getter(#email),
+        returnValue: _i9.dummyValue<String>(
+          this,
+          Invocation.getter(#email),
+        ),
+      ) as String);
+
+  @override
+  String get id => (super.noSuchMethod(
+        Invocation.getter(#id),
+        returnValue: _i9.dummyValue<String>(
+          this,
+          Invocation.getter(#id),
+        ),
+      ) as String);
+
+  @override
+  _i7.Future<_i8.GoogleSignInAuthentication> get authentication =>
+      (super.noSuchMethod(
+        Invocation.getter(#authentication),
+        returnValue: _i7.Future<_i8.GoogleSignInAuthentication>.value(
+            _FakeGoogleSignInAuthentication_16(
+          this,
+          Invocation.getter(#authentication),
+        )),
+      ) as _i7.Future<_i8.GoogleSignInAuthentication>);
+
+  @override
+  _i7.Future<Map<String, String>> get authHeaders => (super.noSuchMethod(
+        Invocation.getter(#authHeaders),
+        returnValue: _i7.Future<Map<String, String>>.value(<String, String>{}),
+      ) as _i7.Future<Map<String, String>>);
+
+  @override
+  _i7.Future<void> clearAuthCache() => (super.noSuchMethod(
+        Invocation.method(
+          #clearAuthCache,
+          [],
+        ),
+        returnValue: _i7.Future<void>.value(),
+        returnValueForMissingStub: _i7.Future<void>.value(),
+      ) as _i7.Future<void>);
+}
+
+/// A class which mocks [GoogleSignInAuthentication].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockGoogleSignInAuthentication extends _i1.Mock
+    implements _i8.GoogleSignInAuthentication {
+  MockGoogleSignInAuthentication() {
+    _i1.throwOnMissingStub(this);
+  }
+}
+
 /// A class which mocks [CollectionReference].
 ///
 /// See the documentation for Mockito's code generation for more information.
@@ -1579,7 +1748,7 @@ class MockCollectionReference<T extends Object?> extends _i1.Mock
   @override
   _i6.FirebaseFirestore get firestore => (super.noSuchMethod(
         Invocation.getter(#firestore),
-        returnValue: _FakeFirebaseFirestore_16(
+        returnValue: _FakeFirebaseFirestore_17(
           this,
           Invocation.getter(#firestore),
         ),
@@ -1922,7 +2091,7 @@ class MockCollectionReference<T extends Object?> extends _i1.Mock
           #count,
           [],
         ),
-        returnValue: _FakeAggregateQuery_17(
+        returnValue: _FakeAggregateQuery_18(
           this,
           Invocation.method(
             #count,
@@ -2000,7 +2169,7 @@ class MockCollectionReference<T extends Object?> extends _i1.Mock
             aggregateField30,
           ],
         ),
-        returnValue: _FakeAggregateQuery_17(
+        returnValue: _FakeAggregateQuery_18(
           this,
           Invocation.method(
             #aggregate,
@@ -2054,7 +2223,7 @@ class MockDocumentReference<T extends Object?> extends _i1.Mock
   @override
   _i6.FirebaseFirestore get firestore => (super.noSuchMethod(
         Invocation.getter(#firestore),
-        returnValue: _FakeFirebaseFirestore_16(
+        returnValue: _FakeFirebaseFirestore_17(
           this,
           Invocation.getter(#firestore),
         ),
@@ -2132,7 +2301,7 @@ class MockDocumentReference<T extends Object?> extends _i1.Mock
           [options],
         ),
         returnValue: _i7.Future<_i6.DocumentSnapshot<T>>.value(
-            _FakeDocumentSnapshot_18<T>(
+            _FakeDocumentSnapshot_19<T>(
           this,
           Invocation.method(
             #get,
@@ -2203,134 +2372,14 @@ class MockDocumentReference<T extends Object?> extends _i1.Mock
       ) as _i6.DocumentReference<R>);
 }
 
-/// A class which mocks [GoogleSignIn].
+/// A class which mocks [DocumentSnapshot].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockGoogleSignIn extends _i1.Mock implements _i8.GoogleSignIn {
-  MockGoogleSignIn() {
+class MockDocumentSnapshot<T extends Object?> extends _i1.Mock
+    implements _i6.DocumentSnapshot<T> {
+  MockDocumentSnapshot() {
     _i1.throwOnMissingStub(this);
   }
-
-  @override
-  _i11.SignInOption get signInOption => (super.noSuchMethod(
-        Invocation.getter(#signInOption),
-        returnValue: _i11.SignInOption.standard,
-      ) as _i11.SignInOption);
-
-  @override
-  List<String> get scopes => (super.noSuchMethod(
-        Invocation.getter(#scopes),
-        returnValue: <String>[],
-      ) as List<String>);
-
-  @override
-  bool get forceCodeForRefreshToken => (super.noSuchMethod(
-        Invocation.getter(#forceCodeForRefreshToken),
-        returnValue: false,
-      ) as bool);
-
-  @override
-  _i7.Stream<_i8.GoogleSignInAccount?> get onCurrentUserChanged =>
-      (super.noSuchMethod(
-        Invocation.getter(#onCurrentUserChanged),
-        returnValue: _i7.Stream<_i8.GoogleSignInAccount?>.empty(),
-      ) as _i7.Stream<_i8.GoogleSignInAccount?>);
-
-  @override
-  _i7.Future<_i8.GoogleSignInAccount?> signInSilently({
-    bool? suppressErrors = true,
-    bool? reAuthenticate = false,
-  }) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #signInSilently,
-          [],
-          {
-            #suppressErrors: suppressErrors,
-            #reAuthenticate: reAuthenticate,
-          },
-        ),
-        returnValue: _i7.Future<_i8.GoogleSignInAccount?>.value(),
-      ) as _i7.Future<_i8.GoogleSignInAccount?>);
-
-  @override
-  _i7.Future<bool> isSignedIn() => (super.noSuchMethod(
-        Invocation.method(
-          #isSignedIn,
-          [],
-        ),
-        returnValue: _i7.Future<bool>.value(false),
-      ) as _i7.Future<bool>);
-
-  @override
-  _i7.Future<_i8.GoogleSignInAccount?> signIn() => (super.noSuchMethod(
-        Invocation.method(
-          #signIn,
-          [],
-        ),
-        returnValue: _i7.Future<_i8.GoogleSignInAccount?>.value(),
-      ) as _i7.Future<_i8.GoogleSignInAccount?>);
-
-  @override
-  _i7.Future<_i8.GoogleSignInAccount?> signOut() => (super.noSuchMethod(
-        Invocation.method(
-          #signOut,
-          [],
-        ),
-        returnValue: _i7.Future<_i8.GoogleSignInAccount?>.value(),
-      ) as _i7.Future<_i8.GoogleSignInAccount?>);
-
-  @override
-  _i7.Future<_i8.GoogleSignInAccount?> disconnect() => (super.noSuchMethod(
-        Invocation.method(
-          #disconnect,
-          [],
-        ),
-        returnValue: _i7.Future<_i8.GoogleSignInAccount?>.value(),
-      ) as _i7.Future<_i8.GoogleSignInAccount?>);
-
-  @override
-  _i7.Future<bool> requestScopes(List<String>? scopes) => (super.noSuchMethod(
-        Invocation.method(
-          #requestScopes,
-          [scopes],
-        ),
-        returnValue: _i7.Future<bool>.value(false),
-      ) as _i7.Future<bool>);
-
-  @override
-  _i7.Future<bool> canAccessScopes(
-    List<String>? scopes, {
-    String? accessToken,
-  }) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #canAccessScopes,
-          [scopes],
-          {#accessToken: accessToken},
-        ),
-        returnValue: _i7.Future<bool>.value(false),
-      ) as _i7.Future<bool>);
-}
-
-/// A class which mocks [GoogleSignInAccount].
-///
-/// See the documentation for Mockito's code generation for more information.
-// ignore: must_be_immutable
-class MockGoogleSignInAccount extends _i1.Mock
-    implements _i8.GoogleSignInAccount {
-  MockGoogleSignInAccount() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  String get email => (super.noSuchMethod(
-        Invocation.getter(#email),
-        returnValue: _i9.dummyValue<String>(
-          this,
-          Invocation.getter(#email),
-        ),
-      ) as String);
 
   @override
   String get id => (super.noSuchMethod(
@@ -2342,39 +2391,38 @@ class MockGoogleSignInAccount extends _i1.Mock
       ) as String);
 
   @override
-  _i7.Future<_i8.GoogleSignInAuthentication> get authentication =>
-      (super.noSuchMethod(
-        Invocation.getter(#authentication),
-        returnValue: _i7.Future<_i8.GoogleSignInAuthentication>.value(
-            _FakeGoogleSignInAuthentication_19(
+  _i6.DocumentReference<T> get reference => (super.noSuchMethod(
+        Invocation.getter(#reference),
+        returnValue: _FakeDocumentReference_14<T>(
           this,
-          Invocation.getter(#authentication),
-        )),
-      ) as _i7.Future<_i8.GoogleSignInAuthentication>);
-
-  @override
-  _i7.Future<Map<String, String>> get authHeaders => (super.noSuchMethod(
-        Invocation.getter(#authHeaders),
-        returnValue: _i7.Future<Map<String, String>>.value(<String, String>{}),
-      ) as _i7.Future<Map<String, String>>);
-
-  @override
-  _i7.Future<void> clearAuthCache() => (super.noSuchMethod(
-        Invocation.method(
-          #clearAuthCache,
-          [],
+          Invocation.getter(#reference),
         ),
-        returnValue: _i7.Future<void>.value(),
-        returnValueForMissingStub: _i7.Future<void>.value(),
-      ) as _i7.Future<void>);
-}
+      ) as _i6.DocumentReference<T>);
 
-/// A class which mocks [GoogleSignInAuthentication].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockGoogleSignInAuthentication extends _i1.Mock
-    implements _i8.GoogleSignInAuthentication {
-  MockGoogleSignInAuthentication() {
-    _i1.throwOnMissingStub(this);
-  }
+  @override
+  _i6.SnapshotMetadata get metadata => (super.noSuchMethod(
+        Invocation.getter(#metadata),
+        returnValue: _FakeSnapshotMetadata_20(
+          this,
+          Invocation.getter(#metadata),
+        ),
+      ) as _i6.SnapshotMetadata);
+
+  @override
+  bool get exists => (super.noSuchMethod(
+        Invocation.getter(#exists),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  dynamic get(Object? field) => super.noSuchMethod(Invocation.method(
+        #get,
+        [field],
+      ));
+
+  @override
+  dynamic operator [](Object? field) => super.noSuchMethod(Invocation.method(
+        #[],
+        [field],
+      ));
 }

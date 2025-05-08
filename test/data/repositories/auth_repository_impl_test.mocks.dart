@@ -46,77 +46,10 @@ class MockFirebaseAuthDataSource extends _i1.Mock
   }
 
   @override
-  _i4.Future<_i2.UserModel> registerWithEmail(
-    String? email,
-    String? password,
-  ) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #registerWithEmail,
-          [
-            email,
-            password,
-          ],
-        ),
-        returnValue: _i4.Future<_i2.UserModel>.value(_FakeUserModel_0(
-          this,
-          Invocation.method(
-            #registerWithEmail,
-            [
-              email,
-              password,
-            ],
-          ),
-        )),
-      ) as _i4.Future<_i2.UserModel>);
-
-  @override
-  _i4.Future<_i2.UserModel> signInWithCredential(
-          _i5.AuthCredential? credential) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #signInWithCredential,
-          [credential],
-        ),
-        returnValue: _i4.Future<_i2.UserModel>.value(_FakeUserModel_0(
-          this,
-          Invocation.method(
-            #signInWithCredential,
-            [credential],
-          ),
-        )),
-      ) as _i4.Future<_i2.UserModel>);
-
-  @override
-  _i4.Future<void> signOut() => (super.noSuchMethod(
-        Invocation.method(
-          #signOut,
-          [],
-        ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
-
-  @override
-  _i4.Future<void> saveUserToFirestore(_i2.UserModel? user) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #saveUserToFirestore,
-          [user],
-        ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
-}
-
-/// A class which mocks [FirebaseAuthDataSourceImpl].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockFirebaseAuthDataSourceImpl extends _i1.Mock
-    implements _i3.FirebaseAuthDataSourceImpl {
-  MockFirebaseAuthDataSourceImpl() {
-    _i1.throwOnMissingStub(this);
-  }
+  _i4.Stream<_i5.User?> get authStateChanges => (super.noSuchMethod(
+        Invocation.getter(#authStateChanges),
+        returnValue: _i4.Stream<_i5.User?>.empty(),
+      ) as _i4.Stream<_i5.User?>);
 
   @override
   _i4.Future<_i2.UserModel> registerWithEmail(
@@ -180,6 +113,31 @@ class MockFirebaseAuthDataSourceImpl extends _i1.Mock
         returnValue: _i4.Future<void>.value(),
         returnValueForMissingStub: _i4.Future<void>.value(),
       ) as _i4.Future<void>);
+
+  @override
+  _i4.Future<_i2.UserModel> signInWithEmailPassword(
+    String? email,
+    String? password,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #signInWithEmailPassword,
+          [
+            email,
+            password,
+          ],
+        ),
+        returnValue: _i4.Future<_i2.UserModel>.value(_FakeUserModel_0(
+          this,
+          Invocation.method(
+            #signInWithEmailPassword,
+            [
+              email,
+              password,
+            ],
+          ),
+        )),
+      ) as _i4.Future<_i2.UserModel>);
 
   @override
   _i4.Future<_i5.AuthCredential?> getGoogleAuthCredential() =>

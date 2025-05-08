@@ -7,9 +7,9 @@ import 'dart:async' as _i4;
 
 import 'package:dartz/dartz.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:money_mate/core/errors/auth_failure.dart' as _i5;
+import 'package:money_mate/core/errors/auth_failure.dart' as _i6;
 import 'package:money_mate/features/authentication/domain/entities/user_entity.dart'
-    as _i6;
+    as _i5;
 import 'package:money_mate/features/authentication/domain/repositories/auth_repository.dart'
     as _i3;
 
@@ -46,7 +46,13 @@ class MockAuthRepository extends _i1.Mock implements _i3.AuthRepository {
   }
 
   @override
-  _i4.Future<_i2.Either<_i5.AuthFailure, _i6.UserEntity>> registerWithEmail(
+  _i4.Stream<_i5.UserEntity?> get authStateChanges => (super.noSuchMethod(
+        Invocation.getter(#authStateChanges),
+        returnValue: _i4.Stream<_i5.UserEntity?>.empty(),
+      ) as _i4.Stream<_i5.UserEntity?>);
+
+  @override
+  _i4.Future<_i2.Either<_i6.AuthFailure, _i5.UserEntity>> registerWithEmail(
     String? email,
     String? password,
   ) =>
@@ -59,8 +65,8 @@ class MockAuthRepository extends _i1.Mock implements _i3.AuthRepository {
           ],
         ),
         returnValue:
-            _i4.Future<_i2.Either<_i5.AuthFailure, _i6.UserEntity>>.value(
-                _FakeEither_0<_i5.AuthFailure, _i6.UserEntity>(
+            _i4.Future<_i2.Either<_i6.AuthFailure, _i5.UserEntity>>.value(
+                _FakeEither_0<_i6.AuthFailure, _i5.UserEntity>(
           this,
           Invocation.method(
             #registerWithEmail,
@@ -70,39 +76,94 @@ class MockAuthRepository extends _i1.Mock implements _i3.AuthRepository {
             ],
           ),
         )),
-      ) as _i4.Future<_i2.Either<_i5.AuthFailure, _i6.UserEntity>>);
+      ) as _i4.Future<_i2.Either<_i6.AuthFailure, _i5.UserEntity>>);
 
   @override
-  _i4.Future<_i2.Either<_i5.AuthFailure, _i6.UserEntity>>
+  _i4.Future<_i2.Either<_i6.AuthFailure, _i5.UserEntity>>
       registerWithGoogle() => (super.noSuchMethod(
             Invocation.method(
               #registerWithGoogle,
               [],
             ),
             returnValue:
-                _i4.Future<_i2.Either<_i5.AuthFailure, _i6.UserEntity>>.value(
-                    _FakeEither_0<_i5.AuthFailure, _i6.UserEntity>(
+                _i4.Future<_i2.Either<_i6.AuthFailure, _i5.UserEntity>>.value(
+                    _FakeEither_0<_i6.AuthFailure, _i5.UserEntity>(
               this,
               Invocation.method(
                 #registerWithGoogle,
                 [],
               ),
             )),
-          ) as _i4.Future<_i2.Either<_i5.AuthFailure, _i6.UserEntity>>);
+          ) as _i4.Future<_i2.Either<_i6.AuthFailure, _i5.UserEntity>>);
 
   @override
-  _i4.Future<_i2.Either<_i5.AuthFailure, void>> logout() => (super.noSuchMethod(
+  _i4.Future<_i2.Either<_i6.AuthFailure, void>> logout() => (super.noSuchMethod(
         Invocation.method(
           #logout,
           [],
         ),
-        returnValue: _i4.Future<_i2.Either<_i5.AuthFailure, void>>.value(
-            _FakeEither_0<_i5.AuthFailure, void>(
+        returnValue: _i4.Future<_i2.Either<_i6.AuthFailure, void>>.value(
+            _FakeEither_0<_i6.AuthFailure, void>(
           this,
           Invocation.method(
             #logout,
             [],
           ),
         )),
-      ) as _i4.Future<_i2.Either<_i5.AuthFailure, void>>);
+      ) as _i4.Future<_i2.Either<_i6.AuthFailure, void>>);
+
+  @override
+  _i4.Future<_i2.Either<_i6.AuthFailure, _i5.UserEntity>>
+      loginWithEmailPassword(
+    String? email,
+    String? password,
+  ) =>
+          (super.noSuchMethod(
+            Invocation.method(
+              #loginWithEmailPassword,
+              [
+                email,
+                password,
+              ],
+            ),
+            returnValue:
+                _i4.Future<_i2.Either<_i6.AuthFailure, _i5.UserEntity>>.value(
+                    _FakeEither_0<_i6.AuthFailure, _i5.UserEntity>(
+              this,
+              Invocation.method(
+                #loginWithEmailPassword,
+                [
+                  email,
+                  password,
+                ],
+              ),
+            )),
+          ) as _i4.Future<_i2.Either<_i6.AuthFailure, _i5.UserEntity>>);
+
+  @override
+  _i4.Future<_i2.Either<_i6.AuthFailure, _i5.UserEntity>> loginWithGoogle() =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #loginWithGoogle,
+          [],
+        ),
+        returnValue:
+            _i4.Future<_i2.Either<_i6.AuthFailure, _i5.UserEntity>>.value(
+                _FakeEither_0<_i6.AuthFailure, _i5.UserEntity>(
+          this,
+          Invocation.method(
+            #loginWithGoogle,
+            [],
+          ),
+        )),
+      ) as _i4.Future<_i2.Either<_i6.AuthFailure, _i5.UserEntity>>);
+
+  @override
+  _i4.Future<_i5.UserEntity?> getCurrentUser() => (super.noSuchMethod(
+        Invocation.method(
+          #getCurrentUser,
+          [],
+        ),
+        returnValue: _i4.Future<_i5.UserEntity?>.value(),
+      ) as _i4.Future<_i5.UserEntity?>);
 }

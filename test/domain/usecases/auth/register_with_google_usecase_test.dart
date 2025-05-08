@@ -5,7 +5,7 @@ import 'package:mockito/mockito.dart';
 import 'package:money_mate/core/errors/auth_failure.dart';
 import 'package:money_mate/features/authentication/domain/entities/user_entity.dart';
 import 'package:money_mate/features/authentication/domain/repositories/auth_repository.dart';
-import 'package:money_mate/features/authentication/domain/usecases/auth/register_with_google_usecase.dart';
+import 'package:money_mate/features/authentication/domain/usecases/register_with_google_usecase.dart';
 
 import 'register_with_google_usecase_test.mocks.dart';
 
