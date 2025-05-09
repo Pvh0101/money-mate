@@ -15,6 +15,7 @@ class RouteConstants {
   static const String categories = '/categories';
   static const String notifications = '/notifications';
   static const String addEntry = '/add-entry';
+  static const String addEntryChoice = '/add-entry-choice';
   static const String addIncome = '/add-income';
   static const String addExpense = '/add-expense';
 

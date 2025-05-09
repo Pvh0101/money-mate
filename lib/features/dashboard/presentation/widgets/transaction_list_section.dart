@@ -141,7 +141,7 @@ class _TransactionListSectionState extends State<TransactionListSection>
         labelStyle: textTheme.titleMedium,
         unselectedLabelStyle: textTheme.titleMedium,
         labelColor: colorScheme.onSurface,
-        unselectedLabelColor: colorScheme.onSurfaceVariant,
+        unselectedLabelColor: colorScheme.onSecondaryContainer,
         indicator: UnderlineTabIndicator(
           borderSide: BorderSide(color: theme.primaryColor, width: 4.0),
           insets: const EdgeInsets.symmetric(horizontal: 16.0),

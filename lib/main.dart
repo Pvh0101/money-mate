@@ -2,6 +2,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:money_mate/features/shared_demo/presentation/pages/button_gallery_page.dart';
 
 import 'core/core.dart' as core; // Import barrel file core với prefix
 import 'features/authentication/presentation/bloc/auth_bloc.dart'; // Giữ lại vì là feature khác
@@ -10,7 +11,7 @@ import 'features/authentication/presentation/widgets/auth_gate.dart'; // Giữ l
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await core.init(); 
+  await core.init();
   final savedThemeMode = await AdaptiveTheme.getThemeMode();
   runApp(MyApp(savedThemeMode: savedThemeMode));
 }
@@ -25,7 +26,8 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
-          create: (context) => core.sl<AuthBloc>()..add(const GetCurrentUserRequested()), 
+          create: (context) =>
+              core.sl<AuthBloc>()..add(const GetCurrentUserRequested()),
         ),
       ],
       child: AdaptiveTheme(
@@ -35,10 +37,10 @@ class MyApp extends StatelessWidget {
         builder: (theme, darkTheme) => MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Money Mate',
-          theme: theme, 
+          theme: theme,
           darkTheme: darkTheme,
           home: const AuthGate(),
-          onGenerateRoute: core.Routes.generateRoute, 
+          onGenerateRoute: core.Routes.generateRoute,
         ),
       ),
     );

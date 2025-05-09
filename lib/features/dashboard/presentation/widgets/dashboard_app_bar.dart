@@ -19,7 +19,7 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     // Style cho tiêu đề AppBar, khớp với Figma (18px, semibold)
     // final appBarTitleStyle = textTheme.titleLarge?.copyWith(
-    //   color: colorScheme.onBackground, // Màu chữ trên màu nền scaffold
+    //   color: colorScheme.onSurface, // Màu chữ trên màu nền scaffold
     //   fontWeight: FontWeight.w600,
     //   fontSize: 18,
     // );
@@ -48,13 +48,13 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
               radius: 20, // Figma: avatar 40x40
               backgroundColor: colorScheme.brightness == Brightness.light
                   ? colorScheme
-                      .surfaceVariant // Light: neutralSoftGrey2 (#EBEEF0)
+                      .secondaryContainer // Light: neutralSoftGrey2 (#EBEEF0)
                   : colorScheme
-                      .secondaryContainer, // Dark: darkIconBackground (#3E4C59)
+                      .secondaryContainer, // Dark: darkIconSurface (#3E4C59)
               // TODO: Replace with actual user image from UserBloc/AuthBloc state
-              // child: userImageUrl != null ? ClipOval(child: Image.network(userImageUrl, fit: BoxFit.cover)) : Icon(Icons.person, color: colorScheme.onSurfaceVariant),
+              // child: userImageUrl != null ? ClipOval(child: Image.network(userImageUrl, fit: BoxFit.cover)) : Icon(Icons.person, color: colorScheme.onSecondaryContainer),
               child: Icon(Icons.person_outline,
-                  color: colorScheme.onSurfaceVariant,
+                  color: colorScheme.onSecondaryContainer,
                   size: 24), // Placeholder icon
             ),
           ),

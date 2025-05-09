@@ -7,7 +7,9 @@ import '../../features/authentication/presentation/pages/register_page.dart';
 // import '../../features/authentication/presentation/widgets/home_page.dart'; // Đã comment/xóa ở bước trước nếu thành công
 import 'package:money_mate/features/home/presentation/pages/home_screen.dart';
 import '../../features/authentication/presentation/pages/onboarding_page.dart';
-import '../../features/add_entry/presentation/pages/add_entry_page.dart';
+import '../../features/transactions/presentation/pages/add_entry_page.dart';
+import '../../features/transactions/presentation/pages/add_income_page.dart';
+import '../../features/transactions/presentation/pages/add_expense_page.dart';
 import '../constants/route_constants.dart';
 
 class Routes {
@@ -30,6 +32,10 @@ class Routes {
         return _materialRoute(const HomeScreen());
       case RouteConstants.addEntry:
         return _materialRoute(const AddEntryPage());
+      case RouteConstants.addIncome:
+        return _materialRoute(const AddIncomePage());
+      case RouteConstants.addExpense:
+        return _materialRoute(const AddExpensePage());
       // Các routes khác sẽ được thêm khi có file tương ứng
       default:
         return _materialRoute(const OnboardingPage());

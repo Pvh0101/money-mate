@@ -47,15 +47,14 @@ class OptionCardItem extends StatelessWidget {
     Color iconColor;
     Color textColor;
     List<BoxShadow>? boxShadow;
-    Border? border;
 
     switch (type) {
       case OptionCardType.dashed:
         backgroundColor = colorScheme.brightness == Brightness.light
             ? colorScheme.background // Light: neutralSoftGrey3 (#FAFAFB)
-            : colorScheme.surfaceVariant; // Dark: neutralDark1 (#1F2933)
-        iconColor = colorScheme.onSurfaceVariant;
-        textColor = colorScheme.onSurfaceVariant;
+            : colorScheme.secondaryContainer; // Dark: neutralDark1 (#1F2933)
+        iconColor = colorScheme.onSecondaryContainer;
+        textColor = colorScheme.onSecondaryContainer;
         // Viền đứt nét sẽ được xử lý bằng CustomPaint, màu viền sẽ là colorScheme.outline
         break;
       case OptionCardType.highlighted:
@@ -116,7 +115,7 @@ class OptionCardItem extends StatelessWidget {
             padding: const EdgeInsets.all(8), // Wrapper cho icon
             decoration: BoxDecoration(
               // Figma có vẻ không dùng background cho icon trong card này
-              // color: type == OptionCardType.highlighted ? Colors.white.withOpacity(0.1) : iconBackgroundColor,
+              // color: type == OptionCardType.highlighted ? Colors.white.withOpacity(0.1) : iconSurfaceColor,
               borderRadius: BorderRadius.circular(8),
             ),
             child: SvgPicture.asset(

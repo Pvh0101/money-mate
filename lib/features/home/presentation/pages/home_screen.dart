@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:money_mate/features/transactions/presentation/pages/add_income_page.dart';
 import 'package:money_mate/features/dashboard/presentation/pages/dashboard_page.dart';
 import 'package:money_mate/features/dashboard/presentation/pages/total_expense_page.dart';
 import 'package:money_mate/features/budgets/presentation/pages/budgets_page.dart';
+import 'package:money_mate/features/entries/presentation/pages/entries_page.dart';
 import 'package:money_mate/features/profile/presentation/pages/profile_page.dart';
 import 'package:money_mate/features/home/presentation/widgets/app_bottom_navigation_bar.dart';
 import 'package:money_mate/core/routes/app_routes.dart';
@@ -22,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   static const List<Widget> _widgetOptions = <Widget>[
     DashboardPage(),
     TotalExpensePage(),
-    BudgetsPage(),
+    AddIncomePage(),
     ProfilePage(),
   ];
 

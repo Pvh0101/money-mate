@@ -52,7 +52,7 @@ class ActionCardItem extends StatelessWidget {
       );
     } else {
       textColor = colorScheme.onSurface;
-      iconColor = colorScheme.onSurfaceVariant;
+      iconColor = colorScheme.onSecondaryContainer;
       iconContainerBackground = colorScheme.secondaryContainer;
       cardDecoration = BoxDecoration(
         color: colorScheme.surface,

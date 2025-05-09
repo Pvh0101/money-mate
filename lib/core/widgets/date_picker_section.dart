@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart'; // For date formatting
+import 'package:intl/intl.dart';
 
 enum CalendarViewMode { week, month }
 
 class DatePickerSection extends StatefulWidget {
-  const DatePickerSection({super.key});
+  final DateTime? initialDate;
+  final ValueChanged<DateTime>? onDateSelected; // Callback khi ngày được chọn
+
+  const DatePickerSection({
+    super.key,
+    this.initialDate,
+    this.onDateSelected,
+  });
 
   @override
   State<DatePickerSection> createState() => _DatePickerSectionState();
@@ -46,7 +53,7 @@ class _DatePickerSectionState extends State<DatePickerSection> {
   void initState() {
     super.initState();
     final now = DateTime.now();
-    _selectedDate = now;
+    _selectedDate = widget.initialDate ?? now;
     _focusedDate =
         DateTime(now.year, now.month, now.day); // Start with today in focus
     _generateDisplayedDays();
@@ -78,6 +85,9 @@ class _DatePickerSectionState extends State<DatePickerSection> {
       final int daysInMonth =
           DateTime(_focusedDate.year, _focusedDate.month + 1, 0).day;
       int weekdayOfFirstDay = firstDayOfMonth.weekday;
+      if (weekdayOfFirstDay == 0)
+        weekdayOfFirstDay =
+            7; // Sunday is 7 for ISO, but DateTime.weekday is 7 for Sunday
 
       for (int i = 0; i < weekdayOfFirstDay - 1; i++) {
         final prevMonthDay =
@@ -99,8 +109,8 @@ class _DatePickerSectionState extends State<DatePickerSection> {
 
       int daysSoFar = _displayedDaysList.length;
       int nextMonthDayCounter = 1;
-      while (daysSoFar < 42) {
-        // Always display 6 weeks for month view
+      while (daysSoFar < 42 && daysSoFar < 6 * 7) {
+        // Max 6 weeks
         final nextMonthDayDateTime = DateTime(
             _focusedDate.year, _focusedDate.month + 1, nextMonthDayCounter++);
         _displayedDaysList.add(_CalendarDay(
@@ -145,6 +155,7 @@ class _DatePickerSectionState extends State<DatePickerSection> {
         }
       }
       _generateDisplayedDays();
+      widget.onDateSelected?.call(_selectedDate); // Gọi callback
     });
   }
 
@@ -195,7 +206,7 @@ class _DatePickerSectionState extends State<DatePickerSection> {
     // Figma: Inter SemiBold 12px, color onSurface. titleSmall trong theme đã có màu này.
     final weekDayStyle = textTheme.titleSmall;
 
-    // Figma: Inter Regular 14px, color onSurface. bodyMedium trong theme có màu onSurfaceVariant.
+    // Figma: Inter Regular 14px, color onSurface. bodyMedium trong theme có màu onSecondaryContainer.
     final dateStyle = textTheme.bodyMedium?.copyWith(
       color: colorScheme.onSurface,
     );
@@ -221,17 +232,17 @@ class _DatePickerSectionState extends State<DatePickerSection> {
       decoration: BoxDecoration(
         color: colorScheme.surface,
         borderRadius: BorderRadius.circular(24.0),
-        boxShadow: [
-          BoxShadow(
-            color: colorScheme.brightness == Brightness.light
-                ? const Color(0xFF1D3A58)
-                    .withOpacity(0.08) // Shadow nhẹ hơn cho card này
-                : const Color(0xFF1B2025)
-                    .withOpacity(0.8), // Shadow nhẹ hơn cho card này
-            blurRadius: 32,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        // boxShadow: [
+        //   BoxShadow(
+        //     color: colorScheme.brightness == Brightness.light
+        //         ? const Color(0xFF1D3A58)
+        //             .withOpacity(0.08) // Shadow nhẹ hơn cho card này
+        //         : const Color(0xFF1B2025)
+        //             .withOpacity(0.8), // Shadow nhẹ hơn cho card này
+        //     blurRadius: 32,
+        //     offset: const Offset(0, 4),
+        //   ),
+        // ],
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,

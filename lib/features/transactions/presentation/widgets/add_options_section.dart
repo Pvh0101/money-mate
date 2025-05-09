@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './option_card_item.dart';
+import 'option_card_item.dart';
 
 class AddOptionsSection extends StatelessWidget {
   final VoidCallback onAddIncomeTap;

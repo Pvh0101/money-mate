@@ -6,7 +6,7 @@ enum AppTextFieldSize { small, medium, large }
 class AppTextField extends StatefulWidget {
   final TextEditingController? controller;
   final String? labelText; // Nhãn hiển thị bên trên TextFormField
-  final String? hintText;  // Placeholder bên trong TextFormField
+  final String? hintText; // Placeholder bên trong TextFormField
   final String? initialValue;
   final TextInputType? keyboardType;
   final bool obscureText;
@@ -20,7 +20,8 @@ class AppTextField extends StatefulWidget {
   final bool enabled;
   final String? errorText;
   final AppTextFieldSize size;
-  final bool filled; // true = filled (nền trắng), false = outlined (nền xám nhạt)
+  final bool
+      filled; // true = filled (nền trắng), false = outlined (nền xám nhạt)
   final int? maxLength;
   final TextCapitalization textCapitalization;
   final AutovalidateMode? autovalidateMode;
@@ -44,7 +45,7 @@ class AppTextField extends StatefulWidget {
     this.onSubmitted,
     this.enabled = true,
     this.errorText,
-    this.size = AppTextFieldSize.medium,
+    this.size = AppTextFieldSize.large,
     this.filled = false, // Theo Figma, "Filled=off" có nền xám F5F6F7
     this.maxLength,
     this.textCapitalization = TextCapitalization.none,
@@ -130,13 +131,14 @@ class _AppTextFieldState extends State<AppTextField> {
         verticalPadding = 12.0; // Figma size 48px
         break;
     }
-    
+
     // Căn chỉnh text và icon bên trong field
     // Nếu chỉ có text, padding dọc cần đảm bảo text ở giữa
     // Nếu có icon, icon cũng cần được căn giữa
     // ThemeData của Material 3 có thể đã xử lý vụ này khá tốt với prefixIconConstraints và suffixIconConstraints
 
-    return EdgeInsets.symmetric(vertical: verticalPadding, horizontal: horizontalPadding);
+    return EdgeInsets.symmetric(
+        vertical: verticalPadding, horizontal: horizontalPadding);
   }
 
   TextStyle _getTextStyle(BuildContext context) {
@@ -144,12 +146,13 @@ class _AppTextFieldState extends State<AppTextField> {
     // Dựa trên style_VI5QUV và style_305F3L từ Figma
     // style_VI5QUV: Inter 400, 16px, lineHeight 1.5 (24px), letterSpacing 2%
     // style_305F3L: Inter 400, 14px, lineHeight 1.428 (20px), letterSpacing 2%
-    
+
     // Lấy textTheme từ AppTheme đã được apply
     // Chúng ta cần một text style phù hợp từ theme, ví dụ bodyMedium hoặc bodyLarge
     // và điều chỉnh fontSize nếu cần
-    
-    TextStyle baseStyle = theme.textTheme.bodyLarge ?? const TextStyle(fontFamily: 'Inter'); // Hoặc bodyMedium
+
+    TextStyle baseStyle = theme.textTheme.bodyLarge ??
+        const TextStyle(fontFamily: 'Inter'); // Hoặc bodyMedium
 
     double fontSize;
     // double lineHeightMultiplier; // Figma dùng em, Flutter dùng multiplier trên fontSize
@@ -166,37 +169,40 @@ class _AppTextFieldState extends State<AppTextField> {
         // lineHeightMultiplier = 1.5;
         break;
     }
-    
+
     // Figma letterSpacing: 2%
     // Flutter letterSpacing: fontSize * 0.02
-    
+
     // Màu text sẽ được quyết định bởi InputDecorationTheme hoặc trực tiếp trong decoration
     return baseStyle.copyWith(
         fontSize: fontSize,
         // height: lineHeightMultiplier, // Cẩn thận khi set height, có thể làm lệch text
         letterSpacing: fontSize * 0.02,
-        color: widget.enabled ? neutralDark1 : neutralGrey1 // Màu cơ bản khi nhập text
-      );
+        color: widget.enabled
+            ? neutralDark1
+            : neutralGrey1 // Màu cơ bản khi nhập text
+        );
   }
-  
+
   TextStyle _getHintStyle(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     // Figma label_1 (Example placeholder): màu #9BA1A8 (neutralGrey1 hoặc tương tự)
     // Cùng font size và line height với text chính
-    TextStyle baseStyle = theme.textTheme.bodyLarge ?? const TextStyle(fontFamily: 'Inter');
-     double fontSize;
+    TextStyle baseStyle =
+        theme.textTheme.bodyLarge ?? const TextStyle(fontFamily: 'Inter');
+    double fontSize;
 
     switch (widget.size) {
       case AppTextFieldSize.small:
         fontSize = 14.0;
-         baseStyle = theme.textTheme.bodyMedium ?? baseStyle;
+        baseStyle = theme.textTheme.bodyMedium ?? baseStyle;
         break;
       case AppTextFieldSize.medium:
       case AppTextFieldSize.large:
         fontSize = 16.0;
         break;
     }
-    
+
     return baseStyle.copyWith(
       fontSize: fontSize,
       letterSpacing: fontSize * 0.02,
@@ -204,24 +210,26 @@ class _AppTextFieldState extends State<AppTextField> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
     final borderRadius = _getBorderRadius();
-    final fieldHeight = _getHeight(); // TextFormField sẽ cố gắng vừa với height này qua contentPadding và constraints
+    final fieldHeight =
+        _getHeight(); // TextFormField sẽ cố gắng vừa với height này qua contentPadding và constraints
     final textStyle = _getTextStyle(context);
     final hintStyle = _getHintStyle(context);
 
     // Màu sắc dựa trên trạng thái
-    Color borderColor = widget.filled ? Colors.transparent : neutralSoftGrey1; // stroke_RR5YST (#DCDFE3)
-    Color fillColor = widget.filled ? neutralWhite : const Color(0xFFF5F6F7); // fill_03EN7V
+    Color borderColor = widget.filled
+        ? Colors.transparent
+        : neutralSoftGrey1; // stroke_RR5YST (#DCDFE3)
+    Color fillColor =
+        widget.filled ? neutralWhite : const Color(0xFFF5F6F7); // fill_03EN7V
     double borderWidth = 1.0;
-    
+
     // BoxShadow cho focus/error
     BoxShadow? activeBoxShadow;
-
 
     if (!widget.enabled) {
       // Màu khi disabled
@@ -230,20 +238,22 @@ class _AppTextFieldState extends State<AppTextField> {
       // Figma: nền vẫn là #F5F6F7 cho "Filled=off, State=disabled"
       // Figma: nền là #F5F6F7 cho "Filled=on, State=disabled"
       fillColor = const Color(0xFFF5F6F7); // Luôn là màu này khi disabled
-      borderColor = widget.filled ? Colors.transparent : neutralSoftGrey1; // Giữ nguyên border cho outlined
+      borderColor = widget.filled
+          ? Colors.transparent
+          : neutralSoftGrey1; // Giữ nguyên border cho outlined
     } else if (widget.errorText != null && widget.errorText!.isNotEmpty) {
       // Màu khi có lỗi
       // Figma stroke_7YV6WY: #EF4E4E (systemRed)
       // Figma effect_KUEI89: boxShadow: 0px 0px 0px 2px rgba(239, 78, 78, 0.2)
       borderColor = systemRed;
       // Theo Figma, khi error, nền là #FFFFFF (trắng) cho cả Filled=on và Filled=off
-      fillColor = neutralWhite; 
+      fillColor = neutralWhite;
       activeBoxShadow = BoxShadow(
           color: systemRed.withValues(alpha: 0.2),
-          spreadRadius: 2, // Tương đương với việc set 0px 0px 0px 2px trong Figma
-          blurRadius: 0, 
-          offset: const Offset(0,0)
-      );
+          spreadRadius:
+              2, // Tương đương với việc set 0px 0px 0px 2px trong Figma
+          blurRadius: 0,
+          offset: const Offset(0, 0));
     } else if (_isFocused) {
       // Màu khi focus
       // Figma stroke_EI9UFA: #37ABFF (systemBlue)
@@ -251,12 +261,12 @@ class _AppTextFieldState extends State<AppTextField> {
       borderColor = systemBlue;
       // Theo Figma, khi focus, nền là #FFFFFF (trắng) cho cả Filled=on và Filled=off
       fillColor = neutralWhite;
-       activeBoxShadow = BoxShadow(
-          color: systemBlue.withValues(alpha: 0.2), // Figma: rgba(24, 144, 255, 0.2)
+      activeBoxShadow = BoxShadow(
+          color: systemBlue.withValues(
+              alpha: 0.2), // Figma: rgba(24, 144, 255, 0.2)
           spreadRadius: 2,
           blurRadius: 0,
-          offset: const Offset(0,0)
-      );
+          offset: const Offset(0, 0));
     }
 
     InputDecoration decoration = InputDecoration(
@@ -266,19 +276,19 @@ class _AppTextFieldState extends State<AppTextField> {
       // labelStyle: ... ,
       // floatingLabelStyle: ... ,
       // floatingLabelBehavior: FloatingLabelBehavior.always, // Nếu muốn label luôn ở trên
-      
+
       prefixIcon: widget.prefixIcon,
       suffixIcon: widget.suffixIcon,
-      
+
       // Màu sắc icon sẽ lấy từ iconTheme của ThemeData, hoặc có thể set ở đây
       // prefixIconColor: ...,
       // suffixIconColor: ...,
 
       contentPadding: _getContentPadding(context),
-      
+
       filled: true, // Luôn set true để fillColor có tác dụng
       fillColor: fillColor,
-      
+
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(borderRadius),
         borderSide: BorderSide(color: borderColor, width: borderWidth),
@@ -289,7 +299,11 @@ class _AppTextFieldState extends State<AppTextField> {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(borderRadius),
-        borderSide: BorderSide(color: (widget.errorText != null && widget.errorText!.isNotEmpty) ? systemRed : systemBlue, width: borderWidth),
+        borderSide: BorderSide(
+            color: (widget.errorText != null && widget.errorText!.isNotEmpty)
+                ? systemRed
+                : systemBlue,
+            width: borderWidth),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(borderRadius),
@@ -301,13 +315,15 @@ class _AppTextFieldState extends State<AppTextField> {
       ),
       disabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(borderRadius),
-        borderSide: BorderSide(color: widget.filled ? Colors.transparent : neutralSoftGrey1, width: borderWidth),
+        borderSide: BorderSide(
+            color: widget.filled ? Colors.transparent : neutralSoftGrey1,
+            width: borderWidth),
       ),
-      
+
       errorText: widget.errorText,
       // errorStyle: ...,
       // errorMaxLines: ...,
-      
+
       // Constraints để kiểm soát kích thước của icon
       // prefixIconConstraints: BoxConstraints(minHeight: fieldHeight, minWidth: 40), // Ví dụ
       // suffixIconConstraints: BoxConstraints(minHeight: fieldHeight, minWidth: 40), // Ví dụ
@@ -331,7 +347,8 @@ class _AppTextFieldState extends State<AppTextField> {
       onFieldSubmitted: widget.onSubmitted,
       enabled: widget.enabled,
       maxLength: widget.maxLength,
-      autovalidateMode: widget.autovalidateMode ?? AutovalidateMode.onUserInteraction,
+      autovalidateMode:
+          widget.autovalidateMode ?? AutovalidateMode.onUserInteraction,
       restorationId: widget.restorationId,
       readOnly: widget.readOnly,
       // cursorColor: ...,
@@ -345,7 +362,7 @@ class _AppTextFieldState extends State<AppTextField> {
     // Hiện tại, tôi sẽ để BoxShadow cho focused/error thông qua màu border được làm nổi bật.
     // Figma có shadow nhẹ, có thể xem xét thêm nếu cần.
     // Nếu muốn shadow chính xác như Figma, cần bọc TextFormField trong một Container có Decoration với shadow đó.
-    
+
     // Wrapper để có thể thêm BoxShadow động
     // Hiện tại, `activeBoxShadow` sẽ không được dùng trực tiếp lên TextFormField mà là
     // thông qua việc thay đổi màu border của InputDecoration.
@@ -361,9 +378,12 @@ class _AppTextFieldState extends State<AppTextField> {
             widget.labelText!,
             // Figma "Income Title": Inter, 600, 16px
             // Nên lấy style từ textTheme, ví dụ titleMedium hoặc custom
-            style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600, fontSize: 16, color: neutralDark1), 
+            style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w600, fontSize: 16, color: neutralDark1),
           ),
-          const SizedBox(height: 8.0), // Khoảng cách giữa label và field (Figma là 12px từ baseline label đến top field, nhưng thường 8px là hợp lý)
+          const SizedBox(
+              height:
+                  8.0), // Khoảng cách giữa label và field (Figma là 12px từ baseline label đến top field, nhưng thường 8px là hợp lý)
           // Container để có thể kiểm soát chiều cao chính xác nếu cần
           SizedBox(
             height: fieldHeight, // Chiều cao mong muốn của field

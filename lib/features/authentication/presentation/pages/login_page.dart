@@ -36,7 +36,7 @@ class LoginPage extends StatelessWidget {
 
   Widget _buildFormContents(
     BuildContext context,
-    TextEditingController emailController, 
+    TextEditingController emailController,
     TextEditingController passwordController,
   ) {
     return Column(
@@ -62,39 +62,43 @@ class LoginPage extends StatelessWidget {
               isFullWidth: true,
               text: 'LOGIN',
               isLoading: isLoading,
-              onPressed: isLoading 
-                ? null 
-                : () {
-                    final email = emailController.text.trim();
-                    final password = passwordController.text.trim();
-                    
-                    String? emailError = Validator.validateEmailField(email);
-                    
-                    String? passwordError;
-                    if (!Validator.isNotEmpty(password)) {
-                      passwordError = 'Mật khẩu không được để trống';
-                    }
+              onPressed: isLoading
+                  ? null
+                  : () {
+                      final email = emailController.text.trim();
+                      final password = passwordController.text.trim();
 
-                    if (emailError != null) {
-                       ScaffoldMessenger.of(context).showSnackBar(
-                         SnackBar(content: Text(emailError), backgroundColor: Colors.red),
-                       );
-                       return;
-                    }
-                    if (passwordError != null) {
-                       ScaffoldMessenger.of(context).showSnackBar(
-                         SnackBar(content: Text(passwordError), backgroundColor: Colors.red),
-                       );
-                       return;
-                    }
+                      String? emailError = Validator.validateEmailField(email);
 
-                    context.read<AuthBloc>().add(
-                          LoginWithEmailPasswordRequested(
-                            email: email,
-                            password: password,
-                          ),
+                      String? passwordError;
+                      if (!Validator.isNotEmpty(password)) {
+                        passwordError = 'Mật khẩu không được để trống';
+                      }
+
+                      if (emailError != null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                              content: Text(emailError),
+                              backgroundColor: Colors.red),
                         );
-                  },
+                        return;
+                      }
+                      if (passwordError != null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                              content: Text(passwordError),
+                              backgroundColor: Colors.red),
+                        );
+                        return;
+                      }
+
+                      context.read<AuthBloc>().add(
+                            LoginWithEmailPasswordRequested(
+                              email: email,
+                              password: password,
+                            ),
+                          );
+                    },
             );
           },
         ),
@@ -125,13 +129,17 @@ class LoginPage extends StatelessWidget {
               isLogin: true,
               isLoading: isLoading,
               onGooglePressed: isLoading
-                ? null
-                : () {
-                    context.read<AuthBloc>().add(const LoginWithGoogleRequested());
-                  },
+                  ? null
+                  : () {
+                      context
+                          .read<AuthBloc>()
+                          .add(const LoginWithGoogleRequested());
+                    },
               onApplePressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Chức năng đăng nhập Apple chưa được hỗ trợ.')),
+                  const SnackBar(
+                      content:
+                          Text('Chức năng đăng nhập Apple chưa được hỗ trợ.')),
                 );
               },
             );

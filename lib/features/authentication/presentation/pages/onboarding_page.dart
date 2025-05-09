@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:money_mate/core/widgets/buttons/app_fill_button.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../../../core/constants/route_constants.dart';
 import '../../../../core/routes/app_routes.dart';
-import '../../../../core/widgets/buttons/custom_button.dart';
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
@@ -128,7 +128,7 @@ class _OnboardingPageState extends State<OnboardingPage>
         children: [
           _buildPageIndicator(context),
           const SizedBox(height: 40),
-          CustomButton(
+          AppFillButton(
             text: _currentPage == 2 ? "LET'S GO" : "NEXT",
             onPressed: () {
               if (_currentPage < 2) {
@@ -155,7 +155,7 @@ class _OnboardingPageState extends State<OnboardingPage>
       count: _slides.length,
       effect: ExpandingDotsEffect(
         activeDotColor: colorScheme.primary,
-        dotColor: colorScheme.surfaceVariant,
+        dotColor: colorScheme.secondaryContainer,
         dotHeight: 8,
         dotWidth: 8,
         spacing: 8,

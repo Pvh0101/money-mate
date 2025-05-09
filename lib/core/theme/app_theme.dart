@@ -46,7 +46,7 @@ TextTheme _buildTextTheme(TextTheme base, ColorScheme colorScheme) {
             fontWeight: FontWeight.w600,
             letterSpacing: 0.02 * 18,
             height: 20 / 18,
-            color: colorScheme.onBackground), // Use onBackground for AppBar
+            color: colorScheme.onSurface), // Use onSurface for AppBar
         titleMedium: interBase.titleMedium?.copyWith(
             // Section Titles, Major List Item Text (Category, Amount)
             fontSize: 16,
@@ -136,9 +136,8 @@ final ThemeData lightTheme = ThemeData.light(
     error: systemRed,
     onError: neutralWhite,
     background: neutralSoftGrey3, // Explicitly set
-    onBackground: neutralDark1, // Explicitly set
+    onSurface: neutralDark1, // Explicitly set
     surface: neutralWhite,
-    onSurface: neutralDark1,
     surfaceVariant: neutralSoftGrey2, // For cards or alternative surfaces
     onSurfaceVariant: neutralGrey1, // For secondary text
     outline: neutralSoftGrey1,
@@ -155,11 +154,9 @@ final ThemeData lightTheme = ThemeData.light(
               primary: primaryBlueLight,
               onPrimary: neutralWhite, // Text on primary elements (buttons)
               background: neutralSoftGrey3,
-              onBackground:
+              onSurface:
                   neutralDark1, // Text on general background (like AppBar title)
               surface: neutralWhite,
-              onSurface: neutralDark1, // Primary text on cards/surfaces
-              surfaceVariant: neutralSoftGrey2,
               onSurfaceVariant:
                   neutralGrey1, // Secondary text on cards/surfaces
               secondaryContainer: neutralSoftGrey2,
@@ -183,13 +180,12 @@ final ThemeData darkTheme = ThemeData.dark(
     error: const Color(0xFFCF6679),
     onError: neutralDark1,
     background: neutralDark2,
-    onBackground: neutralSoftGrey3,
-    surface: neutralDark3,
     onSurface: neutralSoftGrey3,
+    surface: neutralDark3,
     surfaceVariant: neutralDark1,
     onSurfaceVariant: neutralGrey3,
     outline: neutralGrey2,
-    secondaryContainer: darkIconBackground,
+    secondaryContainer: darkIconSurface,
     onSecondaryContainer: neutralSoftGrey3,
   ),
   textTheme: _buildTextTheme(
@@ -202,12 +198,11 @@ final ThemeData darkTheme = ThemeData.dark(
         primary: primaryBlueDark,
         onPrimary: neutralWhite,
         background: neutralDark2,
-        onBackground: neutralSoftGrey3,
-        surface: neutralDark3,
         onSurface: neutralSoftGrey3,
+        surface: neutralDark3,
         surfaceVariant: neutralDark1,
         onSurfaceVariant: neutralGrey3,
-        secondaryContainer: darkIconBackground,
+        secondaryContainer: darkIconSurface,
         onSecondaryContainer: neutralSoftGrey3,
         outline: neutralGrey2,
         error: const Color(0xFFCF6679),

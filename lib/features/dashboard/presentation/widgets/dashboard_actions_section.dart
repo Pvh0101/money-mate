@@ -23,7 +23,7 @@ class DashboardActionsSection extends StatelessWidget {
       width: isActive ? 24 : 8,
       height: 8,
       decoration: BoxDecoration(
-        color: isActive ? colorScheme.primary : colorScheme.surfaceVariant,
+        color: isActive ? colorScheme.primary : colorScheme.secondaryContainer,
         borderRadius: BorderRadius.circular(100),
       ),
     );

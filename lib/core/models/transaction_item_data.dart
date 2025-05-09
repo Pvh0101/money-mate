@@ -7,7 +7,7 @@ class TransactionItemData {
   final String amount;
   final String description; // Can be payment method or any secondary subtitle
   final Color amountColor; // To distinguish income/expense or based on category
-  final Color? iconBackgroundColor; // Optional background for the icon
+  final Color? iconSurfaceColor; // Optional background for the icon
 
   TransactionItemData({
     required this.iconPath,
@@ -16,6 +16,6 @@ class TransactionItemData {
     required this.amount,
     required this.description,
     required this.amountColor,
-    this.iconBackgroundColor,
+    this.iconSurfaceColor,
   });
 }

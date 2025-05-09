@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:money_mate/core/widgets/buttons/app_icon_button.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? titleText;
@@ -35,18 +36,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       title: finalTitleWidget,
       leading: showBackButton
-          ? IconButton(
-              icon: SvgPicture.asset(
-                'assets/icons/chevron_left.svg',
-                colorFilter: ColorFilter.mode(
-                  colorScheme.onSurface,
-                  BlendMode.srcIn,
-                ),
-                width: 24,
-                height: 24,
-              ),
-              onPressed: () => Navigator.of(context).pop(),
-              tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+          ? AppIconButton(
+            
+              icon: Icons.arrow_back,
+              onPressed: () => Navigator.pop(context),
             )
           : null,
       iconTheme:

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_mate/features/dashboard/presentation/widgets/total_expense_app_bar.dart';
-import 'package:money_mate/features/dashboard/presentation/widgets/date_picker_section.dart';
-import 'package:money_mate/features/dashboard/presentation/widgets/budget_summary_widget.dart';
+import 'package:money_mate/core/widgets/date_picker_section.dart';
+import 'package:money_mate/core/widgets/circular_summary_widget.dart';
 import 'package:money_mate/features/dashboard/presentation/widgets/transaction_list_section.dart';
 
 class TotalExpensePage extends StatelessWidget {
@@ -21,7 +21,7 @@ class TotalExpensePage extends StatelessWidget {
             DatePickerSection(),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
-              child: BudgetSummaryWidget(
+              child: CircularSummaryWidget(
                 totalSpentAmountDisplay: "\$1,600",
                 spentPercentageValue: 0.60,
               ),

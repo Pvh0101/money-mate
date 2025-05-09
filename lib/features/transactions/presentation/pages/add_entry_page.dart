@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:money_mate/core/widgets/custom_app_bar.dart';
 import 'package:money_mate/features/dashboard/data/mock/dashboard_mock_data.dart'; // Tạm dùng mock data
 // import 'package:money_mate/features/dashboard/presentation/widgets/dashboard_latest_entries_section.dart'; // Import cũ
-import 'package:money_mate/core/widgets/latest_entries_section.dart'; // Import mới
-import '../widgets/add_entry_app_bar.dart';
-import '../widgets/add_options_section.dart';
+import 'package:money_mate/core/widgets/latest_entries_section.dart';
+import 'package:money_mate/features/transactions/presentation/widgets/add_options_section.dart';
+import 'package:money_mate/core/constants/route_constants.dart'; // Thêm import này
 // import 'package:money_mate/core/widgets/custom_bottom_nav_bar.dart'; // Giả sử có widget này
 
 class AddEntryPage extends StatefulWidget {
@@ -19,29 +20,18 @@ class _AddEntryPageState extends State<AddEntryPage> {
       DashboardMockData.latestEntriesData;
 
   void _onAddIncomeTapped() {
-    print("Add Income Tapped");
-    // TODO: Navigate to Add Income screen
+    Navigator.pushNamed(context, RouteConstants.addIncome);
   }
 
   void _onAddExpenseTapped() {
-    print("Add Expense Tapped");
-    // TODO: Navigate to Add Expense screen
+    Navigator.pushNamed(context, RouteConstants.addExpense);
   }
 
-  void _onPlusIconTapped() {
-    print("Plus Icon Card Tapped");
-    // TODO: Có thể là một action khác hoặc không làm gì
-  }
+  void _onPlusIconTapped() {}
 
-  void _onLatestEntryTapped(Map<String, dynamic> entryData) {
-    print("Latest entry tapped from AddEntryPage: \${entryData['category']}");
-    // TODO: Navigate to Transaction Detail screen
-  }
+  void _onLatestEntryTapped(Map<String, dynamic> entryData) {}
 
-  void _onMoreEntriesTapped() {
-    print("More entries tapped from AddEntryPage");
-    // TODO: Navigate to All Transactions screen
-  }
+  void _onMoreEntriesTapped() {}
 
   @override
   Widget build(BuildContext context) {
@@ -53,14 +43,9 @@ class _AddEntryPageState extends State<AddEntryPage> {
 
     return Scaffold(
       backgroundColor: colorScheme.background, // Nền chính của trang
-      appBar: AddEntryAppBar(
-        onBackTap: () {
-          // Xử lý khi nhấn nút back, ví dụ Navigator.pop(context)
-          // Hoặc nếu nó là một phần của tab, thì chuyển tab
-          if (Navigator.canPop(context)) {
-            Navigator.pop(context);
-          }
-        },
+      appBar: const CustomAppBar(
+        titleText: 'Add Entry',
+        showBackButton: true,
       ),
       body: Column(
         children: [
@@ -93,11 +78,11 @@ class _AddEntryPageState extends State<AddEntryPage> {
                         ),
                       ]
                     : [
-                        BoxShadow(
-                          color: const Color(
+                        const BoxShadow(
+                          color: Color(
                               0xFF1B2025), // Figma shadow for dark (opacity 1)
                           blurRadius: 64,
-                          offset: const Offset(0, 8),
+                          offset: Offset(0, 8),
                         ),
                       ],
               ),
@@ -115,19 +100,6 @@ class _AddEntryPageState extends State<AddEntryPage> {
           ),
         ],
       ),
-      // bottomNavigationBar: CustomBottomNavigationBar( // Nếu có
-      //   currentIndex: 2, // Giả sử FAB là index 2
-      //   onTap: (index) {
-      //     // Xử lý chuyển tab
-      //     print('Tapped tab $index');
-      //   },
-      // ),
-      // floatingActionButton: FloatingActionButton( // Theo Figma, FAB là một phần của BottomNavBar
-      //   onPressed: () { /* Hành động của FAB, có thể là _onPlusIconTapped hoặc _onAddExpenseTapped */ },
-      //   backgroundColor: colorScheme.primary, // Hoặc gradient
-      //   child: Icon(Icons.add, color: colorScheme.onPrimary),
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked, // Nếu BottomNavBar có notch
     );
   }
 }

@@ -53,8 +53,8 @@ class StatCardItem extends StatelessWidget {
       // boxShadow = null;
     } else {
       textColor = colorScheme.onSurface; // Màu chữ trên nền surface
-      iconColor =
-          colorScheme.onSurfaceVariant; // Icon thường có màu nhẹ hơn text chính
+      iconColor = colorScheme
+          .onSecondaryContainer; // Icon thường có màu nhẹ hơn text chính
       backgroundDecoration = BoxDecoration(
         color: colorScheme.surface, // Màu nền từ theme
         borderRadius: BorderRadius.circular(20.0),

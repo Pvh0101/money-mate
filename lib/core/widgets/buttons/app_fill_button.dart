@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart'; // Removed if not directly used for global font override
 import 'button_enums.dart';
+import 'button_style_helpers.dart';
 
 class AppFillButton extends StatelessWidget {
   const AppFillButton({
@@ -13,7 +14,7 @@ class AppFillButton extends StatelessWidget {
     this.classType = ButtonClassType.standard,
     this.isDisabled = false,
     this.isLoading = false,
-    this.isFullWidth = false, // Thêm tùy chọn fullWidth
+    this.isFullWidth = false,
   });
 
   final VoidCallback? onPressed;
@@ -26,128 +27,62 @@ class AppFillButton extends StatelessWidget {
   final bool isLoading;
   final bool isFullWidth;
 
-  // Style Getters
-  double _getHeight() {
-    switch (size) {
-      case ButtonSize.small:
-        return 32.0;
-      case ButtonSize.medium:
-        return 40.0;
-      case ButtonSize.large:
-        return 48.0;
-    }
-  }
-
-  double _getBorderRadius() {
-    switch (size) {
-      case ButtonSize.small:
-        return 10.0;
-      case ButtonSize.medium:
-        return 12.0;
-      case ButtonSize.large:
-        return 14.0;
-    }
-  }
-
-  EdgeInsets _getPadding() {
-    switch (size) {
-      case ButtonSize.small:
-        return const EdgeInsets.symmetric(vertical: 5, horizontal: 15);
-      case ButtonSize.medium:
-        return const EdgeInsets.symmetric(vertical: 8, horizontal: 20);
-      case ButtonSize.large:
-        return const EdgeInsets.symmetric(vertical: 12, horizontal: 20);
-    }
-  }
-
-  double _getFontSize() {
-    switch (size) {
-      case ButtonSize.small:
-        return 14.0;
-      case ButtonSize.medium:
-      case ButtonSize.large:
-        return 16.0;
-    }
-  }
-
-  Color _getTextColorForState(Set<WidgetState> states, ColorScheme colorScheme) {
-    if (isDisabled || isLoading || states.contains(WidgetState.disabled)) {
-      return colorScheme.onSurface.withAlpha((255 * 0.38).round());
-    }
-    return colorScheme.onPrimary;
-  }
-
-  Gradient? _getStandardNormalGradient() {
-    if (classType == ButtonClassType.standard && !(isDisabled || isLoading)) {
-      return const LinearGradient(
-        colors: [Color(0xFF2F51FF), Color(0xFF0E33F3)],
-        begin: Alignment.centerLeft,
-        end: Alignment.centerRight,
-      );
-    }
-    return null;
-  }
-
-  Color _getSolidContainerBackgroundColor(bool isActuallyDisabled, ColorScheme colorScheme) {
-    if (isActuallyDisabled) {
-      return colorScheme.onSurface.withAlpha((255 * 0.12).round());
-    }
-    if (classType == ButtonClassType.dangerous) {
-      return colorScheme.error;
-    }
-    if (classType == ButtonClassType.standard) {
-      return colorScheme.primary;
-    }
-    return colorScheme.primary;
-  }
-  
-  List<BoxShadow>? _getShadow(ColorScheme colorScheme) {
-    if (classType == ButtonClassType.standard && !(isDisabled || isLoading)) {
-        return [
-            BoxShadow(
-                color: colorScheme.primary.withAlpha((255 * 0.3).round()),
-                blurRadius: 12,
-                offset: const Offset(0, 6),
-            ),
-        ];
-    }
-    return null;
-  }
+  // Private color methods (_getTextColorForState, _getStandardNormalGradient,
+  // _getSolidContainerBackgroundColor, _getShadow) are now removed
+  // as their logic is centralized in AppButtonStyleHelper.
 
   @override
   Widget build(BuildContext context) {
-    final double height = _getHeight();
-    final double borderRadius = _getBorderRadius();
-    final EdgeInsets padding = _getPadding();
-    final double fontSize = _getFontSize();
+    final double height = AppButtonStyleHelper.getHeight(size);
+    final double borderRadiusAmount =
+        AppButtonStyleHelper.getBorderRadius(size);
+    final EdgeInsets padding = AppButtonStyleHelper.getPadding(size);
+    final double fontSize = AppButtonStyleHelper.getFontSize(size);
+    // final double leadingTrailingIconSize = AppButtonStyleHelper.getLeadingTrailingIconSize(size);
+
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final TextTheme textTheme = Theme.of(context).textTheme; // Lấy TextTheme
+    final TextTheme textTheme = Theme.of(context).textTheme;
 
     final bool actualDisabled = isDisabled || isLoading;
     final VoidCallback? pressHandler = actualDisabled ? null : onPressed;
 
-    BoxDecoration containerDecoration;
-    final Gradient? standardGradient = _getStandardNormalGradient();
+    // Resolve colors and styles using AppButtonStyleHelper
+    final Color determinedTextColor = AppButtonStyleHelper.getOnFillColor(
+      colorScheme: colorScheme,
+      classType: classType,
+      isDisabledOrLoading: actualDisabled,
+    );
 
-    if (actualDisabled) {
-      containerDecoration = BoxDecoration(
-        color: _getSolidContainerBackgroundColor(true, colorScheme),
-        borderRadius: BorderRadius.circular(borderRadius),
-      );
-    } else if (classType == ButtonClassType.standard && standardGradient != null) {
-      containerDecoration = BoxDecoration(
-        gradient: standardGradient,
-        borderRadius: BorderRadius.circular(borderRadius),
-        boxShadow: _getShadow(colorScheme),
-      );
-    } else {
-      containerDecoration = BoxDecoration(
-        color: _getSolidContainerBackgroundColor(false, colorScheme),
-        borderRadius: BorderRadius.circular(borderRadius),
-        boxShadow: _getShadow(colorScheme),
-      );
-    }
-    
+    final Gradient? buttonGradient =
+        AppButtonStyleHelper.getFillButtonStandardGradient(
+      classType,
+      actualDisabled,
+    );
+
+    final Color? buttonSurfaceColor =
+        AppButtonStyleHelper.getFillBackgroundColor(
+      colorScheme: colorScheme,
+      classType: classType,
+      isDisabledOrLoading: actualDisabled,
+      precomputedGradient:
+          buttonGradient, // Pass gradient to allow helper to decide if color is needed
+    );
+
+    final List<BoxShadow>? buttonBoxShadow =
+        AppButtonStyleHelper.getFillButtonShadow(
+      colorScheme,
+      classType,
+      actualDisabled,
+    );
+
+    BoxDecoration containerDecoration = BoxDecoration(
+      gradient: buttonGradient,
+      color:
+          buttonSurfaceColor, // This will be null if gradient is active for standard type
+      borderRadius: BorderRadius.circular(borderRadiusAmount),
+      boxShadow: buttonBoxShadow,
+    );
+
     Widget buttonContent = Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -155,23 +90,27 @@ class AppFillButton extends StatelessWidget {
         if (leadingIcon != null)
           Padding(
             padding: EdgeInsets.only(right: text.isNotEmpty ? 8.0 : 0.0),
-            // Icon color sẽ được xử lý bởi foregroundColor của ElevatedButton
-            // hoặc có thể bọc trong IconTheme nếu cần màu khác biệt
             child: IconTheme(
-              data: IconThemeData(color: _getTextColorForState({ if (actualDisabled) WidgetState.disabled else WidgetState.selected }, colorScheme)),
+              data: IconThemeData(
+                color: determinedTextColor,
+                // size: leadingTrailingIconSize,
+              ),
               child: leadingIcon!,
-            ), 
+            ),
           ),
-        if (text.isNotEmpty) 
+        if (text.isNotEmpty)
           Text(
             text.toUpperCase(),
-            // TextStyle được quản lý bởi ButtonStyle của ElevatedButton
+            // TextStyle is now more directly controlled by ElevatedButton's ButtonStyle
           ),
         if (trailingIcon != null)
           Padding(
             padding: EdgeInsets.only(left: text.isNotEmpty ? 8.0 : 0.0),
             child: IconTheme(
-              data: IconThemeData(color: _getTextColorForState({ if (actualDisabled) WidgetState.disabled else WidgetState.selected }, colorScheme)),
+              data: IconThemeData(
+                color: determinedTextColor,
+                // size: leadingTrailingIconSize,
+              ),
               child: trailingIcon!,
             ),
           ),
@@ -179,12 +118,18 @@ class AppFillButton extends StatelessWidget {
     );
 
     if (isLoading) {
+      final Color loadingIndicatorColor =
+          AppButtonStyleHelper.getLoadingIndicatorColor(
+        variant: ButtonVariant.filled,
+        colorScheme: colorScheme,
+        classType: classType,
+      );
       buttonContent = SizedBox(
         width: fontSize * 1.5,
         height: fontSize * 1.5,
         child: CircularProgressIndicator(
           strokeWidth: 2.0,
-          valueColor: AlwaysStoppedAnimation<Color>(colorScheme.onPrimary),
+          valueColor: AlwaysStoppedAnimation<Color>(loadingIndicatorColor),
         ),
       );
     }
@@ -197,40 +142,45 @@ class AppFillButton extends StatelessWidget {
         onPressed: pressHandler,
         style: ButtonStyle(
           elevation: WidgetStateProperty.all(0),
-          backgroundColor: WidgetStateProperty.all(Colors.transparent),
-          foregroundColor: WidgetStateProperty.resolveWith((states) => _getTextColorForState(states, colorScheme)),
+          backgroundColor: WidgetStateProperty.all(
+              Colors.transparent), // Background handled by outer Container
+          foregroundColor: WidgetStateProperty.all(
+              determinedTextColor), // Use the resolved text/icon color
           padding: WidgetStateProperty.all(padding),
-          minimumSize: WidgetStateProperty.all(Size(isFullWidth ? double.infinity : 0, height)),
+          minimumSize: WidgetStateProperty.all(
+              Size(isFullWidth ? double.infinity : 0, height)),
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(borderRadius),
+              borderRadius: BorderRadius.circular(borderRadiusAmount),
             ),
           ),
-
           textStyle: WidgetStateProperty.resolveWith<TextStyle?>((states) {
-            TextStyle? baseStyle;
-            if (size == ButtonSize.small) {
-              baseStyle = textTheme.labelLarge?.copyWith(fontSize: fontSize);
-            } else {
-              baseStyle = textTheme.labelLarge;
-            }
+            TextStyle? baseStyle = textTheme.labelLarge?.copyWith(
+              fontSize: fontSize,
+              // If you need to ensure the text color within TextStyle also respects disabled state:
+              // color: states.contains(WidgetState.disabled) ? determinedTextColor : determinedTextColor,
+              // However, ButtonStyle.foregroundColor should typically handle this.
+            );
             return baseStyle;
           }),
           overlayColor: WidgetStateProperty.resolveWith<Color?>((states) {
-            if (states.contains(WidgetState.hovered) || states.contains(WidgetState.pressed)) {
-              if (classType == ButtonClassType.standard) {
-                return colorScheme.onPrimary.withAlpha((255 * 0.12).round());
-              }
-              if (classType == ButtonClassType.dangerous) {
-                return colorScheme.onError.withAlpha((255 * 0.12).round());
-              }
+            if (states.contains(WidgetState.hovered) ||
+                states.contains(WidgetState.pressed)) {
+              Color overlayBase =
+                  determinedTextColor; // Overlay is based on text color for contrast
+              // For filled buttons, overlay is usually a subtle shade on the button itself.
+              // If button bg is dark (e.g. primary), overlay is light (e.g. onPrimary.withOpacity)
+              // If button bg is light, overlay is dark (e.g. primary.withOpacity)
+              // The current getOnFillColor returns onPrimary. So this is white/light.
+              return overlayBase.withAlpha((255 * 0.12).round());
             }
             return null;
           }),
-          shadowColor: WidgetStateProperty.all(Colors.transparent),
+          shadowColor: WidgetStateProperty.all(
+              Colors.transparent), // Shadow handled by outer Container
         ),
         child: buttonContent,
       ),
     );
   }
-} 
+}

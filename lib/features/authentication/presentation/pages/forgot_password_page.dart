@@ -16,7 +16,8 @@ class ForgotPasswordPage extends StatefulWidget {
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
   bool _isLoading = false;
@@ -56,7 +57,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     final password = _passwordController.text;
     final confirmPassword = _confirmPasswordController.text;
     setState(() {
-      if (Validator.isNotEmpty(confirmPassword) && password != confirmPassword) {
+      if (Validator.isNotEmpty(confirmPassword) &&
+          password != confirmPassword) {
         _passwordErrorText = "Passwords do not match";
       } else {
         _passwordErrorText = null;
@@ -71,21 +73,23 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     _validatePasswordOnInput();
     _validateConfirmPassword();
 
-    if (!Validator.isNotEmpty(password) || !Validator.isNotEmpty(confirmPassword)) {
+    if (!Validator.isNotEmpty(password) ||
+        !Validator.isNotEmpty(confirmPassword)) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Please fill in all password fields.")),
       );
       return;
     }
 
-    String? confirmPasswordError = Validator.validateConfirmPassword(password, confirmPassword);
+    String? confirmPasswordError =
+        Validator.validateConfirmPassword(password, confirmPassword);
     if (confirmPasswordError != null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(confirmPasswordError)),
       );
       return;
     }
-    
+
     String? complexityError = Validator.validatePasswordComplexity(password);
     if (complexityError != null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -96,7 +100,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
     if (Validator.containsNameOrEmail(password, 'fisher')) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Password must not contain your name or email.")),
+        const SnackBar(
+            content: Text("Password must not contain your name or email.")),
       );
       return;
     }
@@ -198,7 +203,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     });
                   },
                 ),
-                if (_passwordErrorText != null && _passwordErrorText!.isNotEmpty)
+                if (_passwordErrorText != null &&
+                    _passwordErrorText!.isNotEmpty)
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0, left: 12.0),
                     child: Text(
@@ -211,21 +217,30 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   "Must not contain your name or email",
                   _isValidNameRule,
                   _passwordController.text.isNotEmpty,
-                  Validator.isNotEmpty(_passwordController.text) && !_isValidNameRule ? Colors.red : Colors.blue,
+                  Validator.isNotEmpty(_passwordController.text) &&
+                          !_isValidNameRule
+                      ? Colors.red
+                      : Colors.blue,
                 ),
                 const SizedBox(height: 12),
                 _buildValidationRule(
                   "At least 8 characters",
                   _isValidLengthRule,
                   _passwordController.text.isNotEmpty,
-                  Validator.isNotEmpty(_passwordController.text) && !_isValidLengthRule ? Colors.red : null,
+                  Validator.isNotEmpty(_passwordController.text) &&
+                          !_isValidLengthRule
+                      ? Colors.red
+                      : null,
                 ),
                 const SizedBox(height: 12),
                 _buildValidationRule(
                   "Contains a symbol or a number",
                   _isValidSymbolOrNumberRule,
                   _passwordController.text.isNotEmpty,
-                  Validator.isNotEmpty(_passwordController.text) && !_isValidSymbolOrNumberRule ? Colors.red : null,
+                  Validator.isNotEmpty(_passwordController.text) &&
+                          !_isValidSymbolOrNumberRule
+                      ? Colors.red
+                      : null,
                 ),
                 const SizedBox(height: 32),
                 AppFillButton(
@@ -244,24 +259,28 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     );
   }
 
-  Widget _buildValidationRule(String text, bool isValid, bool isPasswordEntered, Color? highlightColor) {
+  Widget _buildValidationRule(String text, bool isValid, bool isPasswordEntered,
+      Color? highlightColor) {
     final bool showError = isPasswordEntered && !isValid;
-    Color ruleColor = isPasswordEntered ? 
-                        (isValid ? (highlightColor ?? const Color(0xFF2F51FF)) : Colors.red) 
-                        : const Color(0xFFC4C8CC);
-    Color iconContainerColor = isPasswordEntered ? 
-                                (isValid ? (highlightColor ?? const Color(0xFF2F51FF)) : const Color(0xFFEEEFF0)) 
-                                : const Color(0xFFEEEFF0);
-    Color iconColor = isPasswordEntered && isValid ? Colors.white : const Color(0xFFC4C8CC);
+    Color ruleColor = isPasswordEntered
+        ? (isValid ? (highlightColor ?? const Color(0xFF2F51FF)) : Colors.red)
+        : const Color(0xFFC4C8CC);
+    Color iconContainerColor = isPasswordEntered
+        ? (isValid
+            ? (highlightColor ?? const Color(0xFF2F51FF))
+            : const Color(0xFFEEEFF0))
+        : const Color(0xFFEEEFF0);
+    Color iconColor =
+        isPasswordEntered && isValid ? Colors.white : const Color(0xFFC4C8CC);
 
     if (highlightColor == Colors.blue && isPasswordEntered) {
       ruleColor = isValid ? Colors.blue : Colors.red;
       iconContainerColor = isValid ? Colors.blue : const Color(0xFFEEEFF0);
-      iconColor = isValid ? Colors.white : const Color(0xFFC4C8CC); 
+      iconColor = isValid ? Colors.white : const Color(0xFFC4C8CC);
     } else if (isPasswordEntered && !isValid) {
-         ruleColor = Colors.red;
-         iconContainerColor = const Color(0xFFEEEFF0);
-         iconColor = const Color(0xFFC4C8CC);
+      ruleColor = Colors.red;
+      iconContainerColor = const Color(0xFFEEEFF0);
+      iconColor = const Color(0xFFC4C8CC);
     }
 
     return Row(
@@ -290,4 +309,4 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       ],
     );
   }
-} 
+}

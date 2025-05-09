@@ -61,4 +61,4 @@ const Color transparent = Colors.transparent;
 const Color screenBackgroundFigma = Color(0xFFF5F6F7);
 
 // Specific for Dark Mode UI elements
-const Color darkIconBackground = Color(0xFF3E4C59);
+const Color darkIconSurface = Color(0xFF3E4C59);

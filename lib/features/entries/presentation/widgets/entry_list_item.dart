@@ -8,7 +8,7 @@ class EntryListItem extends StatelessWidget {
   final String amount;
   final String paymentMethod;
   final Color iconColor;
-  final Color iconBackgroundColor;
+  final Color iconSurfaceColor;
   final TextStyle? titleStyle;
   final TextStyle? dateStyle;
   final TextStyle? amountStyle;
@@ -22,7 +22,7 @@ class EntryListItem extends StatelessWidget {
     required this.amount,
     required this.paymentMethod,
     required this.iconColor,
-    required this.iconBackgroundColor,
+    required this.iconSurfaceColor,
     this.titleStyle,
     this.dateStyle,
     this.amountStyle,
@@ -43,7 +43,7 @@ class EntryListItem extends StatelessWidget {
     final finalDateStyle = dateStyle ??
         theme.textTheme.bodyMedium?.copyWith(
             fontSize: 14, // Figma: 14px for entry item date/subtitle
-            color: colorScheme.onSurfaceVariant);
+            color: colorScheme.onSecondaryContainer);
     final finalAmountStyle = amountStyle ??
         theme.textTheme.titleMedium?.copyWith(
           fontWeight: FontWeight.w600, // SemiBold
@@ -55,7 +55,7 @@ class EntryListItem extends StatelessWidget {
     final finalPaymentMethodStyle = paymentMethodStyle ??
         theme.textTheme.bodyMedium?.copyWith(
             fontSize: 14, // Figma: 14px for payment method
-            color: colorScheme.onSurfaceVariant);
+            color: colorScheme.onSecondaryContainer);
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -66,7 +66,7 @@ class EntryListItem extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10.0),
             decoration: BoxDecoration(
-              color: iconBackgroundColor,
+              color: iconSurfaceColor,
               shape: BoxShape.circle,
             ),
             child: SvgPicture.asset(

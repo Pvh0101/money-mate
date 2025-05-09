@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'button_enums.dart';
+import 'button_style_helpers.dart';
 
 class AppTextButton extends StatelessWidget {
   const AppTextButton({
@@ -26,93 +27,33 @@ class AppTextButton extends StatelessWidget {
   final bool isLoading;
   final bool isFullWidth;
 
-  // Style Getters - Giữ nguyên từ FillButton/CustomOutlineButton
-  double _getHeight() {
-    switch (size) {
-      case ButtonSize.small:
-        return 32.0;
-      case ButtonSize.medium:
-        return 40.0;
-      case ButtonSize.large:
-        return 48.0;
-    }
-  }
-
-  double _getBorderRadius() {
-    switch (size) {
-      case ButtonSize.small:
-        return 10.0;
-      case ButtonSize.medium:
-        return 12.0;
-      case ButtonSize.large:
-        return 14.0;
-    }
-  }
-
-  EdgeInsets _getPadding() {
-    // Padding cho TextButton có thể cần nhỏ hơn một chút vì không có viền trực quan
-    // hoặc giữ nguyên như OutlineButton tùy theo cảm nhận về không gian.
-    // Figma cho "Nude" button có padding giống "Ghost" button.
-    switch (size) {
-      case ButtonSize.small:
-        return const EdgeInsets.symmetric(vertical: 7, horizontal: 15); 
-      case ButtonSize.medium:
-        return const EdgeInsets.symmetric(vertical: 7, horizontal: 19);
-      case ButtonSize.large:
-        return const EdgeInsets.symmetric(vertical: 11, horizontal: 19);
-    }
-  }
-
-  double _getFontSize() {
-    switch (size) {
-      case ButtonSize.small:
-        return 14.0;
-      case ButtonSize.medium:
-      case ButtonSize.large:
-        return 16.0;
-    }
-  }
-
-  // Màu sắc cho CustomTextButton
-  Color _getForegroundColor(Set<WidgetState> states, ColorScheme colorScheme) {
-    if (isDisabled || isLoading || states.contains(WidgetState.disabled)) {
-      return colorScheme.onSurface.withAlpha((255 * 0.38).round());
-    }
-    // Màu normal và active giống nhau cho TextButton
-    if (classType == ButtonClassType.standard) {
-      return const Color(0xFF0E33F3);
-    }
-    if (classType == ButtonClassType.dangerous) {
-        return colorScheme.error;
-    }
-    return colorScheme.primary; // Fallback
-  }
-  
-  Color _getLoadingIndicatorColor(ColorScheme colorScheme) {
-    if (classType == ButtonClassType.standard) {
-      return colorScheme.primary;
-    }
-    if (classType == ButtonClassType.dangerous) {
-        return colorScheme.error;
-    }
-    return colorScheme.primary; // Fallback
-  }
-
   @override
   Widget build(BuildContext context) {
-    final double height = _getHeight();
-    final double borderRadiusAmount = _getBorderRadius();
-    final EdgeInsets padding = _getPadding();
-    final double fontSize = _getFontSize();
+    final double height = AppButtonStyleHelper.getHeight(size);
+    final double borderRadiusAmount =
+        AppButtonStyleHelper.getBorderRadius(size);
+    final EdgeInsets padding = AppButtonStyleHelper.getPadding(size);
+    final double fontSize = AppButtonStyleHelper.getFontSize(size);
+
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final TextTheme textTheme = Theme.of(context).textTheme;
 
     final bool actualDisabled = isDisabled || isLoading;
     final VoidCallback? pressHandler = actualDisabled ? null : onPressed;
-    
-    final Set<WidgetState> currentStates = {
-      if (actualDisabled) WidgetState.disabled else WidgetState.selected 
-    };
+
+    final Color determinedForegroundColor;
+    if (classType == ButtonClassType.standard) {
+      determinedForegroundColor =
+          AppButtonStyleHelper.getTextButtonStandardForegroundColor(
+              colorScheme, actualDisabled);
+    } else {
+      determinedForegroundColor = AppButtonStyleHelper.getForegroundColor(
+        colorScheme: colorScheme,
+        classType: classType,
+        isDisabledOrLoading: actualDisabled,
+        variant: ButtonVariant.text,
+      );
+    }
 
     return Container(
       width: isFullWidth ? double.infinity : null,
@@ -126,28 +67,24 @@ class AppTextButton extends StatelessWidget {
         style: ButtonStyle(
           elevation: WidgetStateProperty.all(0),
           backgroundColor: WidgetStateProperty.all(Colors.transparent),
-          foregroundColor: WidgetStateProperty.resolveWith((states) => _getForegroundColor(states, colorScheme)),
+          foregroundColor: WidgetStateProperty.all(determinedForegroundColor),
           overlayColor: WidgetStateProperty.resolveWith<Color?>((states) {
-            if (states.contains(WidgetState.hovered) || states.contains(WidgetState.pressed)) {
-              return _getForegroundColor(states, colorScheme).withAlpha((255 * 0.08).round());
+            if (states.contains(WidgetState.hovered) ||
+                states.contains(WidgetState.pressed)) {
+              return determinedForegroundColor.withAlpha((255 * 0.08).round());
             }
             return Colors.transparent;
           }),
           padding: WidgetStateProperty.all(padding),
-          minimumSize: WidgetStateProperty.all(Size(isFullWidth ? double.infinity : 0, height)),
+          minimumSize: WidgetStateProperty.all(
+              Size(isFullWidth ? double.infinity : 0, height)),
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(borderRadiusAmount),
             ),
           ),
           textStyle: WidgetStateProperty.resolveWith<TextStyle?>((states) {
-            TextStyle? baseStyle;
-            if (size == ButtonSize.small) {
-              baseStyle = textTheme.labelLarge?.copyWith(fontSize: fontSize); 
-            } else {
-              baseStyle = textTheme.labelLarge;
-            }
-            return baseStyle;
+            return textTheme.labelLarge?.copyWith(fontSize: fontSize);
           }),
           shadowColor: WidgetStateProperty.all(Colors.transparent),
         ),
@@ -156,8 +93,14 @@ class AppTextButton extends StatelessWidget {
                 width: fontSize * 1.2,
                 height: fontSize * 1.2,
                 child: CircularProgressIndicator(
-                  strokeWidth: 1.5, 
-                  valueColor: AlwaysStoppedAnimation<Color>(_getLoadingIndicatorColor(colorScheme)),
+                  strokeWidth: 1.5,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    AppButtonStyleHelper.getLoadingIndicatorColor(
+                      variant: ButtonVariant.text,
+                      colorScheme: colorScheme,
+                      classType: classType,
+                    ),
+                  ),
                 ),
               )
             : Row(
@@ -166,9 +109,12 @@ class AppTextButton extends StatelessWidget {
                 children: [
                   if (leadingIcon != null)
                     Padding(
-                      padding: EdgeInsets.only(right: text.isNotEmpty ? 8.0 : 0.0),
+                      padding:
+                          EdgeInsets.only(right: text.isNotEmpty ? 8.0 : 0.0),
                       child: IconTheme(
-                        data: IconThemeData(color: _getForegroundColor(currentStates, colorScheme)),
+                        data: IconThemeData(
+                          color: determinedForegroundColor,
+                        ),
                         child: leadingIcon!,
                       ),
                     ),
@@ -178,9 +124,12 @@ class AppTextButton extends StatelessWidget {
                     ),
                   if (trailingIcon != null)
                     Padding(
-                      padding: EdgeInsets.only(left: text.isNotEmpty ? 8.0 : 0.0),
-                       child: IconTheme(
-                        data: IconThemeData(color: _getForegroundColor(currentStates, colorScheme)),
+                      padding:
+                          EdgeInsets.only(left: text.isNotEmpty ? 8.0 : 0.0),
+                      child: IconTheme(
+                        data: IconThemeData(
+                          color: determinedForegroundColor,
+                        ),
                         child: trailingIcon!,
                       ),
                     ),
@@ -189,4 +138,4 @@ class AppTextButton extends StatelessWidget {
       ),
     );
   }
-} 
+}

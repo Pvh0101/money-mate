@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart'; // Thêm import cho flutter_svg
 
 import '../../../../core/constants/route_constants.dart';
 import '../../../../core/routes/app_routes.dart';
-import '../../../../core/widgets/buttons/custom_button.dart'; // Giả sử bạn có CustomButton tái sử dụng được
+import '../../../../core/widgets/buttons/app_fill_button.dart';
 
 class PasswordUpdatedPage extends StatelessWidget {
   const PasswordUpdatedPage({super.key});
@@ -12,7 +12,8 @@ class PasswordUpdatedPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final Color onSurfaceColor = theme.colorScheme.onSurface;
-    final Color secondaryTextColor = theme.textTheme.bodySmall?.color ?? Colors.grey;
+    final Color secondaryTextColor =
+        theme.textTheme.bodySmall?.color ?? Colors.grey;
 
     // Kích thước mong muốn cho SVG, bạn có thể điều chỉnh nếu cần
     const double svgIconSize = 100.0;
@@ -37,7 +38,9 @@ class PasswordUpdatedPage extends StatelessWidget {
                   // fit: BoxFit.contain, // Bạn có thể cần điều chỉnh fit
                 ),
               ),
-              const SizedBox(height: 48.0), // Khoảng cách từ Figma (gap: 32px cho text, cộng thêm khoảng cách từ icon)
+              const SizedBox(
+                  height:
+                      48.0), // Khoảng cách từ Figma (gap: 32px cho text, cộng thêm khoảng cách từ icon)
 
               // Title
               Text(
@@ -63,18 +66,11 @@ class PasswordUpdatedPage extends StatelessWidget {
               const Spacer(flex: 3),
 
               // Button
-              CustomButton(
+              AppFillButton(
                 text: 'BACK TO LOGIN', // Text từ Figma
                 onPressed: () {
                   Routes.navigateAndRemoveUntil(context, RouteConstants.login);
                 },
-                // gradientColors: const [Color(0xFF2F51FF), Color(0xFF0E33F3)], // Gradient từ Figma
-                // textColor: Colors.white,
-                // textStyle: theme.textTheme.labelLarge?.copyWith(
-                //   color: Colors.white,
-                //   fontWeight: FontWeight.w600, // Figma: 600
-                //   letterSpacing: 0.5, // Thêm chút letter spacing cho chữ IN HOA
-                // ),
               ),
               const SizedBox(height: 40), // Khoảng cách dưới cùng
             ],
@@ -83,4 +79,4 @@ class PasswordUpdatedPage extends StatelessWidget {
       ),
     );
   }
-} 
+}
