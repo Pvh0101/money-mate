@@ -4,93 +4,119 @@ import 'app_colors.dart';
 
 // Helper function to create TextTheme to ensure consistency
 TextTheme _buildTextTheme(TextTheme base, ColorScheme colorScheme) {
-  return base
+  // Base styles from Material 3 for Inter, then override specific ones
+  TextTheme interBase = GoogleFonts.interTextTheme(base);
+
+  return interBase
       .copyWith(
-        displayLarge: GoogleFonts.inter(
+        displayLarge: interBase.displayLarge?.copyWith(
             fontSize: 57,
             fontWeight: FontWeight.w400,
-            letterSpacing: -0.25,
             color: colorScheme.onSurface),
-        displayMedium: GoogleFonts.inter(
+        displayMedium: interBase.displayMedium?.copyWith(
             fontSize: 45,
             fontWeight: FontWeight.w400,
-            letterSpacing: 0.0,
             color: colorScheme.onSurface),
-        displaySmall: GoogleFonts.inter(
+        displaySmall: interBase.displaySmall?.copyWith(
+            // Figma: Heading 36 (Medium)
             fontSize: 36,
             fontWeight: FontWeight.w500,
-            letterSpacing: 0.0,
-            color: colorScheme.onSurface), // Figma: Heading 36 (Medium)
+            color: colorScheme.onSurface),
 
-        headlineLarge: GoogleFonts.inter(
+        headlineLarge: interBase.headlineLarge?.copyWith(
+            // Consider Figma: "Heading 32" if specified
             fontSize: 32,
             fontWeight: FontWeight.w500,
-            letterSpacing: 0.0,
             color: colorScheme.onSurface),
-        headlineMedium: GoogleFonts.inter(
+        headlineMedium: interBase.headlineMedium?.copyWith(
+            // Figma: Heading 24 (Medium)
             fontSize: 24,
             fontWeight: FontWeight.w500,
-            letterSpacing: 0.0,
-            color: colorScheme.onSurface), // Figma: Heading 24 (Medium)
-        headlineSmall: GoogleFonts.inter(
+            color: colorScheme.onSurface),
+        headlineSmall: interBase.headlineSmall?.copyWith(
+            // Figma: Subheading 20 (Medium)
             fontSize: 20,
             fontWeight: FontWeight.w500,
-            letterSpacing: 0.0,
-            color: colorScheme.onSurface), // Figma: Subheading 20 (Medium)
+            color: colorScheme.onSurface),
 
-        titleLarge: GoogleFonts.inter(
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-            letterSpacing: 0.15,
-            color: colorScheme.onSurface), // Figma: Subheading 20 (Medium)
-        titleMedium: GoogleFonts.inter(
+        // Updated based on Figma analysis for common UI elements
+        titleLarge: interBase.titleLarge?.copyWith(
+            // AppBar Title, Main Page Titles
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.02 * 18,
+            height: 20 / 18,
+            color: colorScheme.onBackground), // Use onBackground for AppBar
+        titleMedium: interBase.titleMedium?.copyWith(
+            // Section Titles, Major List Item Text (Category, Amount)
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            letterSpacing: 0.15,
-            color: colorScheme.onSurface), // Figma: Subheading 16 (SemiBold)
-        titleSmall: GoogleFonts.inter(
+            height: 20 / 16,
+            color: colorScheme.onSurface),
+        titleSmall: interBase.titleSmall?.copyWith(
+            // Smaller Titles/Captions
             fontSize: 12,
             fontWeight: FontWeight.w600,
-            letterSpacing: 0.1,
-            color: colorScheme.onSurface), // Figma: Subheading 12 (SemiBold)
+            color: colorScheme.onSurface),
 
-        bodyLarge: GoogleFonts.inter(
+        bodyLarge: interBase.bodyLarge?.copyWith(
+            // Main body content
             fontSize: 16,
             fontWeight: FontWeight.w400,
-            letterSpacing: 0.5,
-            color: colorScheme.onSurface), // Figma: Body 16 (Regular)
-        bodyMedium: GoogleFonts.inter(
+            color: colorScheme.onSurface),
+        bodyMedium: interBase.bodyMedium?.copyWith(
+            // Default body, List item subtitles (Date, Payment Method)
             fontSize: 14,
             fontWeight: FontWeight.w400,
-            letterSpacing: 0.25,
-            color: colorScheme.onSurface), // Figma: Body 14 (Regular)
-        bodySmall: GoogleFonts.inter(
+            letterSpacing: 0.02 * 14,
+            height: 20 / 14,
+            color: colorScheme.onSurfaceVariant), // Use onSurfaceVariant
+        bodySmall: interBase.bodySmall?.copyWith(
+            // Fine print
             fontSize: 12,
             fontWeight: FontWeight.w400,
-            letterSpacing: 0.4,
-            color: colorScheme.onSurface), // Figma: Body 12 (Regular)
+            color: colorScheme.onSurfaceVariant),
 
-        labelLarge: GoogleFonts.inter(
+        labelLarge: interBase.labelLarge?.copyWith(
+            // Main button text
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            letterSpacing: 0.1,
-            color: colorScheme
-                .onPrimary), // For Elevated Buttons primary text, Figma: Subheading 16 (SemiBold)
-        labelMedium: GoogleFonts.inter(
+            color: colorScheme.onPrimary),
+        labelMedium: interBase.labelMedium?.copyWith(
+            // OptionCardItem title, other small labels
             fontSize: 12,
-            fontWeight: FontWeight.w500,
-            letterSpacing: 0.5,
-            color: colorScheme.onSurfaceVariant), // Default for TextButtons
-        labelSmall: GoogleFonts.rubik(
-            fontSize: 10,
-            fontWeight: FontWeight.w500,
-            letterSpacing: 0.5,
-            color: colorScheme.onSurfaceVariant,
-            textBaseline:
-                TextBaseline.ideographic), // Figma: Small 10 (Rubik Medium)
+            fontWeight: FontWeight.w400,
+            letterSpacing: 0.02 * 12,
+            height: 16 / 12,
+            color: colorScheme.onSurface), // Use onSurface for card titles
+
+        // labelSmall uses Rubik, so we define it separately if not already correctly handled by 'base'
+        // Forcing Inter here if 'base' for labelSmall wasn't Rubik initially.
+        // If GoogleFonts.interTextTheme(base) correctly sets Rubik for labelSmall, this might not be needed or adjusted.
+        // However, the original code had GoogleFonts.rubik() specifically for labelSmall.
+        // To maintain that, we'll handle it carefully. It seems 'base.labelSmall' would be Inter if not for the special handling.
+        // The original _buildTextTheme directly assigned GoogleFonts.rubik to labelSmall.
+        // Let's re-introduce that specificity if `interBase.labelSmall` is not Rubik.
+        // For now, assume interBase.labelSmall is Inter and style it:
+        // labelSmall: interBase.labelSmall?.copyWith(
+        //     fontSize: 11, fontWeight: FontWeight.w500, letterSpacing: 0.5, color: colorScheme.onSurfaceVariant),
       )
+      .copyWith(
+          // Explicitly set Rubik for labelSmall as per original design intent
+          labelSmall: GoogleFonts.rubik(
+              fontSize: 10,
+              fontWeight: FontWeight.w500,
+              letterSpacing: 0.5,
+              color: colorScheme.onSurfaceVariant,
+              textBaseline:
+                  TextBaseline.ideographic) // Figma: Small 10 (Rubik Medium)
+          )
       .apply(
+        // These ensure that even if a color isn't specified in a copyWith, it has a default
+        // However, we've added color to most copyWith calls above for clarity.
         displayColor: colorScheme.onSurface,
+        bodyColor: colorScheme
+            .onSurface, // Default color for body styles if not overridden
       );
 }
 
@@ -109,49 +135,82 @@ final ThemeData lightTheme = ThemeData.light(
     onSecondary: neutralWhite,
     error: systemRed,
     onError: neutralWhite,
+    background: neutralSoftGrey3, // Explicitly set
+    onBackground: neutralDark1, // Explicitly set
     surface: neutralWhite,
     onSurface: neutralDark1,
+    surfaceVariant: neutralSoftGrey2, // For cards or alternative surfaces
+    onSurfaceVariant: neutralGrey1, // For secondary text
     outline: neutralSoftGrey1,
-    // errorContainer: destructiveRedLightBg,
-    // onErrorContainer: systemRed,
-    // surfaceVariant: neutralSoftGrey2,
-    // onSurfaceVariant: neutralGrey1,
-    // tertiary: primaryBrandOrange,
-    // onTertiary: neutralWhite,
+    secondaryContainer: neutralSoftGrey2, // Example, adjust as needed
+    onSecondaryContainer: neutralGrey1, // Example, adjust as needed
   ),
   textTheme: _buildTextTheme(
-      GoogleFonts.interTextTheme(ThemeData.light().textTheme),
+      ThemeData.light().textTheme, // Base theme for font metrics
       ColorScheme.fromSeed(
-              seedColor: primaryBrandBlue, brightness: Brightness.light)
+              // ColorScheme to be used by _buildTextTheme
+              seedColor: primaryBrandBlue,
+              brightness: Brightness.light)
           .copyWith(
-              onSurface: neutralDark1,
-              onPrimary: neutralWhite,
-              onSurfaceVariant: neutralGrey1)),
+              primary: primaryBlueLight,
+              onPrimary: neutralWhite, // Text on primary elements (buttons)
+              background: neutralSoftGrey3,
+              onBackground:
+                  neutralDark1, // Text on general background (like AppBar title)
+              surface: neutralWhite,
+              onSurface: neutralDark1, // Primary text on cards/surfaces
+              surfaceVariant: neutralSoftGrey2,
+              onSurfaceVariant:
+                  neutralGrey1, // Secondary text on cards/surfaces
+              secondaryContainer: neutralSoftGrey2,
+              onSecondaryContainer: neutralGrey1,
+              outline: neutralSoftGrey1,
+              error: systemRed,
+              onError: neutralWhite)),
 );
 
 // --- Dark Theme (Simplified with fromSeed) ---
 final ThemeData darkTheme = ThemeData.dark(
   useMaterial3: true,
 ).copyWith(
-  scaffoldBackgroundColor: neutralDark1,
+  scaffoldBackgroundColor: neutralDark2, // Figma: #242D35
   colorScheme: ColorScheme.fromSeed(
     seedColor: primaryBrandBlue,
     brightness: Brightness.dark,
   ).copyWith(
     primary: primaryBlueDark,
-    primaryFixed: primaryBrandBlue,
     secondary: primaryBlueDark,
-    onSecondary: neutralWhite,
-    error: const Color(0xFFDC2626), // destructiveRedDarker - Hardcoded
-    onError: neutralWhite,
-    surface: neutralDark2,
-    onSurface: neutralSoftGrey2,
-    outline: neutralGrey1,
-    // errorContainer: secondaryRedDark,
-    // onErrorContainer: const Color(0xFFF87171), // destructiveRedLighter - Hardcoded
-    // surfaceVariant: neutralGrey1,
-    // onSurfaceVariant: neutralSoftGrey1,
-    // tertiary: primaryBrandOrange,
-    // onTertiary: neutralWhite,
+    error: const Color(0xFFCF6679),
+    onError: neutralDark1,
+    background: neutralDark2,
+    onBackground: neutralSoftGrey3,
+    surface: neutralDark3,
+    onSurface: neutralSoftGrey3,
+    surfaceVariant: neutralDark1,
+    onSurfaceVariant: neutralGrey3,
+    outline: neutralGrey2,
+    secondaryContainer: darkIconBackground,
+    onSecondaryContainer: neutralSoftGrey3,
   ),
+  textTheme: _buildTextTheme(
+      ThemeData.dark().textTheme, // Base theme for font metrics
+      ColorScheme.fromSeed(
+              // ColorScheme to be used by _buildTextTheme
+              seedColor: primaryBrandBlue,
+              brightness: Brightness.dark)
+          .copyWith(
+        primary: primaryBlueDark,
+        onPrimary: neutralWhite,
+        background: neutralDark2,
+        onBackground: neutralSoftGrey3,
+        surface: neutralDark3,
+        onSurface: neutralSoftGrey3,
+        surfaceVariant: neutralDark1,
+        onSurfaceVariant: neutralGrey3,
+        secondaryContainer: darkIconBackground,
+        onSecondaryContainer: neutralSoftGrey3,
+        outline: neutralGrey2,
+        error: const Color(0xFFCF6679),
+        onError: neutralDark1,
+      )),
 );

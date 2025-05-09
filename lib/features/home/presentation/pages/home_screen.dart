@@ -4,6 +4,8 @@ import 'package:money_mate/features/dashboard/presentation/pages/total_expense_p
 import 'package:money_mate/features/budgets/presentation/pages/budgets_page.dart';
 import 'package:money_mate/features/profile/presentation/pages/profile_page.dart';
 import 'package:money_mate/features/home/presentation/widgets/app_bottom_navigation_bar.dart';
+import 'package:money_mate/core/routes/app_routes.dart';
+import 'package:money_mate/core/constants/route_constants.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -35,8 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _onAddPressed() {
-    print('Add button tapped!');
-    // TODO: Hiển thị modal hay điều hướng đến trang tạo mới
+    Routes.navigateTo(context, RouteConstants.addEntry);
   }
 
   @override

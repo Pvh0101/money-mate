@@ -14,6 +14,9 @@ class RouteConstants {
   static const String budget = '/budget';
   static const String categories = '/categories';
   static const String notifications = '/notifications';
+  static const String addEntry = '/add-entry';
+  static const String addIncome = '/add-income';
+  static const String addExpense = '/add-expense';
 
   RouteConstants._();
 }

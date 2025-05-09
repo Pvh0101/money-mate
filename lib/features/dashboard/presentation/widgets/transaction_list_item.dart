@@ -23,22 +23,16 @@ class TransactionListItem extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
-    final titleStyle = textTheme.titleMedium?.copyWith(
-      color: colorScheme.onSurface,
-    );
+    final titleStyle = textTheme.titleMedium;
 
     final dateStyle = textTheme.bodyMedium?.copyWith(
       color: neutralGrey1,
-      letterSpacing: 0.02 * 14,
     );
 
-    final amountStyle = textTheme.titleMedium?.copyWith(
-      color: colorScheme.onSurface,
-    );
+    final amountStyle = textTheme.titleMedium;
 
     final paymentMethodStyle = textTheme.bodyMedium?.copyWith(
       color: neutralGrey1,
-      letterSpacing: 0.02 * 14,
     );
 
     return Row(
@@ -48,13 +42,15 @@ class TransactionListItem extends StatelessWidget {
           height: 48,
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: neutralSoftGrey2,
+            color: colorScheme.secondaryContainer,
             borderRadius: BorderRadius.circular(12.0),
           ),
           child: SvgPicture.asset(
             iconPath,
             width: 24,
             height: 24,
+            colorFilter: ColorFilter.mode(
+                colorScheme.onSecondaryContainer, BlendMode.srcIn),
           ),
         ),
         const SizedBox(width: 14),

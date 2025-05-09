@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:money_mate/core/theme/app_colors.dart';
-import 'package:money_mate/features/dashboard/presentation/widgets/transaction_list_item.dart';
+// import 'package:money_mate/core/theme/app_colors.dart'; // Not directly used anymore for item colors
+import 'package:money_mate/core/widgets/transaction_list_item.dart'; // Updated path
 
 class TransactionListSection extends StatefulWidget {
   const TransactionListSection({super.key});
@@ -13,44 +13,66 @@ class _TransactionListSectionState extends State<TransactionListSection>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
-  final List<Map<String, String>> _spendItems = [
+  // Updated mock data structure
+  final List<Map<String, dynamic>> _spendItems = [
     {
-      'icon': 'assets/icons/icon_food_cashback.svg',
-      'title': 'Food',
-      'date': '20 Feb 2024',
-      'amount': '+ \$20 + Vat 0.5%',
-      'paymentMethod': 'Google Pay',
+      'categoryIconPath': 'assets/icons/icon_food_cashback.svg',
+      'title': 'Lunch at Cafe',
+      'transactionDate': DateTime(2024, 2, 20),
+      'amount': -20.50, // Negative for expense
+      'categoryName': 'Food',
     },
     {
-      'icon': 'assets/icons/icon_uber_bike.svg',
-      'title': 'Uber',
-      'date': '13 Mar 2024',
-      'amount': '- \$18 + Vat 0.8%',
-      'paymentMethod': 'Cash',
+      'categoryIconPath': 'assets/icons/icon_uber_bike.svg',
+      'title': 'Uber Ride',
+      'transactionDate': DateTime(2024, 3, 13),
+      'amount': -18.75, // Negative for expense
+      'categoryName': 'Transport',
     },
     {
-      'icon': 'assets/icons/icon_shopping_bags.svg',
-      'title': 'Shopping',
-      'date': '11 Mar 2024',
-      'amount': '- \$400 + Vat 0.12%',
-      'paymentMethod': 'Paytm',
+      'categoryIconPath': 'assets/icons/icon_shopping_bags.svg',
+      'title': 'New Shoes',
+      'transactionDate': DateTime(2024, 3, 11),
+      'amount': -120.00, // Negative for expense
+      'categoryName': 'Shopping',
+    },
+    {
+      'categoryIconPath':
+          'assets/icons/icon_salary_money_bag.svg', // Example income
+      'title': 'Monthly Salary',
+      'transactionDate': DateTime(2024, 3, 1),
+      'amount': 2500.00, // Positive for income
+      'categoryName': 'Salary',
     },
   ];
 
-  final List<Map<String, String>> _categoryItems = [
+  // For the "Categories" tab, the structure might be different.
+  // TransactionListItem expects: title, category (as sub-text), amount, date, categoryIconPath
+  // Let's adapt _categoryItems to fit or consider a different list item widget if adaptation is too forced.
+  // For now, we'll try to adapt.
+  final List<Map<String, dynamic>> _categoryItems = [
     {
-      'icon': 'assets/icons/icon_food_cashback.svg',
-      'title': 'Food & Drinks',
-      'date': '8 transactions',
-      'amount': '\$250.00',
-      'paymentMethod': '40% of total spend',
+      'categoryIconPath': 'assets/icons/icon_food_cashback.svg',
+      'title': 'Food & Drinks', // This will be the main title
+      'transactionDate':
+          DateTime.now(), // Placeholder, as "date" was "8 transactions"
+      'amount': -250.00, // Representing total spend in this category
+      'categoryName':
+          '8 transactions', // This will be the sub-text (formerly category)
     },
     {
-      'icon': 'assets/icons/icon_shopping_bags.svg',
+      'categoryIconPath': 'assets/icons/icon_shopping_bags.svg',
       'title': 'Shopping',
-      'date': '3 transactions',
-      'amount': '\$550.00',
-      'paymentMethod': '60% of total spend',
+      'transactionDate': DateTime.now(),
+      'amount': -550.00,
+      'categoryName': '3 transactions',
+    },
+    {
+      'categoryIconPath': 'assets/icons/icon_salary_money_bag.svg',
+      'title': 'Income Sources',
+      'transactionDate': DateTime.now(),
+      'amount': 3000.00, // Total income example
+      'categoryName': '2 sources',
     },
   ];
 
@@ -69,12 +91,8 @@ class _TransactionListSectionState extends State<TransactionListSection>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
+    // final textTheme = theme.textTheme; // Not directly used here
     final colorScheme = theme.colorScheme;
-
-    final tabLabelStyle = textTheme.titleMedium;
-    final unselectedTabLabelStyle =
-        textTheme.titleMedium?.copyWith(color: colorScheme.onSurfaceVariant);
 
     return Container(
       padding: const EdgeInsets.fromLTRB(24.0, 32.0, 24.0, 32.0),
@@ -84,21 +102,23 @@ class _TransactionListSectionState extends State<TransactionListSection>
           topLeft: Radius.circular(24.0),
           topRight: Radius.circular(24.0),
         ),
+        // Consider adding boxShadow similar to other container elements if needed
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _buildTabBar(
-              context, tabLabelStyle, unselectedTabLabelStyle, colorScheme),
+          _buildTabBar(colorScheme),
           const SizedBox(height: 32.0),
           SizedBox(
-            height: 300,
+            // Constrain the height of the TabBarView
+            height: 300, // Adjust as needed, or make it flexible
             child: TabBarView(
               controller: _tabController,
               children: [
                 _buildTransactionList(_spendItems),
-                _buildTransactionList(_categoryItems),
+                _buildTransactionList(
+                    _categoryItems), // Reusing the same list builder
               ],
             ),
           ),
@@ -107,8 +127,9 @@ class _TransactionListSectionState extends State<TransactionListSection>
     );
   }
 
-  Widget _buildTabBar(BuildContext context, TextStyle? selectedStyle,
-      TextStyle? unselectedStyle, ColorScheme colorScheme) {
+  Widget _buildTabBar(ColorScheme colorScheme) {
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
     return Container(
       decoration: BoxDecoration(
         border: Border(
@@ -117,12 +138,12 @@ class _TransactionListSectionState extends State<TransactionListSection>
       ),
       child: TabBar(
         controller: _tabController,
-        labelStyle: selectedStyle,
-        unselectedLabelStyle: unselectedStyle,
+        labelStyle: textTheme.titleMedium,
+        unselectedLabelStyle: textTheme.titleMedium,
         labelColor: colorScheme.onSurface,
         unselectedLabelColor: colorScheme.onSurfaceVariant,
         indicator: UnderlineTabIndicator(
-          borderSide: BorderSide(color: colorScheme.primary, width: 4.0),
+          borderSide: BorderSide(color: theme.primaryColor, width: 4.0),
           insets: const EdgeInsets.symmetric(horizontal: 16.0),
         ),
         tabs: const [
@@ -133,20 +154,30 @@ class _TransactionListSectionState extends State<TransactionListSection>
     );
   }
 
-  Widget _buildTransactionList(List<Map<String, String>> items) {
+  Widget _buildTransactionList(List<Map<String, dynamic>> items) {
     return ListView.separated(
       itemCount: items.length,
+      shrinkWrap:
+          true, // Added to ensure ListView takes minimum necessary space within SizedBox
+      physics:
+          const AlwaysScrollableScrollPhysics(), // Ensure it's scrollable even if content is small
       itemBuilder: (context, index) {
         final item = items[index];
         return TransactionListItem(
-          iconPath: item['icon']!,
-          title: item['title']!,
-          date: item['date']!,
-          amount: item['amount']!,
-          paymentMethod: item['paymentMethod']!,
+          categoryIconPath: item['categoryIconPath'] as String,
+          title: item['title'] as String,
+          date: item['transactionDate'] as DateTime,
+          amount: item['amount'] as double,
+          subtitle: item['categoryName'] // Đổi từ category sang subtitle
+              as String,
+          onTap: () {
+            // Handle tap, e.g., navigate to transaction details
+            // print("Tapped on: ${item['title']}");
+          },
         );
       },
-      separatorBuilder: (context, index) => const SizedBox(height: 32.0),
+      separatorBuilder: (context, index) =>
+          const SizedBox(height: 16.0), // Reduced separator height
     );
   }
 }

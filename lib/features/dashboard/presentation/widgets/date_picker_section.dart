@@ -186,32 +186,30 @@ class _DatePickerSectionState extends State<DatePickerSection> {
     final textTheme = theme.textTheme;
     final colorScheme = theme.colorScheme;
 
-    final monthYearStyle = textTheme.titleSmall?.copyWith(
-      fontSize: 14,
+    // Figma: Inter SemiBold 14px, color onSurface
+    final monthYearStyle = textTheme.bodyMedium?.copyWith(
       fontWeight: FontWeight.w600,
       color: colorScheme.onSurface,
     );
 
-    final weekDayStyle = textTheme.titleSmall?.copyWith(
-      color: colorScheme.onSurface,
-      letterSpacing: 0.02 * 12,
-    );
+    // Figma: Inter SemiBold 12px, color onSurface. titleSmall trong theme đã có màu này.
+    final weekDayStyle = textTheme.titleSmall;
 
+    // Figma: Inter Regular 14px, color onSurface. bodyMedium trong theme có màu onSurfaceVariant.
     final dateStyle = textTheme.bodyMedium?.copyWith(
       color: colorScheme.onSurface,
-      letterSpacing: 0.02 * 14,
     );
-    final todayDateStyle = dateStyle?.copyWith(
-        color: colorScheme.primary); // Style for today, not selected
+    // Style for today, not selected
+    final todayDateStyle = dateStyle?.copyWith(color: colorScheme.primary);
 
+    // Style for dates not in the displayed month
     final nonDisplayedMonthDateStyle =
         dateStyle?.copyWith(color: colorScheme.outline);
 
-    final selectedDateStyle = textTheme.titleSmall?.copyWith(
-      fontSize: 14,
+    // Figma: Inter SemiBold 14px, color onPrimary. bodyMedium là 14px Regular.
+    final selectedDateStyle = textTheme.bodyMedium?.copyWith(
       fontWeight: FontWeight.w600,
-      color: colorScheme.onPrimary,
-      letterSpacing: 0.02 * 14,
+      color: Colors.white,
     );
 
     final String headerMonthYear =
@@ -225,9 +223,13 @@ class _DatePickerSectionState extends State<DatePickerSection> {
         borderRadius: BorderRadius.circular(24.0),
         boxShadow: [
           BoxShadow(
-            color: theme.shadowColor.withOpacity(0.1),
-            blurRadius: 64.0,
-            offset: const Offset(0, 8),
+            color: colorScheme.brightness == Brightness.light
+                ? const Color(0xFF1D3A58)
+                    .withOpacity(0.08) // Shadow nhẹ hơn cho card này
+                : const Color(0xFF1B2025)
+                    .withOpacity(0.8), // Shadow nhẹ hơn cho card này
+            blurRadius: 32,
+            offset: const Offset(0, 4),
           ),
         ],
       ),

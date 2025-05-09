@@ -31,6 +31,7 @@ const Color secondaryBrown = Color(0xFFB16F05);
 const Color neutralDark1 = Color(0xFF1F2933);
 const Color neutralDark2 =
     Color(0xFF242D35); // Rectangle fill (fill_J3AUVG), text was 323F4B
+const Color neutralDark3 = Color(0xFF0F1B26);
 const Color neutralGrey1 = Color(0xFF6B7580);
 const Color neutralGrey2 = Color(0xFF9BA1A8);
 const Color neutralGrey3 = Color(0xFFB0B8BF);
@@ -58,3 +59,6 @@ const Color transparent = Colors.transparent;
 
 // Figma specific colors that might not be in the general palette yet
 const Color screenBackgroundFigma = Color(0xFFF5F6F7);
+
+// Specific for Dark Mode UI elements
+const Color darkIconBackground = Color(0xFF3E4C59);

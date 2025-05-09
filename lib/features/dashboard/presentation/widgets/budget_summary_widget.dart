@@ -19,11 +19,11 @@ class BudgetSummaryWidget extends StatelessWidget {
     final colorScheme = theme.colorScheme;
 
     final amountStyle = textTheme.headlineMedium?.copyWith(
-      color: colorScheme.onPrimary,
+      fontWeight: FontWeight.w600,
+      color: Colors.white,
     );
 
-    final descriptionStyle = textTheme.titleSmall?.copyWith(
-      fontSize: 14,
+    final descriptionStyle = textTheme.bodyMedium?.copyWith(
       fontWeight: FontWeight.w600,
       color: colorScheme.onSurface,
     );
@@ -36,7 +36,10 @@ class BudgetSummaryWidget extends StatelessWidget {
           height: 160,
           child: CustomPaint(
             painter: _SolidCirclePainter(
-              baseRingColor: colorScheme.surfaceVariant,
+              baseRingColor: colorScheme.brightness == Brightness.light
+                  ? colorScheme.surfaceVariant // Light: neutralSoftGrey2
+                  : colorScheme
+                      .secondaryContainer, // Dark: darkIconBackground (#3E4C59)
               mainCircleGradient: const LinearGradient(
                 colors: [primaryBlueGradientStartFigma, primaryBrandBlue],
                 begin: Alignment.topRight,
@@ -87,11 +90,11 @@ class _SolidCirclePainter extends CustomPainter {
     final double maxRadius = math.min(size.width / 2, size.height / 2);
 
     final paintEllipse3 = Paint()
-      ..color = baseRingColor.withOpacity(_ellipse3Opacity);
+      ..color = baseRingColor.withValues(alpha: _ellipse3Opacity);
     canvas.drawCircle(center, maxRadius, paintEllipse3);
 
     final paintEllipse2 = Paint()
-      ..color = baseRingColor.withOpacity(_ellipse2Opacity);
+      ..color = baseRingColor.withValues(alpha: _ellipse2Opacity);
     canvas.drawCircle(center, maxRadius * ellipse2RadiusFactor, paintEllipse2);
 
     final paintEllipse1 = Paint()

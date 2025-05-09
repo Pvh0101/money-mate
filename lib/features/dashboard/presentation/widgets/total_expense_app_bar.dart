@@ -10,11 +10,6 @@ class TotalExpenseAppBar extends StatelessWidget
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final textTheme = theme.textTheme;
-    final appBarTitleStyle = textTheme.headlineSmall?.copyWith(
-      fontWeight: FontWeight.w600,
-      fontSize: 18,
-      color: colorScheme.onSurface,
-    );
 
     return AppBar(
       automaticallyImplyLeading: false,
@@ -48,7 +43,7 @@ class TotalExpenseAppBar extends StatelessWidget
       ),
       title: Text(
         'Total Expenses',
-        style: appBarTitleStyle,
+        style: textTheme.titleLarge?.copyWith(color: colorScheme.onSurface),
       ),
     );
   }
