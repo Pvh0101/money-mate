@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/dashboard_app_bar.dart'; // Import DashboardAppBar
 import '../widgets/stat_card_item.dart'; // Import  StatCardItem
 import '../widgets/action_card_item.dart'; // Import ActionCardItem
-import '../widgets/latest_entry_item.dart'; 
+import '../widgets/latest_entry_item.dart';
 // Dòng import cho dashboard_bottom_nav_bar.dart đã được xóa hẳn
 
 class DashboardPage extends StatefulWidget {
@@ -26,28 +26,32 @@ class _DashboardPageState extends State<DashboardPage> {
   // TODO: Replace with data from Bloc/Repository
   final List<Map<String, dynamic>> _actionCardData = [
     {"title": "Savings", "icon": Icons.savings_outlined, "isHighlighted": true},
-    {"title": "Remind", "icon": Icons.notifications_outlined, "isHighlighted": false},
+    {
+      "title": "Remind",
+      "icon": Icons.notifications_outlined,
+      "isHighlighted": false
+    },
     {"title": "Budget", "icon": Icons.wallet_outlined, "isHighlighted": false},
   ];
 
   // TODO: Replace with data from Bloc/Repository
   final List<Map<String, dynamic>> _latestEntriesData = [
     {
-      "icon": Icons.fastfood, 
+      "icon": Icons.fastfood,
       "category": "Food",
       "date": "20 Feb 2024",
       "amount": "+ \$20 + Vat 0.5%",
       "paymentMethod": "Google Pay",
     },
     {
-      "icon": Icons.directions_car, 
+      "icon": Icons.directions_car,
       "category": "Uber",
       "date": "13 Mar 2024",
       "amount": "- \$18 + Vat 0.8%",
       "paymentMethod": "Cash",
     },
     {
-      "icon": Icons.shopping_bag, 
+      "icon": Icons.shopping_bag,
       "category": "Shopping",
       "date": "11 Mar 2024",
       "amount": "- \$400 + Vat 0.12%",
@@ -67,7 +71,7 @@ class _DashboardPageState extends State<DashboardPage> {
     final theme = Theme.of(context);
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor, // Sử dụng màu từ theme
-      appBar: const DashboardAppBar(), 
+      appBar: const DashboardAppBar(),
       body: ListView(
         children: [
           _buildStatsSection(),
@@ -87,9 +91,11 @@ class _DashboardPageState extends State<DashboardPage> {
                 children: [
                   _buildCarouselSection(context), // Truyền context để lấy theme
                   const SizedBox(height: 24.0),
-                  _buildLatestEntriesTitle(context), // Truyền context để lấy theme
+                  _buildLatestEntriesTitle(
+                      context), // Truyền context để lấy theme
                   const SizedBox(height: 32.0),
-                  _buildLatestEntriesList(context), // Truyền context để lấy theme
+                  _buildLatestEntriesList(
+                      context), // Truyền context để lấy theme
                 ],
               ),
             ),
@@ -121,7 +127,7 @@ class _DashboardPageState extends State<DashboardPage> {
       padding: const EdgeInsets.symmetric(vertical: 32.0),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 24.0), 
+        padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Row(
           children: spacedStatCards, // Sử dụng list đã tạo
         ),
@@ -130,30 +136,32 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   // Hàm mới để build phần Action Cards và Carousel Indicators
-  Widget _buildCarouselSection(BuildContext context) { // Thêm context
+  Widget _buildCarouselSection(BuildContext context) {
+    // Thêm context
     final theme = Theme.of(context);
     List<Widget> actionCards = [];
     for (int i = 0; i < _actionCardData.length; i++) {
       final data = _actionCardData[i];
       final bool isHighlighted = data["isHighlighted"] as bool;
-      final Color iconColor = isHighlighted ? Colors.white : theme.colorScheme.onSurface; // Màu icon dựa trên theme
+      final Color iconColor = isHighlighted
+          ? Colors.white
+          : theme.colorScheme.onSurface; // Màu icon dựa trên theme
 
-      actionCards.add(
-        Expanded(
-          child: ActionCardItem(
-            icon: Icon(data["icon"] as IconData, size: 20, color: iconColor),
-            title: data["title"] as String,
-            isHighlighted: isHighlighted,
-          ),
-        )
-      );
+      actionCards.add(Expanded(
+        child: ActionCardItem(
+          icon: Icon(data["icon"] as IconData, size: 20, color: iconColor),
+          title: data["title"] as String,
+          isHighlighted: isHighlighted,
+        ),
+      ));
       if (i < _actionCardData.length - 1) {
         actionCards.add(const SizedBox(width: 12.0));
       }
     }
 
     List<Widget> indicators = List.generate(_actionCardData.length, (index) {
-      return _buildCarouselIndicator(context, isActive: index == _currentCarouselIndex); // Truyền context
+      return _buildCarouselIndicator(context,
+          isActive: index == _currentCarouselIndex); // Truyền context
     });
 
     List<Widget> spacedIndicators = [];
@@ -178,27 +186,33 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  Widget _buildCarouselIndicator(BuildContext context, {required bool isActive}) { // Thêm context
+  Widget _buildCarouselIndicator(BuildContext context,
+      {required bool isActive}) {
+    // Thêm context
     final theme = Theme.of(context);
     return Container(
       width: 24,
       height: 8,
       decoration: BoxDecoration(
         // Màu active có thể giữ nguyên hoặc lấy từ theme.primary nếu muốn
-        color: isActive ? const Color(0xFF0E33F3) : theme.colorScheme.surfaceVariant, // Màu inactive từ theme
+        color: isActive
+            ? const Color(0xFF0E33F3)
+            : theme.colorScheme.surfaceVariant, // Màu inactive từ theme
         borderRadius: BorderRadius.circular(4),
       ),
     );
   }
 
-  Widget _buildLatestEntriesTitle(BuildContext context) { // Thêm context
+  Widget _buildLatestEntriesTitle(BuildContext context) {
+    // Thêm context
     final theme = Theme.of(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           "Latest Entries",
-          style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600), // Sử dụng style từ theme
+          style: theme.textTheme.titleLarge
+              ?.copyWith(fontWeight: FontWeight.w600), // Sử dụng style từ theme
         ),
         Container(
           padding: const EdgeInsets.all(6.0),
@@ -209,13 +223,14 @@ class _DashboardPageState extends State<DashboardPage> {
               width: 0.5,
             ),
           ),
-          child: Icon(Icons.more_horiz, color: theme.iconTheme.color, size: 20), // Sử dụng màu từ theme
+          child: Icon(Icons.more_horiz,
+              color: theme.iconTheme.color, size: 20), // Sử dụng màu từ theme
         ),
       ],
     );
   }
 
-  Widget _buildLatestEntriesList(BuildContext context) { 
+  Widget _buildLatestEntriesList(BuildContext context) {
     final theme = Theme.of(context);
     if (_latestEntriesData.isEmpty) {
       return const Center(child: Text("No recent entries."));
@@ -228,11 +243,10 @@ class _DashboardPageState extends State<DashboardPage> {
         final data = _latestEntriesData[index];
         return LatestEntryItem(
           // Tạo Icon với màu từ theme ở đây
-          iconWidget: Icon(
-            data["icon"] as IconData, 
-            size: 24, 
-            color: theme.colorScheme.onSurfaceVariant // Màu icon từ theme
-          ), 
+          iconWidget: Icon(data["icon"] as IconData,
+              size: 24,
+              color: theme.colorScheme.onSurfaceVariant // Màu icon từ theme
+              ),
           category: data["category"] as String,
           date: data["date"] as String,
           amount: data["amount"] as String,
@@ -244,4 +258,4 @@ class _DashboardPageState extends State<DashboardPage> {
       },
     );
   }
-} 
+}
