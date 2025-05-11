@@ -30,8 +30,10 @@ class AppTextFormField extends StatefulWidget {
     this.onFieldSubmitted,
     this.readOnly = false,
     this.onTap,
+    this.fillColor,
   });
   final bool readOnly;
+  final Color? fillColor;
   final VoidCallback? onTap;
   final TextEditingController controller;
   final String? hintText;
@@ -119,6 +121,7 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
                       }
                     : null),
             isFocused: isFocused,
+            fillColor: widget.fillColor,
           ),
         ),
       ],

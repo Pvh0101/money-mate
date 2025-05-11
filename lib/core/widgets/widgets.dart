@@ -22,3 +22,4 @@ export 'latest_entry_item.dart';
 export 'transaction_list_item.dart';
 export 'latest_entries_section.dart';
 export 'dark_mode_switch.dart';
+export 'app_bottom_navigation_bar.dart';

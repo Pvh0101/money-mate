@@ -17,6 +17,7 @@ class PasswordTextFormField extends StatefulWidget {
     this.textInputAction,
     this.onFieldSubmitted,
     this.prefixIconData = Icons.lock_outline,
+    this.fillColor,
   });
 
   final TextEditingController controller;
@@ -26,6 +27,7 @@ class PasswordTextFormField extends StatefulWidget {
   final TextInputAction? textInputAction;
   final ValueChanged<String>? onFieldSubmitted;
   final IconData? prefixIconData; // Allow customizing prefix icon if needed
+  final Color? fillColor;
 
   @override
   State<PasswordTextFormField> createState() => _PasswordTextFormFieldState();
@@ -49,6 +51,7 @@ class _PasswordTextFormFieldState extends State<PasswordTextFormField> {
       keyboardType: TextInputType.visiblePassword,
       textInputAction: widget.textInputAction,
       onFieldSubmitted: widget.onFieldSubmitted,
+      fillColor: widget.fillColor,
     );
     if (widget.labelText != null) {
       return Column(

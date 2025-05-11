@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:money_mate/features/categories/presentation/bloc/category_bloc.dart';
 
 import '../../features/authentication/presentation/pages/forgot_password_page.dart';
 import '../../features/authentication/presentation/pages/login_page.dart';
@@ -11,6 +13,7 @@ import '../../features/transactions/presentation/pages/add_entry_page.dart';
 import '../../features/transactions/presentation/pages/add_income_page.dart';
 import '../../features/transactions/presentation/pages/add_expense_page.dart';
 import '../constants/route_constants.dart';
+import '../di/service_locator.dart';
 
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -45,6 +48,16 @@ class Routes {
   static Route<dynamic> _materialRoute(Widget view) {
     return MaterialPageRoute(
       builder: (_) => view,
+    );
+  }
+
+  // Giữ lại phương thức này để tham khảo sau này nếu cần
+  static Route<dynamic> _materialRouteWithCategoryBloc(Widget view) {
+    return MaterialPageRoute(
+      builder: (_) => BlocProvider<CategoryBloc>(
+        create: (_) => sl<CategoryBloc>(),
+        child: view,
+      ),
     );
   }
 

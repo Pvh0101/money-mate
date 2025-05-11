@@ -37,6 +37,7 @@ class TransactionFormCore extends StatelessWidget {
             // title: 'Transaction Date', // Optional: Add title if needed in DatePickerSection
           ),
           AppTextFormField(
+            fillColor: Theme.of(context).colorScheme.surface,
             labelText: isIncome ? 'Income Title' : 'Expense Title',
             controller: titleController ?? TextEditingController(),
             hintText: isIncome ? 'Enter income title' : 'Enter expense title',
@@ -49,6 +50,7 @@ class TransactionFormCore extends StatelessWidget {
           ),
           const SizedBox(height: 32),
           AppTextFormField(
+            fillColor: Theme.of(context).colorScheme.surface,
             labelText: "Amount",
             controller: amountController ?? TextEditingController(),
             hintText: isIncome ? 'Enter income amount' : 'Enter expense amount',

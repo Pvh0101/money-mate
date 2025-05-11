@@ -2,10 +2,10 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:money_mate/features/home/profile_page.dart';
 import 'core/core.dart' as core; // Import barrel file core với prefix
 import 'features/authentication/presentation/bloc/auth_bloc.dart'; // Giữ lại vì là feature khác
 import 'features/authentication/presentation/widgets/auth_gate.dart'; // Giữ lại vì là feature khác
+import 'features/categories/presentation/bloc/category_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,6 +27,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<AuthBloc>(
           create: (context) =>
               core.sl<AuthBloc>()..add(const GetCurrentUserRequested()),
+        ),
+        BlocProvider<CategoryBloc>(
+          create: (context) => core.sl<CategoryBloc>(),
         ),
       ],
       child: AdaptiveTheme(

@@ -9,8 +9,6 @@ import 'package:money_mate/core/widgets/fields/app_date_picker_form_field.dart';
 import 'package:money_mate/core/widgets/fields/password_text_form_field.dart';
 import 'package:money_mate/core/widgets/buttons/app_outline_button.dart';
 import 'package:money_mate/core/widgets/custom_app_bar.dart';
-import 'package:money_mate/core/constants/route_constants.dart';
-import 'package:money_mate/core/routes/app_routes.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -115,6 +113,7 @@ class ProfilePage extends StatelessWidget {
                 isCircle: false,
                 size: 20,
               ),
+              const SizedBox(height: 24),
             ],
           ),
         ),

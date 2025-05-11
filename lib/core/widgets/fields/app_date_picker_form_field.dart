@@ -22,6 +22,7 @@ class AppDatePickerFormField extends StatefulWidget {
     this.onDateSelected,
     this.suffixIconData = Icons.calendar_today_outlined,
     this.displayFormat = 'dd/MM/yyyy', // Default display format
+    this.fillColor,
   });
 
   final TextEditingController controller;
@@ -35,6 +36,7 @@ class AppDatePickerFormField extends StatefulWidget {
   final IconData suffixIconData;
   final String displayFormat;
   final IconData? prefixIconData;
+  final Color? fillColor;
 
   @override
   State<AppDatePickerFormField> createState() => _AppDatePickerFormFieldState();
@@ -81,6 +83,7 @@ class _AppDatePickerFormFieldState extends State<AppDatePickerFormField> {
       suffixIconData: widget.suffixIconData,
       prefixIconData: widget.prefixIconData,
       onTap: () => _selectDate(context), // Open date picker on tap
+      fillColor: widget.fillColor,
     );
     if (widget.labelText != null) {
       return Column(

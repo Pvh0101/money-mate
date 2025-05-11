@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:money_mate/core/constants/route_constants.dart';
+import 'package:money_mate/core/enums/category_type.dart';
 import 'package:money_mate/core/widgets/custom_app_bar.dart';
 import 'package:money_mate/core/widgets/buttons/app_fill_button.dart';
-import '../models/category_ui_data.dart'; // Added correct import for CategoryUIData
+import 'package:money_mate/features/categories/domain/entities/category.dart';
 import '../widgets/category_list.dart';
 import '../widgets/transaction_form_core.dart';
 
 class AddIncomePage extends StatefulWidget {
   const AddIncomePage({super.key});
-  // static const String routeName = '/add-income'; // Sẽ dùng RouteConstants
   static const String routeName = RouteConstants.addIncome;
 
   @override
@@ -18,28 +18,19 @@ class AddIncomePage extends StatefulWidget {
 class _AddIncomePageState extends State<AddIncomePage> {
   final _formKey = GlobalKey<FormState>();
   DateTime? _actualSelectedDate;
-  String? _selectedCategory;
-
-  final List<CategoryUIData> _incomeCategories = [
-    CategoryUIData(label: 'Salary'),
-    CategoryUIData(label: 'Rewards'),
-    CategoryUIData(label: 'Investment'),
-    CategoryUIData(label: 'Side Business'),
-  ];
+  String? _selectedCategoryId;
+  Category? _selectedCategory;
 
   @override
   void dispose() {
     super.dispose();
   }
 
-  void _handleCategorySelected(String categoryLabel) {
+  void _handleCategorySelected(Category category) {
     setState(() {
-      _selectedCategory = categoryLabel;
+      _selectedCategoryId = category.id;
+      _selectedCategory = category;
     });
-  }
-
-  void _handleAddNewCategory() {
-    // print('Add New Category tapped in AddIncomePage');
   }
 
   void _handleDateSelected(DateTime? date) {
@@ -56,7 +47,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
         showBackButton: true,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+        padding: const EdgeInsets.all(24.0),
         child: Column(
           children: [
             TransactionFormCore(
@@ -65,17 +56,31 @@ class _AddIncomePageState extends State<AddIncomePage> {
               initialDate: _actualSelectedDate,
               onDateSelected: _handleDateSelected,
               categorySection: CategoryList(
-                categories: _incomeCategories,
-                selectedCategory: _selectedCategory,
+                type: CategoryType.income,
+                selectedCategoryId: _selectedCategoryId,
                 onCategorySelected: _handleCategorySelected,
-                onAddNewCategory: _handleAddNewCategory,
               ),
             ),
+            const SizedBox(height: 48),
             AppFillButton(
               text: 'Add Income',
               onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  // TODO: Xử lý logic submit income
+                if (_formKey.currentState!.validate() &&
+                    _selectedCategory != null) {
+                  // TODO: Implement income submission logic
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Income added: ${_selectedCategory!.name}'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                } else if (_selectedCategory == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Please select a category'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
                 }
               },
               isExpanded: true,

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:money_mate/core/constants/route_constants.dart';
+import 'package:money_mate/core/enums/category_type.dart';
 import 'package:money_mate/core/widgets/custom_app_bar.dart';
 import 'package:money_mate/core/widgets/buttons/app_fill_button.dart';
-import 'package:money_mate/features/transactions/presentation/widgets/category_list.dart';
-import '../models/category_ui_data.dart';
+import 'package:money_mate/features/categories/domain/entities/category.dart';
+import '../widgets/category_list.dart';
 import '../widgets/transaction_form_core.dart';
 
 class AddExpensePage extends StatefulWidget {
@@ -17,16 +18,8 @@ class AddExpensePage extends StatefulWidget {
 class _AddExpensePageState extends State<AddExpensePage> {
   final _formKey = GlobalKey<FormState>();
   DateTime? _actualSelectedDate;
-  String? _selectedCategory;
-
-  // Mock data for expense categories
-  final List<CategoryUIData> _expenseCategories = [
-    CategoryUIData(label: 'Food'),
-    CategoryUIData(label: 'Transport'),
-    CategoryUIData(label: 'Shopping'),
-    CategoryUIData(label: 'Bills'),
-    CategoryUIData(label: 'Entertainment'),
-  ];
+  String? _selectedCategoryId;
+  Category? _selectedCategory;
 
   @override
   void dispose() {
@@ -34,15 +27,11 @@ class _AddExpensePageState extends State<AddExpensePage> {
     super.dispose();
   }
 
-  void _handleCategorySelected(String categoryLabel) {
+  void _handleCategorySelected(Category category) {
     setState(() {
-      _selectedCategory = categoryLabel;
+      _selectedCategoryId = category.id;
+      _selectedCategory = category;
     });
-  }
-
-  void _handleAddNewCategory() {
-    // Placeholder for add new expense category logic
-    // print('Add New Expense Category tapped');
   }
 
   void _handleDateSelected(DateTime? date) {
@@ -61,26 +50,40 @@ class _AddExpensePageState extends State<AddExpensePage> {
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TransactionFormCore(
               isIncome: false,
               formKey: _formKey,
               initialDate: _actualSelectedDate,
               onDateSelected: _handleDateSelected,
-              // titleController and amountController can be managed by TransactionFormCore or passed in
               categorySection: CategoryList(
-                categories: _expenseCategories,
-                selectedCategory: _selectedCategory,
+                type: CategoryType.expense,
+                selectedCategoryId: _selectedCategoryId,
                 onCategorySelected: _handleCategorySelected,
-                onAddNewCategory: _handleAddNewCategory,
               ),
             ),
             const SizedBox(height: 48),
             AppFillButton(
               text: 'Add Expense',
               onPressed: () {
-                if (_formKey.currentState!.validate()) {
+                if (_formKey.currentState!.validate() &&
+                    _selectedCategory != null) {
                   // TODO: Implement expense submission logic
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content:
+                          Text('Expense added: ${_selectedCategory!.name}'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                } else if (_selectedCategory == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Please select a category'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
                 }
               },
               isExpanded: true,

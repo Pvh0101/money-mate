@@ -1,94 +1,87 @@
 import 'package:flutter/material.dart';
-import '../models/category_ui_data.dart'; // Updated import path
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/core.dart';
+import '../../../../core/widgets/loading_state_circular_progress.dart';
+import '../../../../core/widgets/error_state_list.dart';
+import '../../../../features/categories/domain/entities/category.dart';
+import '../../../../features/categories/presentation/bloc/category_bloc.dart';
+import '../../../../features/categories/presentation/bloc/category_event.dart';
+import '../../../../features/categories/presentation/bloc/category_state.dart';
+import 'category_list/index.dart';
 
-class CategoryList extends StatelessWidget {
-  final List<CategoryUIData> categories;
-  final String? selectedCategory;
-  final Function(String) onCategorySelected;
-  final VoidCallback onAddNewCategory;
+// Single Responsibility: Component just for displaying list of categories
+class CategoryList extends StatefulWidget {
+  final CategoryType type;
+  final String? selectedCategoryId;
+  final Function(Category) onCategorySelected;
 
   const CategoryList({
     super.key,
-    required this.categories,
-    this.selectedCategory,
+    required this.type,
+    this.selectedCategoryId,
     required this.onCategorySelected,
-    required this.onAddNewCategory,
   });
 
   @override
+  State<CategoryList> createState() => _CategoryListState();
+}
+
+class _CategoryListState extends State<CategoryList> {
+  bool _isInitialized = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _loadCategories();
+  }
+
+  // Single Responsibility: Method focused on loading categories
+  void _loadCategories() {
+    if (!_isInitialized) {
+      try {
+        context.read<CategoryBloc>().add(GetCategoriesEvent(widget.type));
+        _isInitialized = true;
+      } catch (e) {
+        // Using a logger would be better than print in production code
+        debugPrint("Error accessing CategoryBloc: $e");
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      scrollDirection: Axis.horizontal,
-      itemCount: categories.length + 1,
-      separatorBuilder: (context, index) => const SizedBox(width: 10),
-      itemBuilder: (context, index) {
-        if (index == 0) {
-          // Index 0 is now Add New
-          return _buildAddNewCategoryChip(
-            context,
+    return BlocBuilder<CategoryBloc, CategoryState>(
+      builder: (context, state) {
+        if (state is CategoryLoading) {
+          return const LoadingStateShimmerList();
+        } else if (state is CategoriesLoaded) {
+          return CategoriesView(
+            categories: state.categories,
+            selectedCategoryId: widget.selectedCategoryId,
+            onCategorySelected: widget.onCategorySelected,
+            onAddCategory: _showAddCategoryDialog,
+            categoryType: widget.type,
+          );
+        } else if (state is CategoryError) {
+          return ErrorStateList(
+            imageAssetName: 'assets/images/error.png',
+            errorMessage: state.message,
+            onRetry: () => context
+                .read<CategoryBloc>()
+                .add(GetCategoriesEvent(widget.type)),
           );
         }
-        final category = categories[index - 1]; // Adjust index for categories
-        final bool isSelected = category.label == selectedCategory;
-        return _buildCategoryChip(
-          context,
-          category,
-          isSelected,
-        );
+        return const SizedBox.shrink();
       },
     );
   }
 
-  Widget _buildCategoryChip(
-    BuildContext context,
-    CategoryUIData category,
-    bool isSelected,
-  ) {
-    return ElevatedButton(
-      onPressed: () {
-        onCategorySelected(category.label);
-      },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: isSelected
-            ? Theme.of(context).colorScheme.primaryFixed
-            : Theme.of(context).colorScheme.surface,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
-        elevation: 0,
-      ),
-      child: Text(category.label,
-          style: TextStyle(
-              fontSize: 12,
-              color: isSelected
-                  ? Colors.white
-                  : Theme.of(context).colorScheme.onSurface)),
-    );
-  }
-
-  Widget _buildAddNewCategoryChip(
-    BuildContext context,
-  ) {
-    return ElevatedButton(
-      onPressed: onAddNewCategory, // Use the passed callback
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        side: BorderSide(
-          color: Theme.of(context).colorScheme.outline,
-          width: 1,
-          style: BorderStyle.solid,
-        ),
-        elevation: 0,
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
-      ),
-      child: Icon(
-        Icons.add,
-        size: 24,
-        color: Theme.of(context).colorScheme.secondaryFixed,
+  // Single Responsibility: Method focused on showing add category dialog
+  void _showAddCategoryDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AddCategoryDialog(
+        categoryType: widget.type,
       ),
     );
   }

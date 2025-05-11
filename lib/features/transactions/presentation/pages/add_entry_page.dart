@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:money_mate/core/widgets/custom_app_bar.dart';
-import 'package:money_mate/features/dashboard/data/mock/dashboard_mock_data.dart'; // Tạm dùng mock data
-// import 'package:money_mate/features/dashboard/presentation/widgets/dashboard_latest_entries_section.dart'; // Import cũ
+import 'package:money_mate/features/dashboard/data/mock/dashboard_mock_data.dart';
 import 'package:money_mate/core/widgets/latest_entries_section.dart';
 import 'package:money_mate/features/transactions/presentation/widgets/add_options_section.dart';
-import 'package:money_mate/core/constants/route_constants.dart'; // Thêm import này
-// import 'package:money_mate/core/widgets/custom_bottom_nav_bar.dart'; // Giả sử có widget này
+import 'package:money_mate/core/constants/route_constants.dart';
 
 class AddEntryPage extends StatefulWidget {
   const AddEntryPage({super.key});

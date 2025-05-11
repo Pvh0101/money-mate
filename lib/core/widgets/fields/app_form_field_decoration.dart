@@ -8,6 +8,7 @@ InputDecoration appFormFieldDecoration({
   IconData? suffixIconData,
   VoidCallback? onSuffixIconPressed,
   bool isFocused = false,
+  Color? fillColor,
 }) {
   final theme = Theme.of(context);
   final hintColor = theme.colorScheme.outline;
@@ -16,6 +17,8 @@ InputDecoration appFormFieldDecoration({
         const EdgeInsets.symmetric(vertical: 12.0, horizontal: 17.0),
     hintText: hintText,
     labelText: labelText,
+    filled: fillColor != null,
+    fillColor: fillColor,
     hintStyle: theme.textTheme.bodyLarge?.copyWith(color: hintColor),
     prefixIcon: prefixIconData != null ? Icon(prefixIconData) : null,
     suffixIcon: suffixIconData != null

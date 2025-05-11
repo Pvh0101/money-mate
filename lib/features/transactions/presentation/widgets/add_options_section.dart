@@ -38,6 +38,7 @@ class AddOptionsSection extends StatelessWidget {
           const SizedBox(width: 16),
           Expanded(
             child: OptionCardItem(
+              isHighlighted: true,
               title: 'Add Expense',
               iconPath: 'assets/icons/wallet.svg',
               onTap: onAddExpenseTap,

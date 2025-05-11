@@ -21,6 +21,7 @@ class AppDropdownFormField<T> extends StatelessWidget {
     this.prefixIconData,
     this.isExpanded = true,
     this.focusNode,
+    this.fillColor,
   });
 
   final T? value;
@@ -32,6 +33,7 @@ class AppDropdownFormField<T> extends StatelessWidget {
   final IconData? prefixIconData;
   final bool isExpanded;
   final FocusNode? focusNode;
+  final Color? fillColor;
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +56,7 @@ class AppDropdownFormField<T> extends StatelessWidget {
         labelText: null, // Không dùng labelText của InputDecoration nữa
         prefixIconData: prefixIconData,
         isFocused: isFocused,
+        fillColor: fillColor,
       ),
       style: theme.textTheme.bodyLarge,
     );
