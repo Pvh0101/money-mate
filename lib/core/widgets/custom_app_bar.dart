@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:money_mate/core/widgets/buttons/app_icon_button.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? titleText;
   final bool showBackButton;
+  final Widget? trailing;
 
   const CustomAppBar({
     super.key,
     this.titleText,
     this.showBackButton = true,
+    this.trailing,
   });
 
   @override
@@ -36,14 +37,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       title: finalTitleWidget,
       leading: showBackButton
-          ? AppIconButton(
-            
-              icon: Icons.arrow_back,
-              onPressed: () => Navigator.pop(context),
+          ? Padding(
+              padding: const EdgeInsets.all(12),
+              child: AppIconButton(
+                size: 20,
+                isCircle: true,
+                isFilled: false,
+                onPressed: () => Navigator.pop(context),
+                icon: const Icon(
+                  Icons.arrow_back_ios_new,
+                ),
+              ),
             )
           : null,
-      iconTheme:
-          theme.appBarTheme.iconTheme?.copyWith(color: colorScheme.onSurface),
+      actions: trailing != null ? [trailing!] : null,
     );
   }
 

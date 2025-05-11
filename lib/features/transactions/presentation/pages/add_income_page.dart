@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:money_mate/core/constants/route_constants.dart';
 import 'package:money_mate/core/widgets/custom_app_bar.dart';
-import 'package:money_mate/core/widgets/fields/app_text_field.dart';
 import 'package:money_mate/core/widgets/buttons/app_fill_button.dart';
-import 'package:money_mate/core/widgets/buttons/button_enums.dart';
-import 'package:money_mate/core/widgets/date_picker_section.dart';
-// import 'package:money_mate/features/transactions/presentation/widgets/income_category_list.dart'; // Removed incorrect import
 import '../models/category_ui_data.dart'; // Added correct import for CategoryUIData
-import '../widgets/income_category_list.dart';
+import '../widgets/category_list.dart';
 import '../widgets/transaction_form_core.dart';
 
 class AddIncomePage extends StatefulWidget {
@@ -56,26 +51,26 @@ class _AddIncomePageState extends State<AddIncomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
+      appBar: const CustomAppBar(
         titleText: 'Add Income',
         showBackButton: true,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24.0),
+        padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
           children: [
             TransactionFormCore(
+              isIncome: true,
               formKey: _formKey,
               initialDate: _actualSelectedDate,
               onDateSelected: _handleDateSelected,
-              categorySection: IncomeCategoryList(
+              categorySection: CategoryList(
                 categories: _incomeCategories,
                 selectedCategory: _selectedCategory,
                 onCategorySelected: _handleCategorySelected,
                 onAddNewCategory: _handleAddNewCategory,
               ),
             ),
-            const SizedBox(height: 48),
             AppFillButton(
               text: 'Add Income',
               onPressed: () {
@@ -83,8 +78,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
                   // TODO: Xử lý logic submit income
                 }
               },
-              isFullWidth: true,
-              size: ButtonSize.large,
+              isExpanded: true,
             ),
           ],
         ),

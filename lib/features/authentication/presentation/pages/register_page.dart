@@ -31,8 +31,6 @@ class _RegisterPageViewState extends State<RegisterPageView> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
-  bool _isPasswordVisible = false;
-  bool _isConfirmPasswordVisible = false;
   bool _hasError = false;
   String _errorMessage = '';
 
@@ -78,56 +76,33 @@ class _RegisterPageViewState extends State<RegisterPageView> {
           mainAxisSize: MainAxisSize.min,
           children: [
             // Email field
-            CustomTextField(
+            AppTextFormField(
               controller: _emailController,
               hintText: 'Email',
-              prefixIcon: Icons.email_outlined,
-              enabled: !isLoading,
+              prefixIconData: Icons.email_outlined,
             ),
             const SizedBox(height: 20),
 
             // Password field
-            CustomTextField(
+            PasswordTextFormField(
               controller: _passwordController,
               hintText: 'Password',
-              prefixIcon: Icons.lock_outline,
-              suffixIcon: _isPasswordVisible
-                  ? Icons.visibility_off
-                  : Icons.visibility_outlined,
-              isPassword: !_isPasswordVisible,
-              enabled: !isLoading,
-              onSuffixIconTap: () {
-                setState(() {
-                  _isPasswordVisible = !_isPasswordVisible;
-                });
-              },
+              prefixIconData: Icons.lock_outline,
             ),
             const SizedBox(height: 20),
 
             // Confirm Password field
-            CustomTextField(
+            PasswordTextFormField(
               controller: _confirmPasswordController,
               hintText: 'Confirm Password',
-              prefixIcon: Icons.lock_outline,
-              suffixIcon: _isConfirmPasswordVisible
-                  ? Icons.visibility_off
-                  : Icons.visibility_outlined,
-              isPassword: !_isConfirmPasswordVisible,
-              enabled: !isLoading,
-              onSuffixIconTap: () {
-                setState(() {
-                  _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
-                });
-              },
+              prefixIconData: Icons.lock_outline,
             ),
             const SizedBox(height: 24),
 
             // Register button
             AppFillButton(
-              size: ButtonSize.large,
-              isFullWidth: true,
+              isExpanded: true,
               text: 'REGISTER',
-              isLoading: isLoading,
               onPressed: _handleRegister,
             ),
             const SizedBox(height: 24),
@@ -196,7 +171,8 @@ class _RegisterPageViewState extends State<RegisterPageView> {
       return;
     }
 
-    String? confirmPasswordError = Validator.validateConfirmPassword(password, confirmPassword);
+    String? confirmPasswordError =
+        Validator.validateConfirmPassword(password, confirmPassword);
     if (confirmPasswordError != null) {
       setState(() {
         _hasError = true;

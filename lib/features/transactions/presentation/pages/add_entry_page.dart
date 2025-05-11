@@ -38,9 +38,6 @@ class _AddEntryPageState extends State<AddEntryPage> {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    // Theo Figma, phần "Latest Entries" có nền riêng và bo góc trên.
-    // Nền chung của trang là màu screenBackgroundFigma (ví dụ: #F5F6F7 cho light)
-
     return Scaffold(
       backgroundColor: colorScheme.background, // Nền chính của trang
       appBar: const CustomAppBar(
@@ -51,7 +48,7 @@ class _AddEntryPageState extends State<AddEntryPage> {
         children: [
           Padding(
             padding:
-                const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+                const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32.0),
             child: AddOptionsSection(
               onAddIncomeTap: _onAddIncomeTapped,
               onAddExpenseTap: _onAddExpenseTapped,
@@ -67,24 +64,6 @@ class _AddEntryPageState extends State<AddEntryPage> {
                   topLeft: Radius.circular(24.0),
                   topRight: Radius.circular(24.0),
                 ),
-                boxShadow: colorScheme.brightness == Brightness.light
-                    ? [
-                        BoxShadow(
-                          color: const Color(0xFF1D3A58)
-                              .withOpacity(0.12), // Figma shadow for light
-                          spreadRadius: 0, // Mặc định Figma là 0
-                          blurRadius: 64, // Figma blur
-                          offset: const Offset(0, 8), // Figma offset
-                        ),
-                      ]
-                    : [
-                        const BoxShadow(
-                          color: Color(
-                              0xFF1B2025), // Figma shadow for dark (opacity 1)
-                          blurRadius: 64,
-                          offset: Offset(0, 8),
-                        ),
-                      ],
               ),
               child: SingleChildScrollView(
                 child: Padding(

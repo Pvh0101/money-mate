@@ -42,63 +42,57 @@ class LoginPage extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        CustomTextField(
+        AppTextFormField(
           controller: emailController,
           hintText: 'Email',
-          prefixIcon: Icons.email_outlined,
+          prefixIconData: Icons.email_outlined,
         ),
         const SizedBox(height: 20),
-        CustomTextField(
+        PasswordTextFormField(
           controller: passwordController,
           hintText: 'Password',
-          prefixIcon: Icons.lock_outline,
+          prefixIconData: Icons.lock_outline,
         ),
         const SizedBox(height: 24),
         BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
-            final isLoading = state is AuthLoading;
             return AppFillButton(
-              size: ButtonSize.large,
-              isFullWidth: true,
+              isExpanded: true,
               text: 'LOGIN',
-              isLoading: isLoading,
-              onPressed: isLoading
-                  ? null
-                  : () {
-                      final email = emailController.text.trim();
-                      final password = passwordController.text.trim();
+              onPressed: () {
+                final email = emailController.text.trim();
+                final password = passwordController.text.trim();
 
-                      String? emailError = Validator.validateEmailField(email);
+                String? emailError = Validator.validateEmailField(email);
 
-                      String? passwordError;
-                      if (!Validator.isNotEmpty(password)) {
-                        passwordError = 'Mật khẩu không được để trống';
-                      }
+                String? passwordError;
+                if (!Validator.isNotEmpty(password)) {
+                  passwordError = 'Mật khẩu không được để trống';
+                }
 
-                      if (emailError != null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content: Text(emailError),
-                              backgroundColor: Colors.red),
-                        );
-                        return;
-                      }
-                      if (passwordError != null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content: Text(passwordError),
-                              backgroundColor: Colors.red),
-                        );
-                        return;
-                      }
+                if (emailError != null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                        content: Text(emailError), backgroundColor: Colors.red),
+                  );
+                  return;
+                }
+                if (passwordError != null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                        content: Text(passwordError),
+                        backgroundColor: Colors.red),
+                  );
+                  return;
+                }
 
-                      context.read<AuthBloc>().add(
-                            LoginWithEmailPasswordRequested(
-                              email: email,
-                              password: password,
-                            ),
-                          );
-                    },
+                context.read<AuthBloc>().add(
+                      LoginWithEmailPasswordRequested(
+                        email: email,
+                        password: password,
+                      ),
+                    );
+              },
             );
           },
         ),

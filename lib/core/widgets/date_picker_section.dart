@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 
+import '../core.dart';
+
 enum CalendarViewMode { week, month }
 
 class DatePickerSection extends StatefulWidget {
@@ -227,7 +229,7 @@ class _DatePickerSectionState extends State<DatePickerSection> {
         DateFormat('MMMM - yyyy').format(_focusedDate);
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+      margin: const EdgeInsets.symmetric(vertical: 32.0),
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: colorScheme.surface,
@@ -264,16 +266,14 @@ class _DatePickerSectionState extends State<DatePickerSection> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        _CalendarNavButton(
-            iconPath: 'assets/icons/chevron_left.svg',
-            onTap: () => _changeFocusedPeriod(-1)),
+        AppIconButton(
+            isCircle: false,
+            isFilled: false,
+            icon: const Icon(Icons.arrow_back_ios_new),
+            onPressed: () => _changeFocusedPeriod(-1)),
         Text(headerMonthYear, style: monthYearStyle),
         Row(
           children: [
-            _CalendarNavButton(
-                iconPath: 'assets/icons/chevron_right.svg',
-                onTap: () => _changeFocusedPeriod(1)),
-            const SizedBox(width: 8),
             IconButton(
               icon: Icon(_currentViewMode == CalendarViewMode.week
                   ? Icons.calendar_view_month
@@ -284,7 +284,13 @@ class _DatePickerSectionState extends State<DatePickerSection> {
                   : 'View by Week',
               color: theme.colorScheme.onSurface,
               splashRadius: 20,
-            )
+            ),
+            AppIconButton(
+                isCircle: false,
+                isFilled: false,
+                icon: const Icon(Icons.arrow_forward_ios),
+                onPressed: () => _changeFocusedPeriod(1)),
+            const SizedBox(width: 8),
           ],
         )
       ],
@@ -353,12 +359,11 @@ class _DatePickerSectionState extends State<DatePickerSection> {
 
     if (calendarDay.isSelected) {
       currentStyle = selectedDateStyle;
-      backgroundColor = colorScheme.primary;
+      backgroundColor = colorScheme.primaryFixed;
     } else if (isTodayNotSelected) {
       currentStyle = todayStyle;
-      // Optionally add a border for today if not selected
-      border =
-          Border.all(color: colorScheme.primary.withOpacity(0.5), width: 1);
+
+      border = Border.all(color: colorScheme.primaryFixed, width: 1);
     } else if (calendarDay.isDisplayedMonth) {
       currentStyle = dateStyle;
     } else {
@@ -388,36 +393,36 @@ class _DatePickerSectionState extends State<DatePickerSection> {
   }
 }
 
-class _CalendarNavButton extends StatelessWidget {
-  final String iconPath;
-  final VoidCallback onTap;
+// class _CalendarNavButton extends StatelessWidget {
+//   final String iconPath;
+//   final VoidCallback onTap;
 
-  const _CalendarNavButton({required this.iconPath, required this.onTap});
+//   const _CalendarNavButton({required this.iconPath, required this.onTap});
 
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(10.0),
-      child: Container(
-        padding: const EdgeInsets.all(4.0),
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.circular(10.0),
-          border: Border.all(
-            color: theme.colorScheme.outline,
-            width: 0.5,
-          ),
-        ),
-        child: SvgPicture.asset(
-          iconPath,
-          colorFilter:
-              ColorFilter.mode(theme.colorScheme.onSurface, BlendMode.srcIn),
-          width: 20,
-          height: 20,
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     final theme = Theme.of(context);
+//     return InkWell(
+//       onTap: onTap,
+//       borderRadius: BorderRadius.circular(10.0),
+//       child: Container(
+//         padding: const EdgeInsets.all(4.0),
+//         decoration: BoxDecoration(
+//           shape: BoxShape.rectangle,
+//           borderRadius: BorderRadius.circular(10.0),
+//           border: Border.all(
+//             color: theme.colorScheme.outline,
+//             width: 0.5,
+//           ),
+//         ),
+//         child: SvgPicture.asset(
+//           iconPath,
+//           colorFilter:
+//               ColorFilter.mode(theme.colorScheme.onSurface, BlendMode.srcIn),
+//           width: 20,
+//           height: 20,
+//         ),
+//       ),
+//     );
+//   }
+// }

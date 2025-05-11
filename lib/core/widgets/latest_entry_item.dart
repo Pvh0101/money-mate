@@ -6,7 +6,7 @@ class LatestEntryItem extends StatelessWidget {
   final String iconPath; // Thay Widget iconWidget bằng String iconPath
   final String category;
   final String date;
-  final String amount;
+  final String amount; // This is the full string e.g. "+ $20 + Vat 0.5%"
   final String paymentMethod;
   final VoidCallback? onTap; // Thêm onTap callback
 
@@ -43,6 +43,29 @@ class LatestEntryItem extends StatelessWidget {
         ? colorScheme.onSurface // Light mode: #242D35 (neutralDark1)
         : colorScheme
             .onSecondaryContainer; // Dark mode: #FAFAFB (neutralSoftGrey3)
+
+    // --- Start of parsing logic for amount ---
+    final String sign = isIncome ? '+' : '-';
+    String processedAmount = amount.substring(1).trim(); // Remove sign
+
+    String currencySymbol = '';
+    if (processedAmount.startsWith('\$')) {
+      // Assuming $ is the currency symbol
+      currencySymbol = '\$';
+      processedAmount = processedAmount.substring(1).trim();
+    }
+
+    String mainAmountValue;
+    String? vatText;
+
+    if (processedAmount.contains(' + Vat ')) {
+      var parts = processedAmount.split(' + Vat ');
+      mainAmountValue = parts[0].trim(); // e.g., "20"
+      vatText = parts[1].trim(); // e.g., "0.5%"
+    } else {
+      mainAmountValue = processedAmount.trim(); // e.g., "2500"
+    }
+    // --- End of parsing logic ---
 
     return InkWell(
       onTap: onTap,
@@ -98,8 +121,11 @@ class LatestEntryItem extends StatelessWidget {
                         const SizedBox(height: 4.0), // Figma: Khoảng cách 4px
                         Text(
                           date,
-                          style: textTheme
-                              .bodyMedium, // Sử dụng bodyMedium từ theme
+                          style: textTheme.bodyMedium?.copyWith(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer,
+                          ), // Sử dụng bodyMedium từ theme
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -116,10 +142,39 @@ class LatestEntryItem extends StatelessWidget {
               mainAxisAlignment:
                   MainAxisAlignment.center, // Căn giữa text trong Column
               children: [
-                Text(
-                  amount,
-                  style: textTheme.titleMedium
-                      ?.copyWith(color: effectiveAmountColor),
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: sign,
+                        style: textTheme.titleMedium
+                            ?.copyWith(color: effectiveAmountColor),
+                      ),
+                      if (currencySymbol.isNotEmpty)
+                        TextSpan(
+                          text: currencySymbol,
+                          style: textTheme.titleMedium
+                              ?.copyWith(color: effectiveAmountColor),
+                        ),
+                      TextSpan(
+                        text: mainAmountValue,
+                        style: textTheme.titleMedium
+                            ?.copyWith(color: effectiveAmountColor),
+                      ),
+                      if (vatText != null) ...[
+                        TextSpan(
+                          text: ' + Vat ', // Hardcoded prefix for VAT
+                          style: textTheme.titleMedium?.copyWith(
+                              color: effectiveAmountColor.withOpacity(0.7)),
+                        ),
+                        TextSpan(
+                          text: vatText,
+                          style: textTheme.titleMedium?.copyWith(
+                              color: effectiveAmountColor.withOpacity(0.7)),
+                        ),
+                      ]
+                    ],
+                  ),
                   textAlign: TextAlign.end,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -127,7 +182,9 @@ class LatestEntryItem extends StatelessWidget {
                 const SizedBox(height: 4.0), // Figma: Khoảng cách 4px
                 Text(
                   paymentMethod,
-                  style: textTheme.bodyMedium, // Sử dụng bodyMedium từ theme
+                  style: textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.onSecondaryContainer,
+                  ), // Sử dụng bodyMedium từ theme
                   textAlign: TextAlign.end,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

@@ -1,11 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../../../core/constants/route_constants.dart';
-import '../../../../core/routes/app_routes.dart';
-import '../../../../core/utils/validator.dart';
-import '../../../../core/widgets/buttons/app_fill_button.dart';
-import '../../../../core/widgets/fields/custom_text_field.dart';
-import '../../../../core/widgets/buttons/button_enums.dart';
+import '../../../../core/core.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -155,53 +149,35 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   ),
                 ),
                 const SizedBox(height: 24),
-                Text(
+                const Text(
                   'Create Your New\nPassword',
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.w700,
-                    color: const Color(0xFF242D35),
+                    color: Color(0xFF242D35),
                     height: 1.3,
                   ),
                 ),
                 const SizedBox(height: 8),
-                Text(
+                const Text(
                   'Your new password must be different\nfrom previous password.',
                   style: TextStyle(
                     fontSize: 16,
-                    color: const Color(0xFF9BA1A8),
+                    color: Color(0xFF9BA1A8),
                     height: 1.5,
                   ),
                 ),
                 const SizedBox(height: 32),
-                CustomTextField(
+                PasswordTextFormField(
                   controller: _passwordController,
                   hintText: 'New Password',
-                  prefixIcon: Icons.lock_outline,
-                  isPassword: !_isPasswordVisible,
-                  suffixIcon: _isPasswordVisible
-                      ? Icons.visibility_off_outlined
-                      : Icons.visibility_outlined,
-                  onSuffixIconTap: () {
-                    setState(() {
-                      _isPasswordVisible = !_isPasswordVisible;
-                    });
-                  },
+                  prefixIconData: Icons.lock_outline,
                 ),
                 const SizedBox(height: 16),
-                CustomTextField(
+                PasswordTextFormField(
                   controller: _confirmPasswordController,
                   hintText: 'Confirm Password',
-                  prefixIcon: Icons.lock_outline,
-                  isPassword: !_isConfirmPasswordVisible,
-                  suffixIcon: _isConfirmPasswordVisible
-                      ? Icons.visibility_off_outlined
-                      : Icons.visibility_outlined,
-                  onSuffixIconTap: () {
-                    setState(() {
-                      _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
-                    });
-                  },
+                  prefixIconData: Icons.lock_outline,
                 ),
                 if (_passwordErrorText != null &&
                     _passwordErrorText!.isNotEmpty)
@@ -246,9 +222,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 AppFillButton(
                   text: 'RESET PASSWORD',
                   onPressed: _resetPassword,
-                  isLoading: _isLoading,
-                  isFullWidth: true,
-                  size: ButtonSize.large,
+                  isExpanded: true,
                 ),
                 const SizedBox(height: 40),
               ],

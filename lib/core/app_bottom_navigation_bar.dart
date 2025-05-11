@@ -17,7 +17,6 @@ class AppBottomNavigationBar extends StatelessWidget {
     this.hasNotification = false,
   });
 
-  static const _navBarHeight = 80.0;
   static const _fabSize = 64.0;
   static const _fabTopOffset = -10.0;
   static const _iconSize = 24.0;
@@ -51,7 +50,8 @@ class AppBottomNavigationBar extends StatelessWidget {
                   ),
                 ],
               ),
-              child: const Icon(Icons.add, color: neutralWhite, size: _iconSize),
+              child:
+                  const Icon(Icons.add, color: neutralWhite, size: _iconSize),
             ),
           ),
         ),
@@ -61,7 +61,8 @@ class AppBottomNavigationBar extends StatelessWidget {
 
   Widget _buildNavigationBar(BuildContext context) {
     return BottomNavigationBar(
-      backgroundColor: Theme.of(context).colorScheme.surface.withValues(alpha: 0.7),
+      backgroundColor:
+          Theme.of(context).colorScheme.surface.withValues(alpha: 0.7),
       elevation: 0,
       type: BottomNavigationBarType.fixed,
       showSelectedLabels: false,
@@ -75,20 +76,23 @@ class AppBottomNavigationBar extends StatelessWidget {
           icon: SizedBox(width: _fabSize),
           label: '',
         ),
-        _buildItem('assets/icons/notification.svg', 2, showBadge: hasNotification),
+        _buildItem('assets/icons/notification.svg', 2,
+            showBadge: hasNotification),
         _buildItem('assets/icons/setting.svg', 3),
       ],
-    
     );
   }
 
-  BottomNavigationBarItem _buildItem(String iconPath, int index, {bool showBadge = false}) {
+  BottomNavigationBarItem _buildItem(String iconPath, int index,
+      {bool showBadge = false}) {
     final isSelected = selectedIndex == index;
     final icon = SvgPicture.asset(
       iconPath,
       width: _iconSize,
       height: _iconSize,
-      color: isSelected ? primaryBrandBlue : neutralGrey2,
+      colorFilter: isSelected
+          ? const ColorFilter.mode(primaryBrandBlue, BlendMode.srcIn)
+          : null,
     );
 
     return BottomNavigationBarItem(

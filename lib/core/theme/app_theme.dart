@@ -78,10 +78,11 @@ TextTheme _buildTextTheme(TextTheme base, ColorScheme colorScheme) {
             color: colorScheme.onSurfaceVariant),
 
         labelLarge: interBase.labelLarge?.copyWith(
-            // Main button text
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: colorScheme.onPrimary),
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+          color: colorScheme.onSurface,
+        ),
+
         labelMedium: interBase.labelMedium?.copyWith(
             // OptionCardItem title, other small labels
             fontSize: 12,
@@ -141,29 +142,10 @@ final ThemeData lightTheme = ThemeData.light(
     surfaceVariant: neutralSoftGrey2, // For cards or alternative surfaces
     onSurfaceVariant: neutralGrey1, // For secondary text
     outline: neutralSoftGrey1,
+    onSecondaryFixed: neutralGrey2,
     secondaryContainer: neutralSoftGrey2, // Example, adjust as needed
     onSecondaryContainer: neutralGrey1, // Example, adjust as needed
   ),
-  textTheme: _buildTextTheme(
-      ThemeData.light().textTheme, // Base theme for font metrics
-      ColorScheme.fromSeed(
-              // ColorScheme to be used by _buildTextTheme
-              seedColor: primaryBrandBlue,
-              brightness: Brightness.light)
-          .copyWith(
-              primary: primaryBlueLight,
-              onPrimary: neutralWhite, // Text on primary elements (buttons)
-              background: neutralSoftGrey3,
-              onSurface:
-                  neutralDark1, // Text on general background (like AppBar title)
-              surface: neutralWhite,
-              onSurfaceVariant:
-                  neutralGrey1, // Secondary text on cards/surfaces
-              secondaryContainer: neutralSoftGrey2,
-              onSecondaryContainer: neutralGrey1,
-              outline: neutralSoftGrey1,
-              error: systemRed,
-              onError: neutralWhite)),
 );
 
 // --- Dark Theme (Simplified with fromSeed) ---
@@ -175,6 +157,7 @@ final ThemeData darkTheme = ThemeData.dark(
     seedColor: primaryBrandBlue,
     brightness: Brightness.dark,
   ).copyWith(
+    primaryFixed: primaryBrandBlue,
     primary: primaryBlueDark,
     secondary: primaryBlueDark,
     error: const Color(0xFFCF6679),
@@ -184,28 +167,9 @@ final ThemeData darkTheme = ThemeData.dark(
     surface: neutralDark3,
     surfaceVariant: neutralDark1,
     onSurfaceVariant: neutralGrey3,
-    outline: neutralGrey2,
+    outline: neutralGrey1,
+    onSecondaryFixed: neutralGrey2,
     secondaryContainer: darkIconSurface,
     onSecondaryContainer: neutralSoftGrey3,
   ),
-  textTheme: _buildTextTheme(
-      ThemeData.dark().textTheme, // Base theme for font metrics
-      ColorScheme.fromSeed(
-              // ColorScheme to be used by _buildTextTheme
-              seedColor: primaryBrandBlue,
-              brightness: Brightness.dark)
-          .copyWith(
-        primary: primaryBlueDark,
-        onPrimary: neutralWhite,
-        background: neutralDark2,
-        onSurface: neutralSoftGrey3,
-        surface: neutralDark3,
-        surfaceVariant: neutralDark1,
-        onSurfaceVariant: neutralGrey3,
-        secondaryContainer: darkIconSurface,
-        onSecondaryContainer: neutralSoftGrey3,
-        outline: neutralGrey2,
-        error: const Color(0xFFCF6679),
-        onError: neutralDark1,
-      )),
 );

@@ -17,7 +17,7 @@ class DashboardStatsSection extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 32.0),
       child: SizedBox(
-        height: 140, // hoặc điều chỉnh theo chiều cao của StatCardItem
+        height: 140,
         child: ListView.separated(
           scrollDirection: Axis.horizontal,
           padding: const EdgeInsets.symmetric(horizontal: 24.0),

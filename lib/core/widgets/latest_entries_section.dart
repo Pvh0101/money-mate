@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter_svg/flutter_svg.dart'; // Không còn cần thiết trực tiếp ở đây
-import 'package:money_mate/core/widgets/latest_entry_item.dart'; // Đường dẫn mới
+import 'package:money_mate/core/widgets/latest_entry_item.dart';
+import 'package:money_mate/core/widgets/widgets.dart'; // Đường dẫn mới
 
 class LatestEntriesSection extends StatelessWidget {
   // Đổi tên class
@@ -18,7 +19,6 @@ class LatestEntriesSection extends StatelessWidget {
 
   Widget _buildTitle(BuildContext context) {
     final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
     final textTheme = theme.textTheme;
 
     return Row(
@@ -28,25 +28,11 @@ class LatestEntriesSection extends StatelessWidget {
           'Latest Entries',
           style: textTheme.titleMedium,
         ),
-        InkWell(
-          onTap: onMoreEntriesTapped,
-          borderRadius: BorderRadius.circular(12),
-          child: Container(
-            padding: const EdgeInsets.all(6.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12.0),
-              border: Border.all(
-                color: colorScheme.outline.withValues(alpha: 0.5),
-                width: 0.5,
-              ),
-            ),
-            child: Icon(
-              Icons
-                  .more_horiz, // Sử dụng Icon thay vì SvgPicture vì đây là icon chuẩn Material
-              color: colorScheme.onSurface,
-              size: 20,
-            ),
-          ),
+        AppIconButton(
+          onPressed: onMoreEntriesTapped,
+          icon: const Icon(Icons.more_horiz),
+          isCircle: false,
+          isFilled: false,
         ),
       ],
     );

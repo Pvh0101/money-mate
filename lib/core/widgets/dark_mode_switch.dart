@@ -16,8 +16,11 @@ class DarkModeSwitch extends StatelessWidget {
             return const Icon(Icons.dark_mode_outlined);
           } else {
             // System mode, check brightness
-            final bool isPlatformDark = MediaQuery.platformBrightnessOf(context) == Brightness.dark;
-            return Icon(isPlatformDark ? Icons.light_mode_outlined : Icons.dark_mode_outlined);
+            final bool isPlatformDark =
+                MediaQuery.platformBrightnessOf(context) == Brightness.dark;
+            return Icon(isPlatformDark
+                ? Icons.light_mode_outlined
+                : Icons.dark_mode_outlined);
           }
         },
       ),
@@ -33,4 +36,4 @@ class DarkModeSwitch extends StatelessWidget {
       },
     );
   }
-} 
+}

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:money_mate/features/dashboard/presentation/widgets/total_expense_app_bar.dart';
-import 'package:money_mate/core/widgets/date_picker_section.dart';
-import 'package:money_mate/core/widgets/circular_summary_widget.dart';
 import 'package:money_mate/features/dashboard/presentation/widgets/transaction_list_section.dart';
+
+import '../../../../core/core.dart';
 
 class TotalExpensePage extends StatelessWidget {
   const TotalExpensePage({super.key});
@@ -13,7 +12,10 @@ class TotalExpensePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: const TotalExpenseAppBar(),
+      appBar: const CustomAppBar(
+        titleText: 'Total Expenses',
+        showBackButton: true,
+      ),
       body: const SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

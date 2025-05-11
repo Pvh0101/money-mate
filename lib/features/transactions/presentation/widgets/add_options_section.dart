@@ -24,9 +24,7 @@ class AddOptionsSection extends StatelessWidget {
           Expanded(
             child: OptionCardItem(
               iconPath: 'assets/icons/plus.svg',
-              type: OptionCardType.dashed,
               onTap: onPlusIconTap,
-              isIconOnly: true,
             ),
           ),
           const SizedBox(width: 16), // Khoảng cách giữa các card theo Figma
@@ -34,7 +32,6 @@ class AddOptionsSection extends StatelessWidget {
             child: OptionCardItem(
               title: 'Add Income',
               iconPath: 'assets/icons/wallet.svg',
-              type: OptionCardType.normal, // Hoặc highlighted nếu Figma yêu cầu
               onTap: onAddIncomeTap,
             ),
           ),
@@ -43,8 +40,6 @@ class AddOptionsSection extends StatelessWidget {
             child: OptionCardItem(
               title: 'Add Expense',
               iconPath: 'assets/icons/wallet.svg',
-              type: OptionCardType
-                  .highlighted, // Thẻ này có gradient xanh theo Figma
               onTap: onAddExpenseTap,
             ),
           ),

@@ -18,6 +18,7 @@ class RouteConstants {
   static const String addEntryChoice = '/add-entry-choice';
   static const String addIncome = '/add-income';
   static const String addExpense = '/add-expense';
+  static const String budgetDatePicker = '/budget-date-picker';
 
   RouteConstants._();
 }

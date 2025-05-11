@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:money_mate/core/widgets/fields/app_text_field.dart';
-import 'package:money_mate/core/widgets/date_picker_section.dart'; // Assuming this is the correct path
+import 'package:money_mate/core/widgets/date_picker_section.dart';
+import 'package:money_mate/core/widgets/fields/app_text_form_field.dart';
+import 'package:money_mate/core/widgets/fields/field_label_text.dart'; // Assuming this is the correct path
 
 class TransactionFormCore extends StatelessWidget {
   final GlobalKey<FormState> formKey;
@@ -10,6 +11,8 @@ class TransactionFormCore extends StatelessWidget {
   final TextEditingController? amountController; // Made optional
   final Widget categorySection;
 
+  final bool isIncome;
+
   const TransactionFormCore({
     super.key,
     required this.formKey,
@@ -18,6 +21,7 @@ class TransactionFormCore extends StatelessWidget {
     this.titleController,
     this.amountController,
     required this.categorySection,
+    required this.isIncome,
   });
 
   @override
@@ -32,12 +36,10 @@ class TransactionFormCore extends StatelessWidget {
             onDateSelected: onDateSelected,
             // title: 'Transaction Date', // Optional: Add title if needed in DatePickerSection
           ),
-          const SizedBox(height: 20),
-          AppTextField(
-            controller:
-                titleController, // Use provided controller or it will be null (managed internally by AppTextField if needed)
-            labelText: 'Title',
-            hintText: 'Enter transaction title',
+          AppTextFormField(
+            labelText: isIncome ? 'Income Title' : 'Expense Title',
+            controller: titleController ?? TextEditingController(),
+            hintText: isIncome ? 'Enter income title' : 'Enter expense title',
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter a title';
@@ -45,14 +47,13 @@ class TransactionFormCore extends StatelessWidget {
               return null;
             },
           ),
-          const SizedBox(height: 20),
-          AppTextField(
-            controller:
-                amountController, // Use provided controller or it will be null
-            labelText: 'Amount',
-            hintText: 'Enter amount',
+          const SizedBox(height: 32),
+          AppTextFormField(
+            labelText: "Amount",
+            controller: amountController ?? TextEditingController(),
+            hintText: isIncome ? 'Enter income amount' : 'Enter expense amount',
             keyboardType: TextInputType.number,
-            // prefixIcon: Icons.attach_money, // Consider if this should be part of AppTextField or specific to page
+            suffixIconData: Icons.attach_money,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter an amount';
@@ -66,8 +67,13 @@ class TransactionFormCore extends StatelessWidget {
               return null;
             },
           ),
-          const SizedBox(height: 24),
-          categorySection,
+          const SizedBox(height: 32),
+          FieldLabelText(isIncome ? 'Income Category' : 'Expense Category'),
+          SizedBox(
+            height: 56,
+            child: categorySection,
+          ),
+          const SizedBox(height: 32),
         ],
       ),
     );

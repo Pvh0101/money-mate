@@ -3,16 +3,12 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i5;
+import 'dart:async' as _i3;
 
-import 'package:bloc/bloc.dart' as _i6;
+import 'package:bloc/bloc.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:money_mate/features/authentication/domain/usecases/register_with_email_usecase.dart'
-    as _i2;
-import 'package:money_mate/features/authentication/domain/usecases/register_with_google_usecase.dart'
-    as _i3;
 import 'package:money_mate/features/authentication/presentation/bloc/auth_bloc.dart'
-    as _i4;
+    as _i2;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -28,30 +24,8 @@ import 'package:money_mate/features/authentication/presentation/bloc/auth_bloc.d
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeRegisterWithEmailUseCase_0 extends _i1.SmartFake
-    implements _i2.RegisterWithEmailUseCase {
-  _FakeRegisterWithEmailUseCase_0(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeRegisterWithGoogleUseCase_1 extends _i1.SmartFake
-    implements _i3.RegisterWithGoogleUseCase {
-  _FakeRegisterWithGoogleUseCase_1(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeAuthState_2 extends _i1.SmartFake implements _i4.AuthState {
-  _FakeAuthState_2(
+class _FakeAuthState_0 extends _i1.SmartFake implements _i2.AuthState {
+  _FakeAuthState_0(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -63,45 +37,25 @@ class _FakeAuthState_2 extends _i1.SmartFake implements _i4.AuthState {
 /// A class which mocks [AuthBloc].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAuthBloc extends _i1.Mock implements _i4.AuthBloc {
+class MockAuthBloc extends _i1.Mock implements _i2.AuthBloc {
   MockAuthBloc() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.RegisterWithEmailUseCase get registerWithEmailUseCase =>
-      (super.noSuchMethod(
-        Invocation.getter(#registerWithEmailUseCase),
-        returnValue: _FakeRegisterWithEmailUseCase_0(
-          this,
-          Invocation.getter(#registerWithEmailUseCase),
-        ),
-      ) as _i2.RegisterWithEmailUseCase);
-
-  @override
-  _i3.RegisterWithGoogleUseCase get registerWithGoogleUseCase =>
-      (super.noSuchMethod(
-        Invocation.getter(#registerWithGoogleUseCase),
-        returnValue: _FakeRegisterWithGoogleUseCase_1(
-          this,
-          Invocation.getter(#registerWithGoogleUseCase),
-        ),
-      ) as _i3.RegisterWithGoogleUseCase);
-
-  @override
-  _i4.AuthState get state => (super.noSuchMethod(
+  _i2.AuthState get state => (super.noSuchMethod(
         Invocation.getter(#state),
-        returnValue: _FakeAuthState_2(
+        returnValue: _FakeAuthState_0(
           this,
           Invocation.getter(#state),
         ),
-      ) as _i4.AuthState);
+      ) as _i2.AuthState);
 
   @override
-  _i5.Stream<_i4.AuthState> get stream => (super.noSuchMethod(
+  _i3.Stream<_i2.AuthState> get stream => (super.noSuchMethod(
         Invocation.getter(#stream),
-        returnValue: _i5.Stream<_i4.AuthState>.empty(),
-      ) as _i5.Stream<_i4.AuthState>);
+        returnValue: _i3.Stream<_i2.AuthState>.empty(),
+      ) as _i3.Stream<_i2.AuthState>);
 
   @override
   bool get isClosed => (super.noSuchMethod(
@@ -110,7 +64,17 @@ class MockAuthBloc extends _i1.Mock implements _i4.AuthBloc {
       ) as bool);
 
   @override
-  void add(_i4.AuthEvent? event) => super.noSuchMethod(
+  _i3.Future<void> close() => (super.noSuchMethod(
+        Invocation.method(
+          #close,
+          [],
+        ),
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
+
+  @override
+  void add(_i2.AuthEvent? event) => super.noSuchMethod(
         Invocation.method(
           #add,
           [event],
@@ -119,7 +83,7 @@ class MockAuthBloc extends _i1.Mock implements _i4.AuthBloc {
       );
 
   @override
-  void onEvent(_i4.AuthEvent? event) => super.noSuchMethod(
+  void onEvent(_i2.AuthEvent? event) => super.noSuchMethod(
         Invocation.method(
           #onEvent,
           [event],
@@ -128,7 +92,7 @@ class MockAuthBloc extends _i1.Mock implements _i4.AuthBloc {
       );
 
   @override
-  void emit(_i4.AuthState? state) => super.noSuchMethod(
+  void emit(_i2.AuthState? state) => super.noSuchMethod(
         Invocation.method(
           #emit,
           [state],
@@ -137,9 +101,9 @@ class MockAuthBloc extends _i1.Mock implements _i4.AuthBloc {
       );
 
   @override
-  void on<E extends _i4.AuthEvent>(
-    _i6.EventHandler<E, _i4.AuthState>? handler, {
-    _i6.EventTransformer<E>? transformer,
+  void on<E extends _i2.AuthEvent>(
+    _i4.EventHandler<E, _i2.AuthState>? handler, {
+    _i4.EventTransformer<E>? transformer,
   }) =>
       super.noSuchMethod(
         Invocation.method(
@@ -151,7 +115,7 @@ class MockAuthBloc extends _i1.Mock implements _i4.AuthBloc {
       );
 
   @override
-  void onTransition(_i6.Transition<_i4.AuthEvent, _i4.AuthState>? transition) =>
+  void onTransition(_i4.Transition<_i2.AuthEvent, _i2.AuthState>? transition) =>
       super.noSuchMethod(
         Invocation.method(
           #onTransition,
@@ -161,17 +125,7 @@ class MockAuthBloc extends _i1.Mock implements _i4.AuthBloc {
       );
 
   @override
-  _i5.Future<void> close() => (super.noSuchMethod(
-        Invocation.method(
-          #close,
-          [],
-        ),
-        returnValue: _i5.Future<void>.value(),
-        returnValueForMissingStub: _i5.Future<void>.value(),
-      ) as _i5.Future<void>);
-
-  @override
-  void onChange(_i6.Change<_i4.AuthState>? change) => super.noSuchMethod(
+  void onChange(_i4.Change<_i2.AuthState>? change) => super.noSuchMethod(
         Invocation.method(
           #onChange,
           [change],
