@@ -22,6 +22,9 @@ import '../../features/categories/domain/usecases/get_categories_usecase.dart';
 import '../../features/categories/presentation/bloc/category_bloc.dart';
 import '../network/network_info.dart';
 
+// Transaction dependencies import
+import 'transaction_di.dart';
+
 final sl = GetIt.instance;
 
 /// Khởi tạo các dependencies
@@ -104,4 +107,7 @@ Future<void> init() async {
       uuid: sl(),
     ),
   );
+
+  // Khởi tạo dependencies cho Transaction
+  initTransactionDependencies(sl);
 }

@@ -47,6 +47,7 @@ dev_dependencies:
   bloc_test: ^10.0.0
   mockito: ^5.4.6
   mocktail: ^1.0.3
+  network_image_mock: ^2.1.1
 
 flutter:
   uses-material-design: true

@@ -6,6 +6,7 @@ import 'core/core.dart' as core; // Import barrel file core với prefix
 import 'features/authentication/presentation/bloc/auth_bloc.dart'; // Giữ lại vì là feature khác
 import 'features/authentication/presentation/widgets/auth_gate.dart'; // Giữ lại vì là feature khác
 import 'features/categories/presentation/bloc/category_bloc.dart';
+import 'features/transactions/presentation/bloc/transaction_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +31,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<CategoryBloc>(
           create: (context) => core.sl<CategoryBloc>(),
+        ),
+        BlocProvider<TransactionBloc>(
+          create: (context) => core.sl<TransactionBloc>(),
         ),
       ],
       child: AdaptiveTheme(

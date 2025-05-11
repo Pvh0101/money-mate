@@ -14,3 +14,8 @@ class CacheFailure extends Failure {
 class NetworkFailure extends Failure {
   const NetworkFailure([String message = 'Lỗi kết nối']) : super(message);
 }
+
+class ValidationFailure extends Failure {
+  const ValidationFailure([String message = 'Lỗi dữ liệu không hợp lệ'])
+      : super(message);
+}
