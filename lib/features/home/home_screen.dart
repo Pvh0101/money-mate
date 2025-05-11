@@ -3,9 +3,9 @@ import 'package:money_mate/features/transactions/presentation/pages/add_income_p
 import 'package:money_mate/features/dashboard/presentation/pages/dashboard_page.dart';
 import 'package:money_mate/features/dashboard/presentation/pages/total_expense_page.dart';
 import 'package:money_mate/features/budgets/presentation/pages/budgets_page.dart';
-import 'package:money_mate/features/entries/presentation/pages/entries_page.dart';
-import 'package:money_mate/features/profile/presentation/pages/profile_page.dart';
-import 'package:money_mate/features/home/presentation/widgets/app_bottom_navigation_bar.dart';
+import 'package:money_mate/features/transactions/presentation/pages/entries_page.dart';
+import 'package:money_mate/features/home/profile_page.dart';
+import 'package:money_mate/core/app_bottom_navigation_bar.dart';
 import 'package:money_mate/core/routes/app_routes.dart';
 import 'package:money_mate/core/constants/route_constants.dart';
 

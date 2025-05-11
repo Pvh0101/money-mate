@@ -5,7 +5,7 @@ import '../../features/authentication/presentation/pages/login_page.dart';
 import '../../features/authentication/presentation/pages/password_updated_page.dart';
 import '../../features/authentication/presentation/pages/register_page.dart';
 // import '../../features/authentication/presentation/widgets/home_page.dart'; // Đã comment/xóa ở bước trước nếu thành công
-import 'package:money_mate/features/home/presentation/pages/home_screen.dart';
+import 'package:money_mate/features/home/home_screen.dart';
 import '../../features/authentication/presentation/pages/onboarding_page.dart';
 import '../../features/transactions/presentation/pages/add_entry_page.dart';
 import '../../features/transactions/presentation/pages/add_income_page.dart';

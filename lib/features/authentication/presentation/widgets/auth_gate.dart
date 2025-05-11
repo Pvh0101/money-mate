@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:money_mate/features/authentication/presentation/pages/onboarding_page.dart';
-import 'package:money_mate/features/home/presentation/pages/home_screen.dart';
+import 'package:money_mate/features/home/home_screen.dart';
 import '../bloc/auth_bloc.dart';
 
 class AuthGate extends StatelessWidget {
