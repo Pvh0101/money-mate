@@ -23,7 +23,7 @@ class AddIncomePage extends StatefulWidget {
 
 class _AddIncomePageState extends State<AddIncomePage> {
   final _formKey = GlobalKey<FormState>();
-  DateTime? _actualSelectedDate;
+  DateTime? _actualSelectedDate = DateTime.now();
   String? _selectedCategoryId;
   Category? _selectedCategory;
   final TextEditingController _titleController = TextEditingController();
@@ -68,6 +68,8 @@ class _AddIncomePageState extends State<AddIncomePage> {
         createdAt: now,
         updatedAt: now,
         includeVat: false,
+        paymentMethod:
+            PaymentMethod.cash, // TODO: Truyền giá trị thực tế khi có UI
       );
 
       context
@@ -94,20 +96,28 @@ class _AddIncomePageState extends State<AddIncomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(
-        titleText: 'Thêm khoản thu',
+        titleText: 'Add Income',
         showBackButton: true,
       ),
       body: BlocListener<TransactionBloc, TransactionState>(
         listener: (context, state) {
           if (state is TransactionOperationSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: Colors.green,
-              ),
-            );
-            Navigator.pop(
-                context, true); // Quay lại trang trước với kết quả thành công
+            // Khi thêm giao dịch thành công, làm mới dữ liệu trước khi quay lại
+            // Sử dụng khoảng thời gian gần đây (ví dụ: 30 ngày)
+            final now = DateTime.now();
+            final startDate = now.subtract(const Duration(days: 30));
+
+            context.read<TransactionBloc>().add(
+                  GetTransactionsByDateRangeEvent(
+                    start: startDate,
+                    end: now,
+                  ),
+                );
+
+            // Đợi một chút để đảm bảo sự kiện được xử lý
+            Future.delayed(const Duration(milliseconds: 300), () {
+              Navigator.pop(context, true);
+            });
           } else if (state is TransactionFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -118,7 +128,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
           }
         },
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
             children: [
               TransactionFormCore(
@@ -139,7 +149,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
                 builder: (context, state) {
                   final isLoading = state is TransactionLoading;
                   return AppFillButton(
-                    text: 'Thêm khoản thu',
+                    text: 'Add Income',
                     onPressed: isLoading ? () {} : _submitIncome,
                     isExpanded: true,
                   );

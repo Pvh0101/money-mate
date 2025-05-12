@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:money_mate/features/categories/presentation/bloc/category_bloc.dart';
-
+import 'package:money_mate/features/transactions/presentation/pages/total_expense_page.dart';
+import 'package:money_mate/features/transactions/presentation/pages/total_income_page.dart';
 import '../../features/authentication/presentation/pages/forgot_password_page.dart';
 import '../../features/authentication/presentation/pages/login_page.dart';
 import '../../features/authentication/presentation/pages/password_updated_page.dart';
 import '../../features/authentication/presentation/pages/register_page.dart';
-// import '../../features/authentication/presentation/widgets/home_page.dart'; // Đã comment/xóa ở bước trước nếu thành công
 import 'package:money_mate/features/home/home_screen.dart';
 import '../../features/authentication/presentation/pages/onboarding_page.dart';
 import '../../features/transactions/presentation/pages/add_entry_page.dart';
 import '../../features/transactions/presentation/pages/add_income_page.dart';
 import '../../features/transactions/presentation/pages/add_expense_page.dart';
+import '../../features/summary/presentation/pages/summary_page.dart';
 import '../constants/route_constants.dart';
-import '../di/service_locator.dart';
 
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -39,6 +37,12 @@ class Routes {
         return _materialRoute(const AddIncomePage());
       case RouteConstants.addExpense:
         return _materialRoute(const AddExpensePage());
+      case RouteConstants.totalIncome:
+        return _materialRoute(const TotalIncomePage());
+      case RouteConstants.totalExpense:
+        return _materialRoute(const TotalExpensePage());
+      case RouteConstants.summary:
+        return _materialRoute(const SummaryPage());
       // Các routes khác sẽ được thêm khi có file tương ứng
       default:
         return _materialRoute(const OnboardingPage());
@@ -48,16 +52,6 @@ class Routes {
   static Route<dynamic> _materialRoute(Widget view) {
     return MaterialPageRoute(
       builder: (_) => view,
-    );
-  }
-
-  // Giữ lại phương thức này để tham khảo sau này nếu cần
-  static Route<dynamic> _materialRouteWithCategoryBloc(Widget view) {
-    return MaterialPageRoute(
-      builder: (_) => BlocProvider<CategoryBloc>(
-        create: (_) => sl<CategoryBloc>(),
-        child: view,
-      ),
     );
   }
 

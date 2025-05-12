@@ -129,6 +129,7 @@ class _OnboardingPageState extends State<OnboardingPage>
           _buildPageIndicator(context),
           const SizedBox(height: 40),
           AppFillButton(
+            isExpanded: true,
             text: _currentPage == 2 ? "LET'S GO" : "NEXT",
             onPressed: () {
               if (_currentPage < 2) {

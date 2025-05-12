@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:money_mate/features/summary/presentation/pages/summary_page.dart';
 import 'package:money_mate/features/transactions/presentation/pages/add_income_page.dart';
 import 'package:money_mate/features/dashboard/presentation/pages/dashboard_page.dart';
-import 'package:money_mate/features/dashboard/presentation/pages/total_expense_page.dart';
+import 'package:money_mate/features/transactions/presentation/pages/total_income_page.dart';
 import 'package:money_mate/features/budgets/presentation/pages/budgets_page.dart';
 import 'package:money_mate/features/transactions/presentation/pages/entries_page.dart';
 import 'package:money_mate/features/home/profile_page.dart';
@@ -23,9 +24,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     DashboardPage(),
-    TotalExpensePage(),
-    AddIncomePage(),
-    ProfilePage(),
+    TotalIncomePage(),
+    SummaryPage(),
+    EntriesPage(),
   ];
 
   void _onItemTapped(int index) {

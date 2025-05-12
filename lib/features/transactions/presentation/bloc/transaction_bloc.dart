@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
+import '../../../../core/events/app_events.dart';
 import '../../domain/entities/transaction.dart';
 import '../../domain/usecases/add_transaction_usecase.dart';
 import '../../domain/usecases/delete_transaction_usecase.dart';
@@ -112,10 +113,15 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     final result = await addTransaction(transaction);
     result.fold(
       (failure) => emit(TransactionFailure(failure: failure)),
-      (newTransaction) => emit(TransactionOperationSuccess(
-        message: 'Thêm giao dịch thành công',
-        transaction: newTransaction,
-      )),
+      (newTransaction) {
+        // Thông báo giao dịch thay đổi
+        appEvents.notifyTransactionChanged();
+
+        emit(TransactionOperationSuccess(
+          message: 'Thêm giao dịch thành công',
+          transaction: newTransaction,
+        ));
+      },
     );
   }
 
@@ -127,10 +133,15 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     final result = await updateTransaction(event.transaction);
     result.fold(
       (failure) => emit(TransactionFailure(failure: failure)),
-      (updatedTransaction) => emit(TransactionOperationSuccess(
-        message: 'Cập nhật giao dịch thành công',
-        transaction: updatedTransaction,
-      )),
+      (updatedTransaction) {
+        // Thông báo giao dịch thay đổi
+        appEvents.notifyTransactionChanged();
+
+        emit(TransactionOperationSuccess(
+          message: 'Cập nhật giao dịch thành công',
+          transaction: updatedTransaction,
+        ));
+      },
     );
   }
 
@@ -143,9 +154,14 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         await deleteTransaction(DeleteTransactionParams(id: event.id));
     result.fold(
       (failure) => emit(TransactionFailure(failure: failure)),
-      (_) => emit(const TransactionOperationSuccess(
-        message: 'Xóa giao dịch thành công',
-      )),
+      (_) {
+        // Thông báo giao dịch thay đổi
+        appEvents.notifyTransactionChanged();
+
+        emit(const TransactionOperationSuccess(
+          message: 'Xóa giao dịch thành công',
+        ));
+      },
     );
   }
 

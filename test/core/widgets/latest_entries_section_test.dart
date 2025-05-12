@@ -1,34 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:money_mate/core/widgets/latest_entries_section.dart';
-import 'package:money_mate/core/widgets/latest_entry_item.dart';
+import 'package:money_mate/core/widgets/list_entries.dart';
+import 'package:money_mate/core/widgets/entry_item.dart';
 import 'package:money_mate/core/widgets/buttons/app_icon_button.dart';
+import 'package:money_mate/features/transactions/domain/entities/transaction.dart';
+import 'package:money_mate/core/enums/transaction_type.dart';
+import 'package:money_mate/features/categories/domain/entities/category.dart';
+import 'package:money_mate/core/enums/category_type.dart';
 
 void main() {
   group('LatestEntriesSection Tests', () {
-    final List<Map<String, dynamic>> sampleEntries = [
-      {
-        'icon': 'assets/icons/sample_icon_1.svg',
-        'category': 'Groceries',
-        'date': 'Jan 10',
-        'amount': '+ \$50',
-        'paymentMethod': 'Cash'
-      },
-      {
-        'icon': 'assets/icons/sample_icon_2.svg',
-        'category': 'Salary',
-        'date': 'Jan 12',
-        'amount': '+ \$2000',
-        'paymentMethod': 'Bank Transfer'
-      },
+    final List<Transaction> sampleEntries = [
+      Transaction(
+        id: '1',
+        amount: 50,
+        date: DateTime(2024, 1, 10),
+        categoryId: 'Groceries',
+        note: '',
+        type: TransactionType.expense,
+        userId: 'u1',
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+        includeVat: false,
+        paymentMethod: PaymentMethod.cash,
+      ),
+      Transaction(
+        id: '2',
+        amount: 2000,
+        date: DateTime(2024, 1, 12),
+        categoryId: 'Salary',
+        note: '',
+        type: TransactionType.income,
+        userId: 'u1',
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+        includeVat: false,
+        paymentMethod: PaymentMethod.bankTransfer,
+      ),
+    ];
+
+    final List<Category> sampleCategories = [
+      Category(
+        id: 'Groceries',
+        name: 'Food',
+        iconName: 'food',
+        type: CategoryType.expense,
+      ),
+      Category(
+        id: 'Salary',
+        name: 'Salary',
+        iconName: 'salary',
+        type: CategoryType.income,
+      ),
     ];
 
     testWidgets('renders title and more button', (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: LatestEntriesSection(
-              latestEntriesData: const [],
+            body: ListEntries(
+              latestEntries: const [],
+              categories: sampleCategories,
               onLatestEntryTapped: (_) {},
               onMoreEntriesTapped: () {},
             ),
@@ -47,8 +79,9 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: LatestEntriesSection(
-              latestEntriesData: const [],
+            body: ListEntries(
+              latestEntries: const [],
+              categories: sampleCategories,
               onLatestEntryTapped: (_) {},
               onMoreEntriesTapped: () {
                 tapped = true;
@@ -68,8 +101,9 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: LatestEntriesSection(
-              latestEntriesData: const [],
+            body: ListEntries(
+              latestEntries: const [],
+              categories: sampleCategories,
               onLatestEntryTapped: (_) {},
               onMoreEntriesTapped: () {},
             ),
@@ -78,7 +112,7 @@ void main() {
       );
 
       expect(find.text('No entries yet.'), findsOneWidget);
-      expect(find.byType(LatestEntryItem), findsNothing);
+      expect(find.byType(EntryItem), findsNothing);
     });
 
     testWidgets('renders list of LatestEntryItem when data is provided',
@@ -86,8 +120,9 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: LatestEntriesSection(
-              latestEntriesData: sampleEntries,
+            body: ListEntries(
+              latestEntries: sampleEntries,
+              categories: sampleCategories,
               onLatestEntryTapped: (_) {},
               onMoreEntriesTapped: () {},
             ),
@@ -95,21 +130,22 @@ void main() {
         ),
       );
 
-      expect(find.byType(LatestEntryItem), findsNWidgets(sampleEntries.length));
+      expect(find.byType(EntryItem), findsNWidgets(sampleEntries.length));
       expect(find.text('No entries yet.'), findsNothing);
-      expect(find.text(sampleEntries.first['category']!), findsOneWidget);
+      expect(find.text(sampleEntries.first.categoryId!), findsOneWidget);
     });
 
     testWidgets(
         'calls onLatestEntryTapped with correct data when an item is tapped',
         (WidgetTester tester) async {
-      Map<String, dynamic>? tappedEntryData;
+      Transaction? tappedEntryData;
 
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: LatestEntriesSection(
-              latestEntriesData: sampleEntries,
+            body: ListEntries(
+              latestEntries: sampleEntries,
+              categories: sampleCategories,
               onLatestEntryTapped: (entryData) {
                 tappedEntryData = entryData;
               },
@@ -119,10 +155,8 @@ void main() {
         ),
       );
 
-      // Vì LatestEntryItem có thể phức tạp, ta tìm widget con của nó là Text với category để tap
-      // Điều này giả định rằng LatestEntryItem render Text widget cho category
       await tester
-          .tap(find.widgetWithText(InkWell, sampleEntries.first['category']!));
+          .tap(find.widgetWithText(InkWell, sampleEntries.first.categoryId));
       await tester.pump();
 
       expect(tappedEntryData, isNotNull);

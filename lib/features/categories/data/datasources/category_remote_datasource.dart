@@ -1,36 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../../../core/constants/default_categories.dart';
 import '../../../../core/enums/category_type.dart';
 import '../models/category_model.dart';
 
-abstract class CategoryDataSource {
+abstract class CategoryRemoteDataSource {
   Future<List<CategoryModel>> getCategories(CategoryType type);
   Future<CategoryModel> addCategory(CategoryModel category);
 }
 
-class CategoryLocalDataSource implements CategoryDataSource {
-  @override
-  Future<List<CategoryModel>> getCategories(CategoryType type) async {
-    try {
-      final categories = type == CategoryType.income
-          ? defaultIncomeCategories
-          : defaultExpenseCategories;
-      return Future.value(categories);
-    } catch (e) {
-      throw Exception('Không thể lấy danh sách category từ local');
-    }
-  }
-
-  @override
-  Future<CategoryModel> addCategory(CategoryModel category) {
-    throw UnimplementedError('Local data source không hỗ trợ thêm category');
-  }
-}
-
-class CategoryRemoteDataSource implements CategoryDataSource {
+class FirebaseCategoryRemoteDataSource implements CategoryRemoteDataSource {
   final FirebaseFirestore firestore;
 
-  CategoryRemoteDataSource({required this.firestore});
+  FirebaseCategoryRemoteDataSource({required this.firestore});
 
   @override
   Future<List<CategoryModel>> getCategories(CategoryType type) async {
@@ -45,7 +25,7 @@ class CategoryRemoteDataSource implements CategoryDataSource {
           .map((doc) => CategoryModel.fromJson(doc.data()))
           .toList();
     } catch (e) {
-      throw Exception('Không thể lấy danh sách category từ server');
+      throw Exception('Không thể lấy danh sách category từ server: $e');
     }
   }
 
@@ -58,7 +38,7 @@ class CategoryRemoteDataSource implements CategoryDataSource {
           .set(category.toJson());
       return category;
     } catch (e) {
-      throw Exception('Không thể thêm category vào server');
+      throw Exception('Không thể thêm category vào server: $e');
     }
   }
 }

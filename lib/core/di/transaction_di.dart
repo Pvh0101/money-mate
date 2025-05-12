@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hive/hive.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import '../network/network_info.dart';
-import '../../features/transactions/data/datasources/transaction_datasource.dart';
+import '../storage/hive_config.dart';
+import '../../features/transactions/data/datasources/transaction_remote_datasource.dart';
+import '../../features/transactions/data/datasources/transaction_local_datasource.dart';
 import '../../features/transactions/data/repositories/transaction_repository_impl.dart';
 import '../../features/transactions/domain/repositories/transaction_repository.dart';
 import '../../features/transactions/domain/usecases/add_transaction_usecase.dart';
@@ -44,6 +47,7 @@ void initTransactionDependencies(GetIt sl) {
   sl.registerLazySingleton<TransactionRepository>(
     () => TransactionRepositoryImpl(
       remoteDataSource: sl(),
+      localDataSource: sl(),
       networkInfo: sl(),
     ),
   );
@@ -52,6 +56,13 @@ void initTransactionDependencies(GetIt sl) {
   sl.registerLazySingleton<TransactionRemoteDataSource>(
     () => TransactionRemoteDataSourceImpl(
       firestore: sl(),
+    ),
+  );
+
+  // Local data source with Hive
+  sl.registerLazySingleton<TransactionLocalDataSource>(
+    () => HiveTransactionLocalDataSource(
+      transactionsBox: sl<Box>(instanceName: HiveBoxes.transactionsBox),
     ),
   );
 

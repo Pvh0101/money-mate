@@ -41,14 +41,6 @@ class StatCardItem extends StatelessWidget {
           decoration: BoxDecoration(
             color: cardBackgroundColor,
             borderRadius: BorderRadius.circular(16.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.08),
-                blurRadius: 12.0,
-                offset: const Offset(0, 6),
-                spreadRadius: -5,
-              ),
-            ],
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:money_mate/core/widgets/custom_app_bar.dart';
-import 'package:money_mate/features/dashboard/data/mock/dashboard_mock_data.dart';
-import 'package:money_mate/core/widgets/latest_entries_section.dart';
+import 'package:money_mate/core/widgets/list_entries.dart';
 import 'package:money_mate/features/transactions/presentation/widgets/add_options_section.dart';
 import 'package:money_mate/core/constants/route_constants.dart';
+import 'package:money_mate/features/transactions/domain/entities/transaction.dart';
+import 'package:money_mate/features/categories/domain/entities/category.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:money_mate/features/transactions/presentation/bloc/transaction_bloc.dart';
+import 'package:money_mate/features/transactions/presentation/bloc/transaction_state.dart';
+import 'package:money_mate/features/categories/presentation/bloc/category_bloc.dart';
+import 'package:money_mate/features/categories/presentation/bloc/category_state.dart';
 
 class AddEntryPage extends StatefulWidget {
   const AddEntryPage({super.key});
@@ -14,8 +20,7 @@ class AddEntryPage extends StatefulWidget {
 
 class _AddEntryPageState extends State<AddEntryPage> {
   // Mock data cho Latest Entries
-  final List<Map<String, dynamic>> _latestEntriesData =
-      DashboardMockData.latestEntriesData;
+  // final List<Map<String, dynamic>> _latestEntriesData = DashboardMockData.latestEntriesData;
 
   void _onAddIncomeTapped() {
     Navigator.pushNamed(context, RouteConstants.addIncome);
@@ -66,10 +71,31 @@ class _AddEntryPageState extends State<AddEntryPage> {
               child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(24.0, 32.0, 24.0, 32.0),
-                  child: LatestEntriesSection(
-                    latestEntriesData: _latestEntriesData,
-                    onLatestEntryTapped: _onLatestEntryTapped,
-                    onMoreEntriesTapped: _onMoreEntriesTapped,
+                  child: BlocBuilder<TransactionBloc, TransactionState>(
+                    builder: (context, tState) {
+                      if (tState is TransactionLoading) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (tState is TransactionsLoaded) {
+                        final transactions = tState.transactions;
+                        transactions.sort((a, b) => b.date.compareTo(a.date));
+                        final lastEntries = transactions.take(5).toList();
+                        return BlocBuilder<CategoryBloc, CategoryState>(
+                          builder: (context, cState) {
+                            List<Category> categories = [];
+                            if (cState is CategoriesLoaded) {
+                              categories = cState.categories;
+                            }
+                            return ListEntries(
+                              latestEntries: lastEntries,
+                              categories: categories,
+                              onLatestEntryTapped: (entry) {},
+                              onMoreEntriesTapped: _onMoreEntriesTapped,
+                            );
+                          },
+                        );
+                      }
+                      return const SizedBox.shrink();
+                    },
                   ),
                 ),
               ),

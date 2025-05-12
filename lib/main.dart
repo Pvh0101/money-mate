@@ -3,15 +3,29 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'core/core.dart' as core; // Import barrel file core với prefix
+import 'core/storage/hive_service.dart';
+import 'core/storage/hive_config.dart';
 import 'features/authentication/presentation/bloc/auth_bloc.dart'; // Giữ lại vì là feature khác
 import 'features/authentication/presentation/widgets/auth_gate.dart'; // Giữ lại vì là feature khác
 import 'features/categories/presentation/bloc/category_bloc.dart';
 import 'features/transactions/presentation/bloc/transaction_bloc.dart';
+import 'features/summary/presentation/bloc/summary_bloc.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+
+  // Khởi tạo Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  // Khởi tạo Hive
+  await HiveService.init();
+
+  // Khởi tạo các dependency
   await core.init();
+
   final savedThemeMode = await AdaptiveTheme.getThemeMode();
   runApp(MyApp(savedThemeMode: savedThemeMode));
 }
@@ -34,6 +48,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<TransactionBloc>(
           create: (context) => core.sl<TransactionBloc>(),
+        ),
+        BlocProvider<SummaryBloc>(
+          create: (context) => core.sl<SummaryBloc>(),
         ),
       ],
       child: AdaptiveTheme(

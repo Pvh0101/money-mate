@@ -31,10 +31,13 @@ class TransactionFormCore extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          DatePickerSection(
-            initialDate: initialDate,
-            onDateSelected: onDateSelected,
-            // title: 'Transaction Date', // Optional: Add title if needed in DatePickerSection
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 32.0),
+            child: DatePickerSection(
+              initialDate: initialDate,
+              onDateSelected: onDateSelected,
+              // title: 'Transaction Date', // Optional: Add title if needed in DatePickerSection
+            ),
           ),
           AppTextFormField(
             fillColor: Theme.of(context).colorScheme.surface,

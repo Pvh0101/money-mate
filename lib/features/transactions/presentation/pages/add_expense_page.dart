@@ -12,6 +12,8 @@ import 'package:money_mate/features/transactions/presentation/bloc/transaction_e
 import 'package:money_mate/features/transactions/presentation/bloc/transaction_state.dart';
 import '../widgets/category_list.dart';
 import '../widgets/transaction_form_core.dart';
+import 'package:money_mate/features/summary/presentation/bloc/summary_bloc.dart';
+import 'package:money_mate/features/summary/presentation/bloc/summary_event.dart';
 
 class AddExpensePage extends StatefulWidget {
   const AddExpensePage({super.key});
@@ -23,7 +25,7 @@ class AddExpensePage extends StatefulWidget {
 
 class _AddExpensePageState extends State<AddExpensePage> {
   final _formKey = GlobalKey<FormState>();
-  DateTime? _actualSelectedDate;
+  DateTime? _actualSelectedDate = DateTime.now();
   String? _selectedCategoryId;
   Category? _selectedCategory;
   final TextEditingController _titleController = TextEditingController();
@@ -68,6 +70,8 @@ class _AddExpensePageState extends State<AddExpensePage> {
         createdAt: now,
         updatedAt: now,
         includeVat: false,
+        paymentMethod:
+            PaymentMethod.cash, // TODO: Truyền giá trị thực tế khi có UI
       );
 
       context
@@ -94,20 +98,31 @@ class _AddExpensePageState extends State<AddExpensePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(
-        titleText: 'Thêm khoản chi',
+        titleText: 'Add Expense',
         showBackButton: true,
       ),
       body: BlocListener<TransactionBloc, TransactionState>(
         listener: (context, state) {
           if (state is TransactionOperationSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: Colors.green,
-              ),
-            );
-            Navigator.pop(
-                context, true); // Quay lại trang trước với kết quả thành công
+            // Khi thêm giao dịch thành công, làm mới dữ liệu trước khi quay lại
+            // Sử dụng khoảng thời gian gần đây (ví dụ: 30 ngày)
+            final now = DateTime.now();
+            final startDate = now.subtract(const Duration(days: 30));
+
+            context.read<TransactionBloc>().add(
+                  GetTransactionsByDateRangeEvent(
+                    start: startDate,
+                    end: now,
+                  ),
+                );
+
+            // Làm mới dữ liệu Summary bằng cách gửi sự kiện RefreshSummaryEvent
+            context.read<SummaryBloc>().add(const RefreshSummaryEvent());
+
+            // Đợi một chút để đảm bảo sự kiện được xử lý
+            Future.delayed(const Duration(milliseconds: 300), () {
+              Navigator.pop(context, true);
+            });
           } else if (state is TransactionFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -140,7 +155,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
                 builder: (context, state) {
                   final isLoading = state is TransactionLoading;
                   return AppFillButton(
-                    text: 'Thêm khoản chi',
+                    text: 'Add Expense',
                     onPressed: isLoading ? () {} : _submitExpense,
                     isExpanded: true,
                   );

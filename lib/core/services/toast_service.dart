@@ -55,4 +55,4 @@ class ToastService {
   // Có thể thêm các phương thức tiện ích khác ở đây nếu cần
   // void showError(String message) => show(message: message, type: ToastType.error);
   // void showSuccess(String message) => show(message: message, type: ToastType.success);
-} 
+}

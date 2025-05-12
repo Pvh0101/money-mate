@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 
 import '../core.dart';
@@ -229,7 +228,6 @@ class _DatePickerSectionState extends State<DatePickerSection> {
         DateFormat('MMMM - yyyy').format(_focusedDate);
 
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 32.0),
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: colorScheme.surface,

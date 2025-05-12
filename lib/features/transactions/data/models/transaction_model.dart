@@ -16,6 +16,7 @@ class TransactionModel extends Transaction {
     double? vatAmount,
     double? vatRate,
     bool includeVat = false,
+    PaymentMethod paymentMethod = PaymentMethod.cash,
   }) : super(
           id: id,
           amount: amount,
@@ -29,6 +30,7 @@ class TransactionModel extends Transaction {
           vatAmount: vatAmount,
           vatRate: vatRate,
           includeVat: includeVat,
+          paymentMethod: paymentMethod,
         );
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) {
@@ -55,6 +57,16 @@ class TransactionModel extends Transaction {
               : json['vatRate'])
           : null,
       includeVat: json['includeVat'] ?? false,
+      paymentMethod: _parsePaymentMethod(json['paymentMethod']),
+    );
+  }
+
+  static PaymentMethod _parsePaymentMethod(dynamic value) {
+    if (value == null) return PaymentMethod.cash;
+    final str = value.toString();
+    return PaymentMethod.values.firstWhere(
+      (e) => e.name == str,
+      orElse: () => PaymentMethod.cash,
     );
   }
 
@@ -72,6 +84,7 @@ class TransactionModel extends Transaction {
       'vatAmount': vatAmount,
       'vatRate': vatRate,
       'includeVat': includeVat,
+      'paymentMethod': paymentMethod.name,
     };
   }
 
@@ -89,6 +102,7 @@ class TransactionModel extends Transaction {
       vatAmount: entity.vatAmount,
       vatRate: entity.vatRate,
       includeVat: entity.includeVat,
+      paymentMethod: entity.paymentMethod,
     );
   }
 }

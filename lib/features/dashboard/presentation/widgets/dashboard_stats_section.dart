@@ -1,38 +1,55 @@
 import 'package:flutter/material.dart';
-// import 'package:money_mate/features/dashboard/presentation/widgets/stat_card_item.dart'; // Import cũ
+import 'package:money_mate/core/constants/route_constants.dart';
 import 'package:money_mate/core/widgets/stat_card_item.dart'; // Import mới
 
 class DashboardStatsSection extends StatelessWidget {
-  final List<Map<String, dynamic>> statCardData;
-  final Function(Map<String, dynamic> statData) onStatCardTapped;
-
+  final String totalSalary;
+  final String totalExpense;
+  final String totalMonthlyExpense;
   const DashboardStatsSection({
     super.key,
-    required this.statCardData,
-    required this.onStatCardTapped,
+    required this.totalSalary,
+    required this.totalExpense,
+    required this.totalMonthlyExpense,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 32.0),
+      padding: const EdgeInsets.symmetric(vertical: 32.0, horizontal: 24.0),
       child: SizedBox(
         height: 140,
-        child: ListView.separated(
+        child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          itemCount: statCardData.length,
-          itemBuilder: (context, index) {
-            final data = statCardData[index];
-            return StatCardItem(
-              title: data["title"]! as String,
-              value: data["value"]! as String,
-              iconPath: data["icon"]! as String,
-              isPrimaryStyle: data["isPrimary"]! as bool,
-              onTap: () => onStatCardTapped(data),
-            );
-          },
-          separatorBuilder: (context, index) => const SizedBox(width: 16.0),
+          child: Row(children: [
+            StatCardItem(
+              title: "Total Income",
+              value: totalSalary,
+              iconPath: "assets/icons/wallet.svg",
+              onTap: () {
+                Navigator.pushNamed(context, RouteConstants.totalIncome);
+              },
+            ),
+            const SizedBox(width: 16),
+            StatCardItem(
+              title: "Total Expense",
+              value: totalExpense,
+              iconPath: "assets/icons/wallet.svg",
+              isPrimaryStyle: true,
+              onTap: () {
+                Navigator.pushNamed(context, RouteConstants.totalExpense);
+              },
+            ),
+            const SizedBox(width: 16),
+            StatCardItem(
+              title: "Monthly Expense",
+              value: totalMonthlyExpense,
+              iconPath: "assets/icons/wallet.svg",
+              onTap: () {
+                Navigator.pushNamed(context, RouteConstants.summary);
+              },
+            ),
+          ]),
         ),
       ),
     );

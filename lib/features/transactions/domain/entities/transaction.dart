@@ -1,6 +1,16 @@
 import 'package:equatable/equatable.dart';
 import '../../../../core/enums/transaction_type.dart';
 
+// Thêm enum PaymentMethod
+enum PaymentMethod {
+  cash,
+  bankTransfer,
+  card,
+  momo,
+  zalopay,
+  other,
+}
+
 class Transaction extends Equatable {
   final String id;
   final double amount;
@@ -14,6 +24,7 @@ class Transaction extends Equatable {
   final double? vatAmount;
   final double? vatRate;
   final bool includeVat;
+  final PaymentMethod paymentMethod;
 
   const Transaction({
     required this.id,
@@ -28,6 +39,7 @@ class Transaction extends Equatable {
     this.vatAmount,
     this.vatRate,
     this.includeVat = false,
+    this.paymentMethod = PaymentMethod.cash,
   });
 
   // Tính toán số tiền trước thuế
@@ -55,6 +67,7 @@ class Transaction extends Equatable {
         updatedAt,
         vatAmount,
         vatRate,
-        includeVat
+        includeVat,
+        paymentMethod,
       ];
 }
